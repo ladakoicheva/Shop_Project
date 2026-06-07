@@ -1,0 +1,10 @@
+{
+  "setting" : {
+    "uid" : {
+      "colorBg" : "",
+      "colorText" : "",
+      "shopName": "",
+      "categories" : ["categoryName", "text"]
+    }
+  }
+}
