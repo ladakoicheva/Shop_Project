@@ -4,12 +4,12 @@ import ProductCard from "../../Components/ProductCard/ProductCard"
 import styles from './Products.module.css'
 import FilterProducts from "../../Components/FilterProducts/FilterProducts";
 import { useStoreContext } from "../../store/store";
-import { getAllProducts } from "../../firebase/db/products";
+import { getAllProducts } from "../../services/firebase/db/products";
 import { useParams } from "react-router-dom";
 import ProductsForm from "../../Components/Forms/ProductsForm/ProductsForm"
 import { NoFound } from "../../uix/NoFound";
 import ShopName from "../../Components/FilterBg/ShopName";
-import { getSettings } from "../../firebase/db/settings";
+import { getSettings } from "../../services/firebase/db/settings";
 
 
 

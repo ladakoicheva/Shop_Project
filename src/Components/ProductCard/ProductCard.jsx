@@ -6,17 +6,15 @@ import { useStoreContext } from '../../store/store'
 import { useState } from 'react'
 import { images } from '../../utils/images'
 import { useMemo } from 'react'
-import { getAllFavProducts } from '../../firebase/db/favProducts'
+import { getAllFavProducts } from '../../services/firebase/db/favProducts'
 
 
 
 export default function ProductCard({ product, onEdit, deleteItem }) {
 
   const { addToBasket, deleteFromBasket, basket, user,
-    setEditCurrentProduct, setProductToEdit, deleteProduct, deleteItemFromFav, addToFav, favorites} = useStoreContext();
-  //   favorites: {
-  //     uid : ['idProduct']
-  //   }
+    setEditCurrentProduct, setProductToEdit, deleteProduct, deleteItemFromFav, addToFav, favorites } = useStoreContext();
+
   const isInBasket = basket[product.id];
   const params = useParams();
   const isOwner = params.uid === user?.uid;
@@ -47,8 +45,8 @@ export default function ProductCard({ product, onEdit, deleteItem }) {
 
         <Link to={`product/${product.id}`}>
           <div className={style.img} >
-            <img src={product.img || '/No-Image.svg.png'} alt=""  />
-            <span  className={style.inStockSpan} style={{ color: `${product.inStock ? 'green' : 'red'}` }}>{product.inStock ? '◉ in Stock' : '◉ out of Stock'} </span>
+            <img src={product.img || '/No-Image.svg.png'} alt="" />
+            <span className={style.inStockSpan} style={{ color: `${product.inStock ? 'green' : 'red'}` }}>{product.inStock ? '◉ in Stock' : '◉ out of Stock'} </span>
           </div>
         </Link>
 
@@ -58,9 +56,9 @@ export default function ProductCard({ product, onEdit, deleteItem }) {
             onClick={onFavClick} src={favorit.src} alt="" />}</div>
         </div>
 
-        <section  className={style.info}>
+        <section className={style.info}>
 
-          <div  className={style.buyInfo}  >
+          <div className={style.buyInfo}  >
             <h2 >{product.currency == 'UAH' ? getUANtoUSD(product.price) : product.price} USD</h2 >
             <div className={style.basketBtns} >
               <button onClick={() => addToBasket(product)} >+</button>

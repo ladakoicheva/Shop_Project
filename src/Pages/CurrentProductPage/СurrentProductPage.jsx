@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { getOneProduct } from "../../firebase/db/products";
+import { getOneProduct } from "../../services/firebase/db/products";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useStoreContext } from "../../store/store";

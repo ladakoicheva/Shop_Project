@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAllProducts } from "../firebase/db/products";
+import { getAllProducts } from "../services/firebase/db/products";
 import { TYPE_MODAL } from "../Components/Forms/typeModeHelper";
-import { onRegistartionApi, onLoginApi } from "../firebase/auth";
+import { onRegistartionApi, onLoginApi } from "../services/firebase/auth";
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import { APP_AUTH } from "../firebase";
-import { getSettings } from '../firebase/db/settings';
-import { removeProduct, editProduct } from "../firebase/db/products";
-import { addProductToFav, deleteProductFromFav } from "../firebase/db/favProducts";
-import { getAllFavProducts } from "../firebase/db/favProducts";
+import { APP_AUTH } from "../services/firebase";
+import { getSettings } from '../services/firebase/db/settings';
+import { removeProduct, editProduct } from "../services/firebase/db/products";
+import { addProductToFav, deleteProductFromFav } from "../services/firebase/db/favProducts";
+import { getAllFavProducts } from "../services/firebase/db/favProducts";
 
 
 // const f = {
@@ -51,7 +51,7 @@ export const useStore = () => {
   //   priceColor: ' #E6736A;'
 
   // });
- 
+
   const isLogin = !!user;
 
   // const getFav = async () => {
@@ -109,7 +109,7 @@ export const useStore = () => {
     localStorage.setItem('basket', JSON.stringify(basket))
   }, [basket])
 
-  
+
 
   useEffect(() => {
 
@@ -160,7 +160,7 @@ export const useStore = () => {
 
 
   const editProductData = async (uid, id, newData, file) => {
-    const res = await editProduct( uid, id, newData, file);
+    const res = await editProduct(uid, id, newData, file);
 
 
     if (res.ok) {
@@ -284,7 +284,7 @@ export const useStore = () => {
     setFavorites,
     currentUID,
     setCurrentUID,
-   
+
 
   }
 }
