@@ -1,0 +1,23 @@
+.menu{
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: fit-content;
+  
+  
+  background:white;
+
+}
+
+.picker {
+  transform: scale(0.8);
+  
+
+ 
+}
+
+.closeButton{
+  align-self: flex-end;
+  transform: scale(1.2);
+  cursor: pointer;
+}

@@ -1,0 +1,87 @@
+:root {
+  --black: #0B0F19;
+  --white: #F5F5F3;
+  --padding: 16px 0;
+ 
+}
+
+.header {
+  color: var(--black);
+  width: 100%;
+
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  padding: var(--padding);
+  background-color: var(--white);
+}
+
+.header button {
+  font-size: 0.8rem;
+  max-width: fit-content;
+}
+
+.basketWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+}
+
+.basketIcon {
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s ease;
+
+}
+
+.basketIcon:hover {
+  transform: scale(1.2);
+
+}
+
+.navContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.mainNav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+
+}
+
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: flex-end;
+}
+
+.header a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: inherit;
+  white-space: nowrap;
+  
+}
+
+.header a:hover {
+  color: red;
+}
+
+.header h4 {
+  font-size: 1.2rem;
+  margin: 0;
+}

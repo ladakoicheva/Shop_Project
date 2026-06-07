@@ -1,0 +1,11 @@
+.userInfo{
+  display: flex;
+ align-items: center;
+  gap: 15px;
+  width: fit-content;
+  
+}
+.userInfo button{
+  width: fit-content;
+  height: fit-content;
+}

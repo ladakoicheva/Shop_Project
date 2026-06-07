@@ -1,0 +1,147 @@
+.productCard {
+
+  height: 100%;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  transition: .3s all;
+  position: relative;
+  font-size: 1.2rem;
+}
+
+.product {
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.img {
+  height: 50%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  
+}
+
+.productCard img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+
+
+
+
+}
+
+
+
+
+.inStockSpan {
+  max-width: fit-content;
+  max-height: fit-content;
+  position: absolute;
+  top: 90%;
+  left: 68%;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category {
+  margin: 0 auto;
+  width: 80%;
+  text-align: left;
+  margin-bottom: 5%;
+}
+
+.rating {
+  display: flex;
+
+}
+
+.rating img {
+  border: none;
+  width: 40px;
+  object-fit: contain;
+  align-self: flex-start;
+  
+
+}
+
+.info {
+  text-align: left
+}
+
+.info div {
+  margin-bottom: 10px;
+}
+
+.buyInfo {
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  gap: 5px;
+
+
+}
+
+.buyInfo h2 {
+  color: #E6736A;
+  align-self: flex-start;
+
+}
+
+
+
+
+.basketBtns button {
+  margin-left: 5px
+}
+
+.deleteBtn {
+  font-size: 30px;
+  position: absolute;
+  top: 2%;
+  left: 90%
+}
+
+.deleteBtn:hover {
+  cursor: pointer;
+  font-size: 35px;
+  transition: all 0.2s;
+}
+
+.editBtn {
+
+  position: absolute;
+  top: 2%;
+  left: 2%;
+
+
+  cursor: pointer;
+}
+
+.editBtn img {
+  width: 30px;
+  object-fit: contain;
+}
+
+.editBtn img:hover {
+  width: 35px;
+  transition: all 0.2s;
+}
+
+.additionalInfo span {
+  position: absolute;
+  top: 5%
+}
+
+

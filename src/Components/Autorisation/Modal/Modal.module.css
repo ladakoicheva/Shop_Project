@@ -1,0 +1,36 @@
+.modal {
+  background-color: white;
+  width: clamp(300px, 30%, 600px);
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #e5e4e7;;
+}
+
+
+.modalHeader {
+
+  display: flex;
+  justify-content: space-between;
+  padding: 2%
+}
+
+.modal h1,
+h2,
+h3,
+label,
+p,
+span {
+  color: rgb(40, 40, 40)
+}
+
+.modal span {
+  text-decoration: underline;
+  cursor: pointer;
+
+
+}
