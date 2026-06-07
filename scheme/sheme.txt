@@ -1,0 +1,20 @@
+
+
+Products setting Add
+
+
+// login 
+(owner products save store)
+
+products/uid 
+setting 
+add
+basket
+
+
+// unkown 
+
+/products/uid  - show product 
+basket
+
+any adress - 404 (page no found)
