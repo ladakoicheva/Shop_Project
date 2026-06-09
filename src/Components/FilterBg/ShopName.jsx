@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { getSettings } from "../../firebase/db/settings";
 import { useStoreContext } from "../../store/store";
 
 export default function ShopName({name}) {

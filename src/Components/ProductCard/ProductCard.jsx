@@ -13,13 +13,17 @@ import { getAllFavProducts } from '../../services/firebase/db/favProducts'
 export default function ProductCard({ product, onEdit, deleteItem }) {
 
   const { addToBasket, deleteFromBasket, basket, user,
-    setEditCurrentProduct, setProductToEdit, deleteProduct, deleteItemFromFav, addToFav, favorites } = useStoreContext();
+    setEditCurrentProduct, setProductToEdit, deleteProduct, deleteItemFromFav, addToFav, favorites, cardStyle } = useStoreContext();
 
   const isInBasket = basket[product.id];
   const params = useParams();
   const isOwner = params.uid === user?.uid;
 
-
+  // useState({
+  //   name: ['black', '16'],
+  //   price: ['black', '14'],
+  //   bg: ['rgb(255, 255, 255)']
+  // })
 
 
   const favorit = useMemo(() => {
@@ -41,7 +45,7 @@ export default function ProductCard({ product, onEdit, deleteItem }) {
   }
   return (
     <>
-      <article className={style.productCard}   >
+      <article style={{ background: cardStyle.bg[0] }} className={style.productCard}   >
 
         <Link to={`product/${product.id}`}>
           <div className={style.img} >
@@ -51,7 +55,7 @@ export default function ProductCard({ product, onEdit, deleteItem }) {
         </Link>
 
         <div className={style.product}>
-          <h3 >{product.name}</h3>
+          <h3 style={{ color: cardStyle.name[0], fontSize: `${cardStyle.name[1]}px` }}>{product.name}</h3>
           <div className={style.rating}>  {favorit && <img className='fav'
             onClick={onFavClick} src={favorit.src} alt="" />}</div>
         </div>
@@ -59,7 +63,7 @@ export default function ProductCard({ product, onEdit, deleteItem }) {
         <section className={style.info}>
 
           <div className={style.buyInfo}  >
-            <h2 >{product.currency == 'UAH' ? getUANtoUSD(product.price) : product.price} USD</h2 >
+            <h2 style={{ color: cardStyle.price[0], fontSize: `${cardStyle.price[1]}px` }}>{product.currency == 'UAH' ? getUANtoUSD(product.price) : product.price} USD</h2 >
             <div className={style.basketBtns} >
               <button onClick={() => addToBasket(product)} >+</button>
               {basket[product.id]?.count}

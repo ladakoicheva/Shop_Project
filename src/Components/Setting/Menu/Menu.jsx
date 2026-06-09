@@ -6,34 +6,38 @@ import { useStoreContext } from '../../../store/store';
 
 
 
-export default function Menu({style}) {
-  const { menuConf, setMenuConf } = useStoreContext();
+export default function Menu({ style, setStyle, changeStyle }) {
+
   const [currentColor, setCurrentColor] = useState("");
+  const store = useStoreContext();
+  const [textSizeValue, setTextSizeValue] = useState("");
 
 
-  const handleColorChange = (color) => {
-    setCurrentColor(color.rgb);
 
 
-    const colorString = `rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`;
-    const clicked = menuConf;
-    setMenuConf((prev) => {
-      return {
-        ...prev,
-        [menuConf.clickedItem]: colorString
-      }
-    });
-  };
+  // const saveSettings = (key) => {
+  //   const valueToSave = key === 'color' ? `rgba(${currentColor.r},${currentColor.g},${currentColor.b},${currentColor.a})` : textSizeValue
+  //   const styles = { ...style };
+  //   styles.datas[key] = valueToSave
+  //   //setStyle(styles);
+  // }
 
-  const closeMenu = (e) => {
-    setMenuConf({ ...menuConf, isOpen: false })
+
+
+  const getColor = (rgb, i) => {
+    const valueToSave = `rgba(${rgb.r},${rgb.g},${rgb.b})`;
+    changeStyle(valueToSave, i)
   }
 
-  const getContentFromStyle = (type) => {
+
+  const getContentFromStyle = (type, i) => {
     switch (type) {
-      case 'bg' :
-      case 'color': return <SketchPicker className='picker' color={currentColor} onChange={handleColorChange} />
-      case 'fontSize' : return <input type='number'/>
+
+      case 'color': return <SketchPicker className='picker' color={style.datas[i]} onChange={(color) => getColor(color.rgb, i)} />
+      case 'fontSize': return <input value={style.datas[i]} onChange={(e) => changeStyle(e.target.value, i)} type='number' />
+      case 'bg': return <SketchPicker className='picker' color={style.datas[i]} onChange={(color) => getColor(color.rgb, i)} />
+
+
     }
   }
 
@@ -41,17 +45,25 @@ export default function Menu({style}) {
 
   return (
     <div className='menu'>
-      <span onClick={closeMenu} className='closeButton'>×</span>
+      <span className='closeButton' onClick={() => setStyle({
+        ...style,
+        isOpen: false,
+
+
+      })}>×</span>
 
 
       {style.types.map((type, i) => {
-        const title = style.title[i];
-        const Component = getContentFromStyle(type)
 
-        return <div>
-          <h2>{ title }</h2>
+        const title = style.title[i];
+
+
+        const Component = getContentFromStyle(type, i)
+
+        return <div key={i}>
+          <h2>{title}</h2>
           {Component}
-          <button style ={{width:'100%'}}>Save</button>
+          <button onClick={() => store.updateStyles(style.datas[i],style.type,i)} style={{ width: '100%' }}>Save</button>
         </div>
       })}
 

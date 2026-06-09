@@ -8,6 +8,7 @@ import { getSettings } from '../services/firebase/db/settings';
 import { removeProduct, editProduct } from "../services/firebase/db/products";
 import { addProductToFav, deleteProductFromFav } from "../services/firebase/db/favProducts";
 import { getAllFavProducts } from "../services/firebase/db/favProducts";
+import styled from "@emotion/styled";
 
 
 // const f = {
@@ -42,6 +43,11 @@ export const useStore = () => {
   const [isLoadingApp, setIsLoadingApp] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [currentUID, setCurrentUID] = useState('')
+  const [cardStyle, setCardStyle] = useState(JSON.parse(localStorage.getItem('cardStyle')) ||{
+    name: ['black', '16'],
+    price: ['black', '14'],
+    bg: ['rgb(255, 255, 255)']
+  })
   // const [menuConf, setMenuConf] = useState(JSON.parse(localStorage.getItem('menuConf'))|| {
   //   isOpen: false,
   //   clickedItem:'',
@@ -101,7 +107,13 @@ export const useStore = () => {
   }
 
 
-
+  const updateStyles = (data, type, i) => {
+    const copy = { ...cardStyle };
+    
+   console.log(type,i)
+    copy[type][i] = data;
+    setCardStyle(copy)
+  }
 
 
 
@@ -132,6 +144,10 @@ export const useStore = () => {
       setIsLoadingApp(false)
     })
   }, [])
+
+  useEffect(() => {
+    localStorage.setItem('cardStyle', JSON.stringify(cardStyle))
+  },[cardStyle])
   //products 
 
   const setProductsData = (data, currentUID) => {
@@ -284,6 +300,8 @@ export const useStore = () => {
     setFavorites,
     currentUID,
     setCurrentUID,
+    cardStyle,
+    updateStyles
 
 
   }

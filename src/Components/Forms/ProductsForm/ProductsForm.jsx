@@ -4,7 +4,7 @@ import IOSSwitch from '../../Switch';
 import { schema } from '../schemas/productsValidationSchema';
 import { useNavigate } from 'react-router-dom';
 import { useStoreContext } from '../../../store/store';
-import { addProduct } from '../../../firebase/db/products';
+import { addProduct } from '../../../services/firebase/db/products';
 import { useState } from 'react';
 import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
 
@@ -30,7 +30,7 @@ function ProductsForm({ products, setProducts, onClose, product }) {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      product ? updateItem( store.user.uid, product.id, { ...values, id: product.id }, img?.file) : create(values)
+      product ? updateItem(store.user.uid, product.id, { ...values, id: product.id }, img?.file) : create(values)
     },
 
 

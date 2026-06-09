@@ -1,80 +1,121 @@
 import React, { useEffect, useState } from 'react'
-import { changeSettings, getSettings } from '../../firebase/db/settings';
+import { changeSettings, getSettings } from '../../services/firebase/db/settings';
 import { useStoreContext } from '../../store/store';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC'
-import  ExampleProductCard from './ExampleProductCard'
+import ExampleProductCard from './ExampleProductCard'
 import Menu from './Menu/Menu';
 import styles from './Setting.module.css'
+import { log } from 'firebase/firestore/lite/pipelines';
 
 // const types = ['bg', 'color', 'padding', 'fontSize'];
-const types = {
+export const typesConfig = {
   bg: {
     type: 'bg',
-    text : 'Цвет фона'
+    text: 'Цвет фона'
+
   },
   color: {
     type: 'color',
-    text : 'Цвет текста'
+    text: 'Цвет текста'
   },
   padding: {
     type: 'padding',
-    text : 'Отступы'
+    text: 'Отступы'
   },
   fontSize: {
     type: 'fontSize',
-    text : 'Размер текста'
+    text: 'Размер текста'
   },
 }
 
 function Setting() {
-  
-  // const { user } = useStoreContext();
+
+  const { user } = useStoreContext();
   const [colorText, setColorText] = useState('#121111');
   const [colorBg, setColorBg] = useState('#121111');
   const [name, setName] = useState("");
-  
-  const [style, setStyle] = useState({
+
+  const [settingProduct, setSettingProduct] = useState({
+    name: ['black', '16'],
+    price: ['black', '14'],
+    bg: ['rgb(255, 255, 255)']
+  })
+
+  const [style, setStyle] = useState({ 
     isOpen: false,
-    types: [],
+    types: [],  
     datas: [],
-    title : []
-  })  
+    title: [],
+    type : null
+  })
 
-  const openStyle = (keys) => {
-    const type = keys.reduce((type, key) => {
-      const t = types[key];
-      
-      type.types.push(t.type)
-      type.title.push(t.text)
-      type.datas.push('#000000')
-      return type
-    }, {types : [], title : [], datas : []})
+  useEffect(() => {
+    console.log('style', style);
+    console.log('settings',settingProduct)
+},[style,settingProduct])
+
+
+  // {
+  //   "isOpen": true,
+  //     "types": [
+  //       "color",
+  //       "fontSize"
+  //     ],
+  //       "title": [
+  //         "Цвет текста",
+  //         "Размер текста"
+  //       ],
+  //         "datas": [
+  //           "rgb(81,56,56)",
+  //           "16"
+  //         ],
+  //           "type": "name"
+  // }
+  const getStyle = (type) => {
+    if (style.type === type && style.isOpen) { 
+      //console.log(style.datas)
+      return style.datas; //  отработает если меню открыто 
+      // "datas": [
+      //      "rgb(81,56,56)",
+      //       "16"
+      //         ],
+    }
+ 
+    return settingProduct[type]; // ['black', '16'],
+  }
+
+
+
+
+  const openStyle = (keys, type /* ['color', 'fontSize'], 'name' */ ) => {
+   
+    const types = keys.reduce((type, key) => { 
+      const t = typesConfig[key];  
+      type.types.push(t.type);
+      type.title.push(t.text);
+      return type; 
+    }, { types: [], title: [], datas: [] }) //{types:[color,fontSize],title:['Цвет текста','Размер текста'],datas: []}
+    types.datas = settingProduct[type];
 
     setStyle({
       isOpen: true,
-      ...type
-      // types: ['color', 'fontSize'],
-      // datas: [e.target.color, e.target.fontSize],
-      // title: [e.target.slot, 'Размер текста']
-    })
-  }
-  const  openName  = () => {
-    setStyle({
-      isOpen: true,
-      types: ['color', 'fontSize'],
-      datas: ['#000000', '16'],
-      title: ['', 'Размер текста']
+      ...types,
+      type // name
     })
   }
 
-  // useEffect(() => {
+  
 
-  //   if (user) {
-  //     syncSettings();
-  //   }
+  
+
+  useEffect(() => {
+
+    if (user) {
+      syncSettings();
+    }
 
 
-  // }, [user])
+  }, [user])
 
 
   const syncSettings = async () => {
@@ -83,22 +124,13 @@ function Setting() {
     setColorText(settings.colorText);
     setColorBg(settings.colorBg);
     setName(settings.name)
-   
-   
   }
 
 
-  const openMenu = (e) => {
-  
-    if(!e.target.slot) return
-    console.log(e.target.slot)
-    console.log(menuConf)
-    // switch (e.target.title) {
-    //   case 'H3': return console.log('product name text')
-    //   case 'H2': return console.log('product price text')
-    //   case 'SECTION': return console.log('card BG')
-    // }
-    setMenuConf({ ...menuConf, isOpen: true, clickedItem: e.target.slot })
+
+  const changeStyle = (data, i) => {
+    style.datas[i] = data; 
+    setStyle({...style})
   }
 
 
@@ -114,12 +146,12 @@ function Setting() {
         store.setName(name)
       }}>Save</button>
       <div className={styles.exampleCard}>
-        <ExampleProductCard onClick={openStyle} name='product name' />
-        {style.isOpen && <Menu style= {style} />}
+        <ExampleProductCard getStyle={getStyle} openStyle={openStyle} styles={style} />
+        {style.isOpen && <Menu style={style} changeStyle={changeStyle} setStyle={setStyle} />}
       </div>
     </div>
 
-    
+
   )
 }
 export default Autorisation_HOC(Setting);
