@@ -16,13 +16,13 @@ import { getSettings } from "../../services/firebase/db/settings";
 
 
 export default function Products() {
-  const { setProductsData, openLoading, closeLoading } = useStoreContext();
+  const { setProductsData, openLoading, closeLoading, updateStyles } = useStoreContext();
 
   const [products, setProducts] = useState([]);
   const [showProducts, setShowProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isOpenPage, setIsOpenPage] = useState(true);
-  const [name, setName] = useState();
+  const [style, setStyle] = useState({})
   const store = useStoreContext();
 
   const { uid } = useParams();
@@ -31,19 +31,34 @@ export default function Products() {
   }
 
 
+
   useEffect(() => {
 
-    const getShopName = async () => {
-
-      if (!uid) return;
-
-      const data = await getSettings(uid);
-      if (data && data.name) {
-        setName(data.name);
+    const getUserSettings = async () => {
+      const response = await getSettings(uid)
+      if (response.ok) {
+        setStyle(response.data)
       }
-    };
+      // console.log(uid)
+      // console.log(res)
+      // if (res) {
 
-    getShopName();
+      //   const data = { name: [res.namecolor, res.namefontSize], price: [res.pricecolor, res.pricefontSize], bg: [res.bgbg] }
+      //   updateStyles(data)
+      // }
+   
+    }
+
+    // const getShopName = async () => {
+
+    //   if (!uid) return;
+
+    //   const data = await getSettings(uid);
+    //   if (data && data.name) {
+    //     setName(data.name);
+    //   }
+    // };
+
 
     const getProducts = async () => {
       setIsOpenPage(true)
@@ -63,6 +78,8 @@ export default function Products() {
 
     }
     uid && getProducts();
+
+    getUserSettings();
 
   }, [uid])
 
@@ -109,7 +126,7 @@ export default function Products() {
   return (
 
     <div>
-      <ShopName name={name}></ShopName>
+      <ShopName name={style?.name}></ShopName>
       {editingProduct && (
         <ProductsForm
           products={products}
@@ -128,6 +145,7 @@ export default function Products() {
               <ProductCard
                 key={el.id}
                 product={el}
+                style={style}
                 onEdit={() => setEditingProduct(el)}
                 deleteItem={() => deleteItem(el, uid, el.id)}
               />

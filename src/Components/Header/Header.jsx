@@ -9,12 +9,13 @@ export default function Header() {
 
 
   const { basket, isLogin, user } = useStoreContext();
- 
+  const params = useParams();
 
   const memoNavigation = useMemo(() => {
     if (isLogin) {
       return <>
-        <Link to={"products/" + user.uid}>Products</Link>
+        <Link to={"Home/" + params.uid}>Home</Link>
+        <Link to={"products/" + user.uid}>My Products</Link>
         <Link to="/add">Add product</Link>
         <Link to='setting'>Setting</Link>
       </>

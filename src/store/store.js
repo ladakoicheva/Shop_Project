@@ -43,18 +43,12 @@ export const useStore = () => {
   const [isLoadingApp, setIsLoadingApp] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [currentUID, setCurrentUID] = useState('')
-  const [cardStyle, setCardStyle] = useState(JSON.parse(localStorage.getItem('cardStyle')) ||{
-    name: ['black', '16'],
-    price: ['black', '14'],
-    bg: ['rgb(255, 255, 255)']
+  const [settings, setSettings] = useState({
+
   })
   // const [menuConf, setMenuConf] = useState(JSON.parse(localStorage.getItem('menuConf'))|| {
   //   isOpen: false,
   //   clickedItem:'',
-  //   topBG: 'rgb(255, 255, 255)',
-  //   bottomBG: 'rgb(255, 255, 255)',
-  //   nameColor: 'black',
-  //   priceColor: ' #E6736A;'
 
   // });
 
@@ -67,6 +61,7 @@ export const useStore = () => {
   // if (user && !isLoadingApp) {
   //   getFav();
   // }
+
 
 
   const addToFav = async (ownersUid, productId) => {
@@ -107,12 +102,11 @@ export const useStore = () => {
   }
 
 
-  const updateStyles = (data, type, i) => {
-    const copy = { ...cardStyle };
-    
-   console.log(type,i)
-    copy[type][i] = data;
-    setCardStyle(copy)
+  const updateStyles = (data, type) => {
+    console.log(data, type)
+    const copy = { ...settings };
+    copy[type] = data;
+    setSettings(copy)
   }
 
 
@@ -124,7 +118,7 @@ export const useStore = () => {
 
 
   useEffect(() => {
-
+   
 
     onAuthStateChanged(APP_AUTH, (user) => {
 
@@ -135,9 +129,23 @@ export const useStore = () => {
         const getFav = async () => {
           const res = await getAllFavProducts(user.uid)
           if (res.ok) setFavorites(res.data)
+
+          const response = await getSettings(user.uid);
+          if (response.ok) setSettings(response.data)
         }
+        // const getUserSettings = async () => {
+        //   const res = await getSettings(user.uid)
+        //   console.log(res)
+        //   if (res) {
+        //     const data = { name: [res.namecolor, res.namefontSize], price: [res.pricecolor, res.pricefontSize], bg: [res.bgbg] }
+        //     setCardStyle(data)
+        //   }
+        //   console.log(res.ok)
+        // }
         //запрос на все избранные продукты
         getFav()
+        // getUserSettings ()
+
       } else {
         setUser(null)
       }
@@ -145,10 +153,6 @@ export const useStore = () => {
     })
   }, [])
 
-  useEffect(() => {
-    localStorage.setItem('cardStyle', JSON.stringify(cardStyle))
-  },[cardStyle])
-  //products 
 
   const setProductsData = (data, currentUID) => {
     //! old user 
@@ -300,8 +304,9 @@ export const useStore = () => {
     setFavorites,
     currentUID,
     setCurrentUID,
-    cardStyle,
+    settings,
     updateStyles
+
 
 
   }

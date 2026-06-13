@@ -7,7 +7,6 @@ import Menu from './Menu/Menu';
 import styles from './Setting.module.css'
 import { log } from 'firebase/firestore/lite/pipelines';
 
-// const types = ['bg', 'color', 'padding', 'fontSize'];
 export const typesConfig = {
   bg: {
     type: 'bg',
@@ -30,16 +29,10 @@ export const typesConfig = {
 
 function Setting() {
 
-  const { user } = useStoreContext();
-  const [colorText, setColorText] = useState('#121111');
-  const [colorBg, setColorBg] = useState('#121111');
-  const [name, setName] = useState("");
+  const { user, settings, updateStyles } = useStoreContext();
+  
 
-  const [settingProduct, setSettingProduct] = useState({
-    name: ['black', '16'],
-    price: ['black', '14'],
-    bg: ['rgb(255, 255, 255)']
-  })
+ 
 
   const [style, setStyle] = useState({ 
     isOpen: false,
@@ -48,11 +41,6 @@ function Setting() {
     title: [],
     type : null
   })
-
-  useEffect(() => {
-    console.log('style', style);
-    console.log('settings',settingProduct)
-},[style,settingProduct])
 
 
   // {
@@ -80,14 +68,21 @@ function Setting() {
       //       "16"
       //         ],
     }
+
+    switch (type) {
+      case 'name': return [settings.namecolor, settings.namefontSize];
+      case 'price': return [settings.pricecolor, settings.pricefontSize];
+      case 'bg': return [settings.bgbg];
+      default : []
+    }
  
-    return settingProduct[type]; // ['black', '16'],
+    return settings[type]; // ['black', '16'],
   }
 
 
 
 
-  const openStyle = (keys, type /* ['color', 'fontSize'], 'name' */ ) => {
+  const openStyle = (keys, type ) => {
    
     const types = keys.reduce((type, key) => { 
       const t = typesConfig[key];  
@@ -95,7 +90,7 @@ function Setting() {
       type.title.push(t.text);
       return type; 
     }, { types: [], title: [], datas: [] }) //{types:[color,fontSize],title:['Цвет текста','Размер текста'],datas: []}
-    types.datas = settingProduct[type];
+    types.datas = getStyle(type);
 
     setStyle({
       isOpen: true,
@@ -108,23 +103,17 @@ function Setting() {
 
   
 
-  useEffect(() => {
-
-    if (user) {
-      syncSettings();
-    }
 
 
-  }, [user])
 
+  // const syncSettings = async () => {
 
-  const syncSettings = async () => {
-
-    const settings = await getSettings(user.uid);
-    setColorText(settings.colorText);
-    setColorBg(settings.colorBg);
-    setName(settings.name)
-  }
+  //   const response = await getSettings(user.uid);
+  //   if()
+  //   setColorText(settings.colorText);
+  //   setColorBg(settings.colorBg);
+  //   setName(settings.name)
+  // }
 
 
 
@@ -133,21 +122,29 @@ function Setting() {
     setStyle({...style})
   }
 
+  const closeStyle = (data, i) => {
+  
+    setStyle({
+      isOpen: false,
+      types: [],
+      datas: [],
+      title: [],
+      type: null
+    })
+  }
+
 
 
 
   return (
     <div>
       <input type="text" placeholder='your shop`s name' value={name} onChange={(e) => setName(e.target.value)} />
-      <input type="color" value={colorText} onChange={(e) => setColorText(e.target.value)} />
-      <input type="color" value={colorBg} onChange={(e) => setColorBg(e.target.value)} />
       <button onClick={() => {
-        changeSettings(user.uid, { colorText, colorBg, name })
-        store.setName(name)
+        changeSettings(user.uid, { name })
       }}>Save</button>
       <div className={styles.exampleCard}>
         <ExampleProductCard getStyle={getStyle} openStyle={openStyle} styles={style} />
-        {style.isOpen && <Menu style={style} changeStyle={changeStyle} setStyle={setStyle} />}
+        {style.isOpen && <Menu user={user} updateStyles={updateStyles} closeStyle = {closeStyle} style={style} changeStyle={changeStyle} setStyle={setStyle} />}
       </div>
     </div>
 
@@ -155,3 +152,4 @@ function Setting() {
   )
 }
 export default Autorisation_HOC(Setting);
+

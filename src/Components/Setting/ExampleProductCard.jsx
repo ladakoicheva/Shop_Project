@@ -12,10 +12,17 @@ export const keyStyle = {
 
 export default function ExampleProductCard({ openStyle, styles, getStyle }) {
   const store = useStoreContext()
+  console.log(getStyle('name'), 'getStyle');
+  
   const [colorName, fontSizeName] = getStyle('name');
   const [colorPrice, fontSizePrice] = getStyle('price');
   const [bgColor] = getStyle('bg');
 
+  //todo
+  //remove useStoreHook and get data by props
+  // save data to firebase
+  //get data from firebase
+  //use one hook for all settings
 
   useEffect(() => {
     console.log('colorName', colorName)
