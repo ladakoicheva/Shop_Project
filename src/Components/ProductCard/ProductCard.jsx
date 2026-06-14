@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+
 import styles from './ProductCard.module.css'
 import { getUANtoUSD } from '../../utils/convector'
 import { Link, useParams } from 'react-router-dom'
@@ -7,13 +8,17 @@ import { useState } from 'react'
 import { images } from '../../utils/images'
 import { useMemo } from 'react'
 import { getAllFavProducts } from '../../services/firebase/db/favProducts'
+import useBasket from '../../store/features/useBasket'
+import useAuth from '../../store/features/useAuth'
+import useFav from '../../store/features/useFav'
 
 
+export default function ProductCard({ product, onEdit, deleteItem, style }) {
 
-export default function ProductCard({ product, onEdit, deleteItem,style }) {
-
-  const { addToBasket, deleteFromBasket, basket, user,
-    setEditCurrentProduct, setProductToEdit, deleteProduct, deleteItemFromFav, addToFav, favorites, cardStyle } = useStoreContext();
+  const { deleteProduct, cardStyle } = useStoreContext();
+  const { addToBasket, deleteFromBasket, basket } = useBasket();
+  const { user, isLoadingApp } = useAuth();
+  const { deleteItemFromFav, addToFav, favorites } = useFav();
 
   const isInBasket = basket[product.id];
   const params = useParams();
@@ -45,7 +50,7 @@ export default function ProductCard({ product, onEdit, deleteItem,style }) {
   }
   return (
     <>
-      <article style={{ backgroundColor: style.bgbg }} className={styles.productCard}   >
+      <article style={{ backgroundColor: style?.bgbg }} className={styles.productCard}   >
 
         <Link to={`product/${product.id}`}>
           <div className={styles.img} >

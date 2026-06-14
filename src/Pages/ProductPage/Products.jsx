@@ -10,56 +10,45 @@ import ProductsForm from "../../Components/Forms/ProductsForm/ProductsForm"
 import { NoFound } from "../../uix/NoFound";
 import ShopName from "../../Components/FilterBg/ShopName";
 import { getSettings } from "../../services/firebase/db/settings";
+import useAuth from "../../store/features/useAuth";
+import useProductManager from "../../store/features/useProductManager";
 
 
 
 
 
 export default function Products() {
-  const { setProductsData, openLoading, closeLoading, updateStyles } = useStoreContext();
-
+  const { openLoading, closeLoading, updateStyles, isLoadingApp, user } = useStoreContext();
+  const { setProductsData ,deleteProduct,editProductData} = useProductManager();
   const [products, setProducts] = useState([]);
   const [showProducts, setShowProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isOpenPage, setIsOpenPage] = useState(true);
-  const [style, setStyle] = useState({})
-  const store = useStoreContext();
-
+  const [style, setStyle] = useState({
+    bgbg: "rgba(255,255,255)",
+    name: "shop",
+    namecolor: "rgba(255,242,242)",
+    namefontSize: "30",
+    pricecolor: "black",
+    pricefontSize: "24"
+  });
   const { uid } = useParams();
   const setProductsLocal = (data) => {
     setProducts(data)
   }
 
+  console.log(style)
 
 
   useEffect(() => {
 
     const getUserSettings = async () => {
       const response = await getSettings(uid)
-      if (response.ok) {
+      if (response.ok && response.data) {
         setStyle(response.data)
       }
-      // console.log(uid)
-      // console.log(res)
-      // if (res) {
 
-      //   const data = { name: [res.namecolor, res.namefontSize], price: [res.pricecolor, res.pricefontSize], bg: [res.bgbg] }
-      //   updateStyles(data)
-      // }
-   
     }
-
-    // const getShopName = async () => {
-
-    //   if (!uid) return;
-
-    //   const data = await getSettings(uid);
-    //   if (data && data.name) {
-    //     setName(data.name);
-    //   }
-    // };
-
-
     const getProducts = async () => {
       setIsOpenPage(true)
       openLoading();
@@ -77,11 +66,15 @@ export default function Products() {
 
 
     }
+    
+
+
     uid && getProducts();
 
     getUserSettings();
+    if (uid !== user?.uid && !isLoadingApp) localStorage.setItem('lastVisitedShop', uid)
 
-  }, [uid])
+  }, [uid,isLoadingApp])
 
 
 
@@ -93,7 +86,7 @@ export default function Products() {
 
   const deleteItem = async (product, uid, id) => {
     const productsCopy = [...products]
-    await store.deleteProduct(product, uid, id);
+    await deleteProduct(product, uid, id);
 
     setProducts(productsCopy.filter((el) => el.id !== id));
 
@@ -133,6 +126,7 @@ export default function Products() {
           setProducts={setProductsLocal}
           product={editingProduct}
           onClose={() => setEditingProduct(null)}
+          editProductData={editProductData}
         />
       )}
 
@@ -147,7 +141,8 @@ export default function Products() {
                 product={el}
                 style={style}
                 onEdit={() => setEditingProduct(el)}
-                deleteItem={() => deleteItem(el, uid, el.id)}
+                deleteItem={()=>deleteItem(el,uid,el.id)}
+                
               />
             </li>
           )}

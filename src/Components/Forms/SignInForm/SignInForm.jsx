@@ -2,15 +2,15 @@
 import styles from '../Form.module.css';
 import { useFormik } from 'formik';
 import { schema } from "../schemas/signInValidationSchema";
-import { useStoreContext } from "../../../store/store";
 import { TYPE_MODAL } from "../typeModeHelper";
 import { useState } from "react";
+import useAuth from '../../../store/features/useAuth';
 
 
 
-export default function SignInForm() {
+export default function SignInForm({setModalOpen}) {
 
-  const { onLogin, setModalOpen, setAuthMode } = useStoreContext();
+  const { onLogin, setAuthMode } = useAuth();
   const [backError, setBackError] = useState(null);
 
   const formik = useFormik({
@@ -34,18 +34,6 @@ export default function SignInForm() {
     }
   }
 
-  /*const userLogIn = async (email, password) => {
-    const userData = await logIn(email, password);
-    console.log(userData)
-    if (userData.ok) {
-      setUserData(userData);
-      localStorage.setItem('token', userData.data.token);
-      close();
-    } else {
-      setBackError(userData.text)
-    }
-
-  }*/
 
   return (
 

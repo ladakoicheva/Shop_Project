@@ -8,7 +8,7 @@ export const changeSettings = async (uid, data) => {
   
   try {
     const docLink = doc(APP_DB, "settings", uid)
-    await updateDoc(docLink, data); 
+    await setDoc(docLink, data, { merge: true });
     
     console.log("Document successfully written!");
   } catch (error) {

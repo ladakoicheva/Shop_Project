@@ -1,5 +1,6 @@
-import { doc, getDocs, getDoc, setDoc, deleteDoc, updateDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
+import { doc, getDocs, getDoc, setDoc, deleteDoc,addDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
 import { APP_DB } from "..";
+import { updateDoc } from "firebase/firestore/lite";
 
 
 
@@ -24,7 +25,7 @@ export const addProductToFav = async (uid, ownersUid, productId) => {
   try {
     const link = doc(APP_DB, 'user', uid, 'favorites', ownersUid);
     const data = { favorites: arrayUnion(productId) }
-    await updateDoc(link, data)
+    await await setDoc(link, data, { merge: true });
     return { ok: true, text: 'success' };
   } catch (e) {
     return { ok: false, text: e }
@@ -35,7 +36,7 @@ export const deleteProductFromFav = async (uid, ownersUid, productId) => {
   try {
     const link = doc(APP_DB, 'user', uid, 'favorites', ownersUid);
     const data = { favorites: arrayRemove(productId) }
-    await updateDoc(link, data)
+    await setDoc(link, data, { merge: true });
     return { ok: true, text: 'success' };
   } catch (e) {
     return { ok: false, text: e }

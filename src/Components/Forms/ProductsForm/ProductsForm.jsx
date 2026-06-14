@@ -10,7 +10,7 @@ import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
 
 
 
-function ProductsForm({ products, setProducts, onClose, product }) {
+function ProductsForm({ products, setProducts, onClose, product,editProductData }) {
 
 
 
@@ -53,7 +53,7 @@ function ProductsForm({ products, setProducts, onClose, product }) {
     for (const key in product) {
       if (product[key] !== newData[key]) fieldsToUpdate[key] = newData[key]
     }
-    const dataToUpdate = await store.editProductData(uid, id, fieldsToUpdate, file);
+    const dataToUpdate = await editProductData(uid, id, fieldsToUpdate, file);
 
     if (dataToUpdate) {
       const copy = [...products];

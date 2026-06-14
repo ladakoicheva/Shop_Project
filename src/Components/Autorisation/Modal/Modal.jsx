@@ -1,12 +1,12 @@
 import SignInForm from "../../Forms/SignInForm/SignInForm";
 import SignUpForm from "../../Forms/SignUpForm/SignUpForm";
 import { TYPE_MODAL } from "../../Forms/typeModeHelper";
-import { useStoreContext } from "../../../store/store";
-
 import styles from './Modal.module.css'
+import useAuth from "../../../store/features/useAuth";
 
-export default function Modal() {
-  const { setModalOpen, authMode } = useStoreContext()
+export default function Modal({modalOpen,setModalOpen}) {
+  const { authMode } = useAuth();
+  
 
   return (
 
@@ -14,8 +14,8 @@ export default function Modal() {
       <div className={styles.modalHeader}><h3>{authMode.text}</h3>  <span onClick={() => setModalOpen(false)} className={styles.closeBtn}>✕</span> </div>
       <hr />
       {authMode.type === TYPE_MODAL.SING_UP.type
-        ? <SignUpForm />
-        : <SignInForm />}
+        ? <SignUpForm setModalOpen={setModalOpen} />
+        : <SignInForm setModalOpen={setModalOpen} x/>}
     </div>
   )
 }

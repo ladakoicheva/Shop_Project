@@ -2,19 +2,21 @@ import styles from './Header.module.css'
 import { Link, useParams } from 'react-router-dom'
 import { Autorisation } from '../Autorisation/Authorise/Autorisation'
 import FilterProducts from '../FilterProducts/FilterProducts'
-import { useStoreContext } from '../../store/store'
+import useAuth from '../../store/features/useAuth'
 import { useMemo } from 'react'
+import useBasket from '../../store/features/useBasket'
 
 export default function Header() {
 
-
-  const { basket, isLogin, user } = useStoreContext();
+  const { isLogin, user } = useAuth();
+  const { basket } = useBasket();
+  const lastVisitedShopUID = localStorage.getItem('lastVisitedShop') || "";
   const params = useParams();
 
   const memoNavigation = useMemo(() => {
     if (isLogin) {
       return <>
-        <Link to={"Home/" + params.uid}>Home</Link>
+        <Link to={"products/" + lastVisitedShopUID}>Home</Link>
         <Link to={"products/" + user.uid}>My Products</Link>
         <Link to="/add">Add product</Link>
         <Link to='setting'>Setting</Link>

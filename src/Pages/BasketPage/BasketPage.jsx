@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useStoreContext } from "../../store/store";
+import useBasket from "../../store/features/useBasket";
 
 export default function BasketPage() {
-  const { basket } = useStoreContext();
+  const { basket } = useBasket()
   const [showBasket, setShowBasket] = useState(Object.entries(basket));
  
   return (

@@ -1,14 +1,14 @@
-import { useStoreContext } from '../../../store/store';
 import styles from '../Form.module.css';
 import { useFormik } from 'formik';
 import { schema } from "../schemas/signUpValidationSchema";
 import { useState } from 'react';
 import { TYPE_MODAL } from '../typeModeHelper';
+import useAuth from '../../../store/features/useAuth';
 
 
-export default function SignUpForm() {
+export default function SignUpForm({setModalOpen}) {
 
-  const { onRegistration, setModalOpen, setAuthMode } = useStoreContext();
+  const { onRegistration, setAuthMode } = useAuth()
   const [backError, setBackError] = useState(null);
 
   const formik = useFormik({

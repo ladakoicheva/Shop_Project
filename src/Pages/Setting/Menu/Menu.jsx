@@ -7,14 +7,14 @@ import { changeSettings } from '../../../services/firebase/db/settings';
 
 
 
-export default function Menu({ style, setStyle, changeStyle, closeStyle, updateStyles,user }) {
+export default function Menu({ style, setStyle, changeStyle, closeStyle, updateStyles, user }) {
 
   const [currentColor, setCurrentColor] = useState("");
   const [textSizeValue, setTextSizeValue] = useState("");
-  
 
 
-  
+
+
 
   const getColor = (rgb, i) => {
     const valueToSave = `rgba(${rgb.r},${rgb.g},${rgb.b})`;
@@ -24,13 +24,15 @@ export default function Menu({ style, setStyle, changeStyle, closeStyle, updateS
   const saveSettings = () => {
     const dataToSave = {}
     style.types.forEach((type, i) => {
-      dataToSave[style.type+ type] = style.datas[i]
+      if (style.datas[i] !== undefined) {
+        dataToSave[style.type + type] = style.datas[i]
+      }
     })
 
-
     closeStyle();
-    updateStyles(style.datas, style.type)
-    changeSettings(user.uid, dataToSave)
+    changeSettings(user.uid, dataToSave);
+
+    updateStyles(dataToSave);
   }
 
 

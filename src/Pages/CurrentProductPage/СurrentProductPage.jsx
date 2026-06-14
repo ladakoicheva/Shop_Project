@@ -2,18 +2,20 @@ import { useNavigate, useParams } from "react-router-dom"
 import { getOneProduct } from "../../services/firebase/db/products";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useStoreContext } from "../../store/store";
+import { useStore, useStoreContext } from "../../store/store";
 import styles from './CurrentProductPage.module.css'
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import useBasket from "../../store/features/useBasket";
 
 export default function СurrentProductPage() {
   const [currentProduct, setCurrentProduct] = useState(null);
 
   const navigate = useNavigate();
   const params = useParams();
-  const store = useStoreContext();
-  const isInBasket = store.basket[currentProduct?.id]
+  const { basket, addToBasket, deleteFromBasket } = useBasket()
+  const store = useStore();
+  const isInBasket = basket[currentProduct?.id]
 
   useEffect(() => {
 
@@ -59,12 +61,12 @@ export default function СurrentProductPage() {
             <h3>{currentProduct.price} {currentProduct.currency}</h3>
             <div className={styles.btns}>
               {!isInBasket ?
-                <button onClick={() => store.addToBasket(currentProduct)} >Add to basket</button>
+                <button onClick={() => addToBasket(currentProduct)} >Add to basket</button>
                 :
                 <div className={styles.basketBtns} >
-                  <button onClick={() => store.addToBasket(currentProduct)} >+</button>
-                  {store.basket[currentProduct.id]?.count}
-                  <button onClick={() => store.deleteFromBasket(currentProduct)}>-</button>
+                  <button onClick={() => addToBasket(currentProduct)} >+</button>
+                  {basket[currentProduct.id]?.count}
+                  <button onClick={() => deleteFromBasket(currentProduct)}>-</button>
                 </div>
               }
               <button>Buy now</button>

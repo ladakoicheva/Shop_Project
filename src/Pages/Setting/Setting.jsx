@@ -30,19 +30,23 @@ export const typesConfig = {
 function Setting() {
 
   const { user, settings, updateStyles } = useStoreContext();
-  
+  const [name, setName] = useState("");
 
  
 
-  const [style, setStyle] = useState({ 
+
+  const [style, setStyle] = useState({
     isOpen: false,
-    types: [],  
+    types: [],
     datas: [],
     title: [],
-    type : null
+    type: null
   })
-
-
+  console.log(style)
+  
+  useEffect(() => {
+    if (settings.name) setName(settings.name);
+  }, [settings.name]);
   // {
   //   "isOpen": true,
   //     "types": [
@@ -60,48 +64,42 @@ function Setting() {
   //           "type": "name"
   // }
   const getStyle = (type) => {
-    if (style.type === type && style.isOpen) { 
-      //console.log(style.datas)
-      return style.datas; //  отработает если меню открыто 
-      // "datas": [
-      //      "rgb(81,56,56)",
-      //       "16"
-      //         ],
+    if (style.type === type && style.isOpen) {
+      return style.datas;
     }
 
     switch (type) {
-      case 'name': return [settings.namecolor, settings.namefontSize];
-      case 'price': return [settings.pricecolor, settings.pricefontSize];
-      case 'bg': return [settings.bgbg];
-      default : []
+      case 'name': return [settings.namecolor , settings.namefontSize ];
+      case 'price': return [settings.pricecolor , settings.pricefontSize ];
+      case 'bg': return [settings.bgbg ];
+      default: return []
     }
- 
-    return settings[type]; // ['black', '16'],
+    
   }
 
 
 
 
-  const openStyle = (keys, type ) => {
-   
-    const types = keys.reduce((type, key) => { 
-      const t = typesConfig[key];  
+  const openStyle = (keys, type) => {
+
+    const types = keys.reduce((type, key) => {
+      const t = typesConfig[key];
       type.types.push(t.type);
       type.title.push(t.text);
-      return type; 
-    }, { types: [], title: [], datas: [] }) //{types:[color,fontSize],title:['Цвет текста','Размер текста'],datas: []}
+      return type;
+    }, { types: [], title: [], datas: [] })
     types.datas = getStyle(type);
 
     setStyle({
       isOpen: true,
       ...types,
-      type // name
+      type
     })
   }
 
-  
 
-  
+
+
 
 
 
@@ -118,12 +116,13 @@ function Setting() {
 
 
   const changeStyle = (data, i) => {
-    style.datas[i] = data; 
-    setStyle({...style})
+    const newDatas = [...style.datas];
+    newDatas[i] = data;
+    setStyle({ ...style, datas: newDatas })
   }
 
   const closeStyle = (data, i) => {
-  
+
     setStyle({
       isOpen: false,
       types: [],
@@ -143,8 +142,8 @@ function Setting() {
         changeSettings(user.uid, { name })
       }}>Save</button>
       <div className={styles.exampleCard}>
-        <ExampleProductCard getStyle={getStyle} openStyle={openStyle} styles={style} />
-        {style.isOpen && <Menu user={user} updateStyles={updateStyles} closeStyle = {closeStyle} style={style} changeStyle={changeStyle} setStyle={setStyle} />}
+        <ExampleProductCard getStyle={getStyle} openStyle={openStyle}  />
+        {style.isOpen && <Menu user={user} updateStyles={updateStyles} closeStyle={closeStyle} style={style} changeStyle={changeStyle} setStyle={setStyle} />}
       </div>
     </div>
 
