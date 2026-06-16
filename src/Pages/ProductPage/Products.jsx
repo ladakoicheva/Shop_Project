@@ -119,7 +119,7 @@ export default function Products() {
   return (
 
     <div>
-      <ShopName name={style?.name}></ShopName>
+      <ShopName name={style.name}></ShopName>
       {editingProduct && (
         <ProductsForm
           products={products}

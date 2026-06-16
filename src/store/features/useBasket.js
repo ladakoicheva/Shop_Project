@@ -32,6 +32,9 @@ export default function useBasket() {
     setBasket(copy)
   }
 
+  const resetBasket = () => {
+    setBasket({});
+  }
 
 
   return {
@@ -39,7 +42,7 @@ export default function useBasket() {
     addToBasket,
     deleteFromBasket,
     setBasket,
-
+    resetBasket,
   }
     
     

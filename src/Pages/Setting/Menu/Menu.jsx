@@ -28,6 +28,7 @@ export default function Menu({ style, setStyle, changeStyle, closeStyle, updateS
         dataToSave[style.type + type] = style.datas[i]
       }
     })
+    console.log(dataToSave)
 
     closeStyle();
     changeSettings(user.uid, dataToSave);
@@ -40,7 +41,7 @@ export default function Menu({ style, setStyle, changeStyle, closeStyle, updateS
     switch (type) {
       case 'color':
       case 'bg': return <SketchPicker className='picker' color={style.datas[0]} onChange={(color) => getColor(color.rgb, i)} />
-      case 'fontSize': return <input value={style.datas[i]} onChange={(e) => changeStyle(e.target.value, i)} type='number' />
+      case 'fontSize': return <input value={style.datas[i]} onChange={(e) => changeStyle(e.target.value, i)} type='range' min ='14' max ='40' />
     }
   }
 

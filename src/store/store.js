@@ -42,12 +42,7 @@ export const useStore = () => {
 
 
   useEffect(() => {
-
-
     onAuthStateChanged(APP_AUTH, (user) => {
-
-
-
       if (user) {
         setUser(user)
         const getFav = async () => {

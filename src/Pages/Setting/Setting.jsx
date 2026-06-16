@@ -42,7 +42,7 @@ function Setting() {
     title: [],
     type: null
   })
-  console.log(style)
+ 
   
   useEffect(() => {
     if (settings.name) setName(settings.name);
@@ -140,6 +140,7 @@ function Setting() {
       <input type="text" placeholder='your shop`s name' value={name} onChange={(e) => setName(e.target.value)} />
       <button onClick={() => {
         changeSettings(user.uid, { name })
+        updateStyles({ name });
       }}>Save</button>
       <div className={styles.exampleCard}>
         <ExampleProductCard getStyle={getStyle} openStyle={openStyle}  />
