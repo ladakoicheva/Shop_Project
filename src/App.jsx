@@ -12,6 +12,7 @@ import Setting from './Pages/Setting/Setting.jsx';
 import NoFound from './Pages/404Page/NoFound.jsx';
 import { getSettings } from './services/firebase/db/settings.js';
 import FilterBg from './Components/FilterBg/ShopName.jsx';
+import History from './Pages/History/History.jsx';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/products/:uid/product/:id' element={<СurrentProductPage />} />
           <Route path='basket' element={<BasketPage />} />
           <Route path='setting' element={<Setting />} />
+          <Route path='history' element={ <History/>} />
           <Route path='*' element={<NoFound />}></Route>
         </Routes>
       </StoreContext.Provider>

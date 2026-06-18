@@ -5,7 +5,7 @@ import { getSettings } from '../services/firebase/db/settings';
 import { TYPE_MODAL } from "../Components/Forms/typeModeHelper";
 import useBasket from "./features/useBasket";
 import { getAllFavProducts } from "../services/firebase/db/favProducts";
-
+import { getHistory, getNext } from "../services/firebase/db/history";
 
 
 export const StoreContext = createContext({
@@ -31,6 +31,12 @@ export const useStore = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [history, setHistory] = useState({
+    items: [],
+    lastDoc: null,
+    isLoading: false,
+  }
+  );
   const [settings, setSettings] = useState({
     bgbg: "rgba(255,255,255)",
     name: "shop",
@@ -45,6 +51,22 @@ export const useStore = () => {
     onAuthStateChanged(APP_AUTH, (user) => {
       if (user) {
         setUser(user)
+
+        const getUserHistory = async () => {
+          const res = await getHistory(user.uid)
+
+          if (res.ok) {
+            setHistory(prev => ({
+              ...prev,
+              items: res.data,
+              lastDoc: res.lastDoc
+            }));
+          
+            console.log(res.data)
+          } else {
+            console.log(res.e)
+          }
+        }
         const getFav = async () => {
           const res = await getAllFavProducts(user.uid)
           if (res.ok) setFavorites(res.data)
@@ -54,6 +76,7 @@ export const useStore = () => {
         }
 
         getFav()
+        getUserHistory()
 
       } else {
         setUser(null)
@@ -63,16 +86,39 @@ export const useStore = () => {
   }, [])
 
 
+  const getNextHistoryItems = async () => {
+    if (history.isLoading) return;
 
+    setHistory(prev => ({ ...prev, isLoading: true }));
+    const res = await getNext(user.uid, history.lastDoc);
+
+    if (res.ok && res.data.length > 0) {
+      setHistory(prev => ({
+        ...prev,
+        items: [...prev.items, ...res.data],
+        lastDoc: res.lastDoc,
+        isLoading: false
+      }))
+    } else {
+      console.log(res.e)
+    }
+
+  }
 
 
 
   const updateStyles = (newSettingsObject) => {
     setSettings((prevSettings) => ({
-      ...prevSettings,      
-      ...newSettingsObject   
+      ...prevSettings,
+      ...newSettingsObject
     }));
   };
+  const updateHistory = (data) => {
+    setHistory(prev => ({
+      ...prev,
+      items: [data, ...prev.items]
+    }));
+  }
 
 
   const openLoading = () => {
@@ -102,7 +148,9 @@ export const useStore = () => {
     setFavorites,
     settings,
     updateStyles,
-
+    history,
+    updateHistory,
+    getNextHistoryItems
 
 
 

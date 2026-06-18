@@ -8,11 +8,13 @@ import { count } from "firebase/firestore";
 
 export default function BasketPage() {
   const { basket, addToBasket, deleteFromBasket ,resetBasket} = useBasket()
-  const { user } = useStoreContext();
+  const { user ,history,updateHistory} = useStoreContext();
   console.log(basket);
 
   const basketsArr = useMemo(() => Object.values(basket), [basket]);
+  const isEmpty = basketsArr.length == 0?true:false;
   console.log(basketsArr)
+  console.log(isEmpty)
 
   const total = useMemo(() => {
     return basketsArr.reduce((acc, el) => {
@@ -40,12 +42,18 @@ export default function BasketPage() {
     };
     //   }
     const res = await saveHistory(data, user.uid);
-    if (res.ok) resetBasket();
+    if (res.ok) { 
+      resetBasket(); 
+      updateHistory(data)
+      console.log(history)
+    } 
     console.log(res)
   }
+  if (isEmpty) return <div>No products</div>;
 
   return (
-    <ul className={style.wrapper}>{
+    <>
+        <ul className={style.wrapper}>{
       basketsArr.map((el) => <li key={el.product.id}>
         <BasketProductCard data={el} addToBasket={addToBasket} deleteFromBasket={deleteFromBasket} />
       </li>)
@@ -54,6 +62,8 @@ export default function BasketPage() {
       <button onClick={onSave}>BUY</button>
     </ul>
 
+    </>
+  
   )
 }
 

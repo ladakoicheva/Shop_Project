@@ -20,6 +20,7 @@ export default function Header() {
         <Link to={"products/" + user.uid}>My Products</Link>
         <Link to="/add">Add product</Link>
         <Link to='setting'>Setting</Link>
+        <Link to ='history'>History</Link>
       </>
     } 
   }, [isLogin, user])
