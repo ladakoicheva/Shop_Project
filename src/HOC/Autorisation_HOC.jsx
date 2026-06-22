@@ -19,7 +19,7 @@ export const Autorisation_HOC = (Component) => (props) => {
     store.openLoading();
     if(!auth.isLoadingApp) store.closeLoading()
   },[store.isLoadingApp])
-  if (auth.isLoadingApp) return <></>
+  if (auth.isLoadingApp ) return <></>
 
 
   if (isLogin ) {

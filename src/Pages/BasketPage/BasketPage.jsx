@@ -7,12 +7,12 @@ import { saveHistory } from "../../services/firebase/db/history";
 import { count } from "firebase/firestore";
 
 export default function BasketPage() {
-  const { basket, addToBasket, deleteFromBasket ,resetBasket} = useBasket()
-  const { user ,history,updateHistory} = useStoreContext();
+  const { basket, addToBasket, deleteFromBasket, resetBasket } = useBasket()
+  const { user, history, updateHistory ,setHistory} = useStoreContext();
   console.log(basket);
 
   const basketsArr = useMemo(() => Object.values(basket), [basket]);
-  const isEmpty = basketsArr.length == 0?true:false;
+  const isEmpty = basketsArr.length == 0 ? true : false;
   console.log(basketsArr)
   console.log(isEmpty)
 
@@ -31,7 +31,7 @@ export default function BasketPage() {
         img: el.product.img,
         name: el.product.name,
         id: el.product.id,
-        count:el.count
+        count: el.count
       }
     })
     const data = {
@@ -42,28 +42,28 @@ export default function BasketPage() {
     };
     //   }
     const res = await saveHistory(data, user.uid);
-    if (res.ok) { 
-      resetBasket(); 
-      updateHistory(data)
+    if (res.ok) {
+      resetBasket();
+      setHistory([data,...history])
       console.log(history)
-    } 
+    }
     console.log(res)
   }
   if (isEmpty) return <div>No products</div>;
 
   return (
     <>
-        <ul className={style.wrapper}>{
-      basketsArr.map((el) => <li key={el.product.id}>
-        <BasketProductCard data={el} addToBasket={addToBasket} deleteFromBasket={deleteFromBasket} />
-      </li>)
-    }
-      <h1>Total:{total}</h1>
-      <button onClick={onSave}>BUY</button>
-    </ul>
+      <ul className={style.wrapper}>{
+        basketsArr.map((el) => <li key={el.product.id}>
+          <BasketProductCard data={el} addToBasket={addToBasket} deleteFromBasket={deleteFromBasket} />
+        </li>)
+      }
+        <h1>Total:{total}</h1>
+        <button onClick={onSave}>BUY</button>
+      </ul>
 
     </>
-  
+
   )
 }
 
@@ -94,3 +94,8 @@ const h = {
 
   ]
 }
+
+
+
+
+

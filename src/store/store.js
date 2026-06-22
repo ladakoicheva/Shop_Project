@@ -5,7 +5,7 @@ import { getSettings } from '../services/firebase/db/settings';
 import { TYPE_MODAL } from "../Components/Forms/typeModeHelper";
 import useBasket from "./features/useBasket";
 import { getAllFavProducts } from "../services/firebase/db/favProducts";
-import { getHistory, getNext } from "../services/firebase/db/history";
+import { getHistory } from "../services/firebase/db/history";
 
 
 export const StoreContext = createContext({
@@ -31,12 +31,7 @@ export const useStore = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [favorites, setFavorites] = useState([]);
-  const [history, setHistory] = useState({
-    items: [],
-    lastDoc: null,
-    isLoading: false,
-  }
-  );
+  const [history, setHistory] = useState([]);
   const [settings, setSettings] = useState({
     bgbg: "rgba(255,255,255)",
     name: "shop",
@@ -56,13 +51,7 @@ export const useStore = () => {
           const res = await getHistory(user.uid)
 
           if (res.ok) {
-            setHistory(prev => ({
-              ...prev,
-              items: res.data,
-              lastDoc: res.lastDoc
-            }));
-          
-            console.log(res.data)
+            setHistory(res.data);
           } else {
             console.log(res.e)
           }
@@ -86,24 +75,7 @@ export const useStore = () => {
   }, [])
 
 
-  const getNextHistoryItems = async () => {
-    if (history.isLoading) return;
 
-    setHistory(prev => ({ ...prev, isLoading: true }));
-    const res = await getNext(user.uid, history.lastDoc);
-
-    if (res.ok && res.data.length > 0) {
-      setHistory(prev => ({
-        ...prev,
-        items: [...prev.items, ...res.data],
-        lastDoc: res.lastDoc,
-        isLoading: false
-      }))
-    } else {
-      console.log(res.e)
-    }
-
-  }
 
 
 
@@ -114,10 +86,9 @@ export const useStore = () => {
     }));
   };
   const updateHistory = (data) => {
-    setHistory(prev => ({
-      ...prev,
-      items: [data, ...prev.items]
-    }));
+
+    setHistory([...history,
+    ...data])
   }
 
 
@@ -150,7 +121,7 @@ export const useStore = () => {
     updateStyles,
     history,
     updateHistory,
-    getNextHistoryItems
+    setHistory,
 
 
 
