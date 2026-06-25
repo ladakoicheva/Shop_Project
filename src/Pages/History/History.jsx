@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useStoreContext } from '../../store/store'
 import { getHistory } from '../../services/firebase/db/history';
 import HistoryItemCard from './ui/HistoryItemCard/HistoryItemCard';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC';
-
+import { useHistoryContext } from '../../store/features/useHistory';
+import { useAuthContext } from '../../store/features/useAuth';
 
 const History = () => {
-  const store = useStoreContext();
+  const history = useHistoryContext();
+  const {user} = useAuthContext()
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false)
 
@@ -14,21 +15,24 @@ const History = () => {
   const getNextHistoryItems = async () => {
     if (isLoading) return;
     setIsLoading(true);
-    const res = await getHistory(store.user.uid);
+    const res = await getHistory(user.uid);
 
 
     if (res.ok) {
 
-      if (!res.data || res.data.length === 0) {
+      if (res.data.length === 0) {
         setIsEnd(true);
       }
-      store.updateHistory(res.data);
+      history.updateHistory(res.data);
+
     }
+    console.log(res);
     setIsLoading(false)
 
   }
 
   const onAddHistory = (e) => {
+   
     if (isEnd) return;
 
     const teg = e.target;
@@ -47,24 +51,23 @@ const History = () => {
 
   }
 
+  if ( history.history.length === 0) return <div>No items</div>
+  
 
   return (
 
 
-    <div onScroll={onAddHistory} style={{ width: '100vw', height: '70vh', overflow: 'auto', }}>
+    <div onScroll={onAddHistory} style={{ height: 'calc(100vh - 60px)', overflow: 'auto', }}>
 
-      {store.history.map((el,index) => (
-        <HistoryItemCard key={index} purchase={el} />
+      {history.history.map((el,index) => (
+        <HistoryItemCard key={index} purchase={el} user={user} addToArchive={history.addToHistoryArchive} />
       ))}
     </div>
 
   )
 }
 
-// создать новую пейджу и Route
-// по клику перенаправлять на history/:id(LINK)
-// get запрос (по айди покупки,его получаем с юрл) .локальный хук и отрабатыввает юзефект при каждом изменении айди
-// вывести на страницу всю информацию о конкретной покупке
+
 
 
 

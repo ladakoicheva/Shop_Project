@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import './Menu.css'
 import { SketchPicker } from 'react-color';
 import { useState } from 'react';
-import { useStoreContext } from '../../../store/store';
 import { changeSettings } from '../../../services/firebase/db/settings';
 
 

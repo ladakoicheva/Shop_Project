@@ -1,15 +1,42 @@
+import { createContext, useContext } from "react";
 import { addProductToFav, deleteProductFromFav, getAllFavProducts } from "../../services/firebase/db/favProducts";
-import { useStoreContext } from "../store";
+import { useAuthContext } from "./useAuth";
+import { useState } from "react";
+import { useEffect } from "react";
 
 
-export default function useFav() {
+export const FavContext = createContext({})
 
-  const { favorites, setFavorites, user } = useStoreContext();
+
+export default function useFav(user) {
+
+
+  const [favorites, setFavorites] = useState([]);
+  
+ 
+
+  useEffect(() => {
+
+
+    if (user) {
+
+    
+      const getFav = async () => {
+        const res = await getAllFavProducts(user.uid)
+        if (res.ok) setFavorites(res.data)
+      }
+      getFav()
+    } else {
+      setFavorites([]);
+    }
+
+  }, [user])
 
   const addToFav = async (ownersUid, productId) => {
+    if (!user) return
 
     const res = await addProductToFav(user.uid, ownersUid, productId)
-    console.log(user.uid, ownersUid, productId)
+  
     if (res.ok) {
       favorites.push(productId)
       console.log(favorites)
@@ -24,8 +51,9 @@ export default function useFav() {
   }
   const deleteItemFromFav = async (ownersUid, productId) => {
 
-    const res = await deleteProductFromFav(user.uid, ownersUid, productId)
-   
+    if (!user) return
+    const res = await deleteProductFromFav(user?.uid, ownersUid, productId)
+
     if (res.ok) {
       const copy = [...favorites]
       const index = copy.indexOf(productId)
@@ -43,5 +71,9 @@ export default function useFav() {
     favorites,
     deleteItemFromFav,
     addToFav,
+
   }
 }
+
+
+export const useFavContext = ()=>useContext(FavContext)

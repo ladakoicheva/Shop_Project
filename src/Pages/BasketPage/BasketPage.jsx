@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react";
-import { useStoreContext } from "../../store/store";
-import useBasket from "../../store/features/useBasket";
+import { useBasketContext } from "../../store/features/useBasket";
 import BasketProductCard from "./BasketProductCard/BasketProductCard";
 import style from './BasketPage.module.css';
 import { saveHistory } from "../../services/firebase/db/history";
 import { count } from "firebase/firestore";
+import { useAuthContext } from "../../store/features/useAuth";
 
 export default function BasketPage() {
-  const { basket, addToBasket, deleteFromBasket, resetBasket } = useBasket()
-  const { user, history, updateHistory ,setHistory} = useStoreContext();
+  const { basket, addToBasket, deleteFromBasket, resetBasket } = useBasketContext();
+  const { user, history, updateHistory } = useAuthContext();
   console.log(basket);
 
   const basketsArr = useMemo(() => Object.values(basket), [basket]);
@@ -24,6 +24,7 @@ export default function BasketPage() {
   }, [basketsArr])
 
   const onSave = async () => {
+    if (!user) return;
     const productsData = basketsArr.map((el) => {
       return {
         price: el.product.price,
@@ -44,7 +45,7 @@ export default function BasketPage() {
     const res = await saveHistory(data, user.uid);
     if (res.ok) {
       resetBasket();
-      setHistory([data,...history])
+      setHistory([data, ...history])//!
       console.log(history)
     }
     console.log(res)

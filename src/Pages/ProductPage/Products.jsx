@@ -3,23 +3,22 @@ import { minSort, maxSort } from "../../utils/sort";
 import ProductCard from "../../Components/ProductCard/ProductCard"
 import styles from './Products.module.css'
 import FilterProducts from "../../Components/FilterProducts/FilterProducts";
-import { useStoreContext } from "../../store/store";
 import { getAllProducts } from "../../services/firebase/db/products";
 import { useParams } from "react-router-dom";
 import ProductsForm from "../../Components/Forms/ProductsForm/ProductsForm"
 import { NoFound } from "../../uix/NoFound";
 import ShopName from "../../Components/FilterBg/ShopName";
 import { getSettings } from "../../services/firebase/db/settings";
-import useAuth from "../../store/features/useAuth";
-import useProductManager from "../../store/features/useProductManager";
+import useProductManager, { useProductContext } from "../../store/features/useProductManager";
+import { useAuthContext } from "../../store/features/useAuth";
 
 
 
 
 
 export default function Products() {
-  const { openLoading, closeLoading, updateStyles, isLoadingApp, user } = useStoreContext();
-  const { setProductsData ,deleteProduct,editProductData} = useProductManager();
+  const { openLoading, closeLoading, updateStyles, isLoadingApp, user } = useAuthContext()
+  const { setProductsData ,deleteProduct,editProductData} =  useProductContext()
   const [products, setProducts] = useState([]);
   const [showProducts, setShowProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);

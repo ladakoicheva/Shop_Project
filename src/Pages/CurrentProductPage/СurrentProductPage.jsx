@@ -2,19 +2,19 @@ import { useNavigate, useParams } from "react-router-dom"
 import { getOneProduct } from "../../services/firebase/db/products";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useStore, useStoreContext } from "../../store/store";
 import styles from './CurrentProductPage.module.css'
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import useBasket from "../../store/features/useBasket";
+import { useBasketContext } from "../../store/features/useBasket";
+import { useAuthContext } from "../../store/features/useAuth";
 
 export default function СurrentProductPage() {
   const [currentProduct, setCurrentProduct] = useState(null);
 
   const navigate = useNavigate();
   const params = useParams();
-  const { basket, addToBasket, deleteFromBasket } = useBasket()
-  const store = useStore();
+  const { basket, addToBasket, deleteFromBasket } = useBasketContext()
+  const store = useAuthContext()
   const isInBasket = basket[currentProduct?.id]
 
   useEffect(() => {

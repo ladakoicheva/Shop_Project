@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { changeSettings, getSettings } from '../../services/firebase/db/settings';
-import { useStoreContext } from '../../store/store';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC'
 import ExampleProductCard from './ExampleProductCard'
 import Menu from './Menu/Menu';
 import styles from './Setting.module.css'
 import { log } from 'firebase/firestore/lite/pipelines';
+import { useAuthContext } from '../../store/features/useAuth';
 
 export const typesConfig = {
   bg: {
@@ -29,7 +29,7 @@ export const typesConfig = {
 
 function Setting() {
 
-  const { user, settings, updateStyles } = useStoreContext();
+  const { user, settings, updateStyles } = useAuthContext();
   const [name, setName] = useState("");
 
  

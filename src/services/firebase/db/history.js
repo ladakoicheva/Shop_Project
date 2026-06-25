@@ -1,19 +1,31 @@
 import { v4 as uuidv4 } from "uuid";
-import { collection, doc, getDocs, limit, orderBy, query, setDoc, startAfter,getDoc } from "firebase/firestore";
+import { collection, doc, getDocs, limit, orderBy, query, setDoc, startAfter, getDoc, updateDoc } from "firebase/firestore";
 import { APP_DB } from "..";
 
 
 
+export const archieveItem = async (uid,purchaseId) => {
+  try {
+    const docLink = doc(APP_DB, "user", uid, 'history', purchaseId);
+    const res = await updateDoc(docLink, { isArchived: true });
+ 
+    return { ok: true, data: null };
+
+  } catch (e) {
+    console.log(e);
+    return { ok: false, data: null, e: e };
+  }
+}
 
 export const getHistoryItem = async (uid, id) => {
-  console.log(uid,id)
+  console.log(uid, id)
   try {
     const docLink = doc(APP_DB, "user", uid, 'history', id);
     const res = await getDoc(docLink)
     const data = res.data();
     return { ok: true, data };
 
-  } catch(e) {
+  } catch (e) {
     return { ok: false, data: null, e: e };
   }
 }
@@ -22,13 +34,15 @@ export const saveHistory = async (data, uid) => {
   const id = uuidv4();
   try {
     const docLink = doc(APP_DB, "user", uid, 'history', id);
-    await setDoc(docLink, { ...data, id }, { merge: true });
+    await setDoc(docLink, { ...data, id, isArchived: false }, { merge: true });
     return { ok: true, data: data }
 
   } catch (error) {
     return { ok: false, data: null, e: error }
   }
 }
+
+
 
 let lastDocState = new Date(0);
 
@@ -47,7 +61,7 @@ export const getHistory = async (uid) => {
       docLink,
       orderBy("date", "desc"),
       startAfter(lastDocState),
-      limit(5)
+      limit(10)
     );
 
 
@@ -58,7 +72,7 @@ export const getHistory = async (uid) => {
     const datas = []
     const productsList = docSnap.docs.forEach((doc) => {
       const data = doc.data()
-      if (data) datas.push(data);
+      if (data && !data.isArchived) datas.push(data);
     });
 
     console.log(datas, 'sss');

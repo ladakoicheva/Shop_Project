@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from "react";
 import { useFilterProducts } from "./filterProductsLogical";
-import { useStoreContext } from "../../store/store";
 import styles from './FilterProducts.module.css';
 
 export default function FilterProducts({ filterProducts,products }) {
@@ -13,7 +12,7 @@ export default function FilterProducts({ filterProducts,products }) {
     searchValue
   } = useFilterProducts()
 
-  const store = useStoreContext();
+ 
   
 
   const options = useMemo(() => {

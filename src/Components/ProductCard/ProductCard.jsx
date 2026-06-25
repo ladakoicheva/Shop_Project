@@ -3,22 +3,22 @@ import React, { useEffect } from 'react'
 import styles from './ProductCard.module.css'
 import { getUANtoUSD } from '../../utils/convector'
 import { Link, useParams } from 'react-router-dom'
-import { useStoreContext } from '../../store/store'
 import { useState } from 'react'
 import { images } from '../../utils/images'
 import { useMemo } from 'react'
 import { getAllFavProducts } from '../../services/firebase/db/favProducts'
-import useBasket from '../../store/features/useBasket'
+import { useBasketContext } from '../../store/features/useBasket'
 import useAuth from '../../store/features/useAuth'
-import useFav from '../../store/features/useFav'
+import { useFavContext } from '../../store/features/useFav'
+import { useProductContext } from '../../store/features/useProductManager'
 
 
 export default function ProductCard({ product, onEdit, deleteItem, style }) {
 
-  const { deleteProduct, cardStyle } = useStoreContext();
-  const { addToBasket, deleteFromBasket, basket } = useBasket();
+  const { deleteProduct } = useProductContext()
+  const { addToBasket, deleteFromBasket, basket } = useBasketContext();
   const { user, isLoadingApp } = useAuth();
-  const { deleteItemFromFav, addToFav, favorites } = useFav();
+  const { deleteItemFromFav, addToFav, favorites } = useFavContext();
 
   const isInBasket = basket[product.id];
   const params = useParams();

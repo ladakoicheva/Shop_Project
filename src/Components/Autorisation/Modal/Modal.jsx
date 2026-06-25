@@ -2,10 +2,10 @@ import SignInForm from "../../Forms/SignInForm/SignInForm";
 import SignUpForm from "../../Forms/SignUpForm/SignUpForm";
 import { TYPE_MODAL } from "../../Forms/typeModeHelper";
 import styles from './Modal.module.css'
-import useAuth from "../../../store/features/useAuth";
+import useAuth, { useAuthContext } from "../../../store/features/useAuth";
 
 export default function Modal({modalOpen,setModalOpen}) {
-  const { authMode } = useAuth();
+  const { authMode } = useAuthContext();
   
 
   return (
