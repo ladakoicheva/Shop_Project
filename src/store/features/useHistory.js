@@ -5,7 +5,7 @@ import { archieveItem } from "../../services/firebase/db/history";
 
 export const HistoryContext = createContext({})
 
-export default function useHistory(user) {
+export default function useHistory({ user, isLoading }) {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
@@ -19,13 +19,13 @@ export default function useHistory(user) {
         console.log(res.e)
       }
     }
-    if (user) {
+    if (user && !isLoading) {
       getUserHistory()
     } else {
       setHistory([])
     }
 
-  }, [user])
+  }, [user,isLoading])
 
   const updateHistory = (data) => {
 

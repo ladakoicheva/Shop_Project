@@ -8,7 +8,7 @@ import { useEffect } from "react";
 export const FavContext = createContext({})
 
 
-export default function useFav(user) {
+export default function useFav({ user, isLoading }) {
 
 
   const [favorites, setFavorites] = useState([]);
@@ -18,7 +18,7 @@ export default function useFav(user) {
   useEffect(() => {
 
 
-    if (user) {
+    if (user && !isLoading) {
 
     
       const getFav = async () => {
@@ -30,7 +30,7 @@ export default function useFav(user) {
       setFavorites([]);
     }
 
-  }, [user])
+  }, [user,isLoading])
 
   const addToFav = async (ownersUid, productId) => {
     if (!user) return

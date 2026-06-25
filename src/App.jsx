@@ -29,10 +29,9 @@ function App() {
 
   const basket = useBasket();
   const user = useAuth();
-  const fav = useFav(user.user);
-  const history = useHistory(user.user)
+  const fav = useFav({ user: user.user, isLoading: user.isLoadingApp });
+  const history = useHistory({ user: user.user, isLoading: user.isLoadingApp })
   const products = useProductManager({ user: user.user, basket: basket.basket, updateBasketEditProduct: basket.updateBasketEditProduct });
-
 
 
   return (
