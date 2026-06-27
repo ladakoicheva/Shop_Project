@@ -1,7 +1,7 @@
 import style from '../../Components/ProductCard/ProductCard.module.css'
-import { useEffect } from 'react';
 
-export const keyStyle = {
+
+ const keyStyle = {
   topBG: 'topBG',
   bottomBG: 'bottomBG',
   priceColor: 'priceColor',

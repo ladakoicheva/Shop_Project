@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { changeSettings, getSettings } from '../../services/firebase/db/settings';
+import React, { useState } from 'react'
+import { changeSettings } from '../../services/firebase/db/settings';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC'
 import ExampleProductCard from './ExampleProductCard'
 import Menu from './Menu/Menu';
 import styles from './Setting.module.css'
-import { log } from 'firebase/firestore/lite/pipelines';
-import { useAuthContext } from '../../store/features/useAuth';
 
-export const typesConfig = {
+const typesConfig = {
   bg: {
     type: 'bg',
     text: 'Цвет фона'
@@ -27,10 +25,10 @@ export const typesConfig = {
   },
 }
 
-function Setting() {
+export function Setting({auth}) {
 
-  const { user, settings, updateStyles } = useAuthContext();
-  const [name, setName] = useState("");
+  const { user, settings, updateStyles } = auth;
+  const [name, setName] = useState(settings.name);
 
  
 
@@ -44,10 +42,10 @@ function Setting() {
   })
  
   
-  useEffect(() => {
-    if (settings.name) setName(settings.name);
-  }, [settings.name]);
-  // {
+  // useEffect(() => {
+  //   if (settings.name) setName(settings.name);
+  // }, [settings.name]);
+  // // {
   //   "isOpen": true,
   //     "types": [
   //       "color",
@@ -121,7 +119,7 @@ function Setting() {
     setStyle({ ...style, datas: newDatas })
   }
 
-  const closeStyle = (data, i) => {
+  const closeStyle = () => {
 
     setStyle({
       isOpen: false,
@@ -151,5 +149,8 @@ function Setting() {
 
   )
 }
-export default Autorisation_HOC(Setting);
+
+
+const SettingPage = Autorisation_HOC(Setting);
+export default SettingPage
 

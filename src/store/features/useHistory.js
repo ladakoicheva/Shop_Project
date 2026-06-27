@@ -7,30 +7,40 @@ export const HistoryContext = createContext({})
 
 export default function useHistory({ user, isLoading }) {
   const [history, setHistory] = useState([]);
+  const [total, setTotal] = useState(0)
 
   useEffect(() => {
 
     const getUserHistory = async () => {
       const res = await getHistory(user.uid)
-
+      // const total = await getTotal(user.uid);
       if (res.ok) {
         setHistory(res.data);
+        // setTotal(total.data)
       } else {
         console.log(res.e)
       }
     }
     if (user && !isLoading) {
       getUserHistory()
-    } else {
-      setHistory([])
     }
+    return () => {
+      setHistory([]);
+    };
 
-  }, [user,isLoading])
+  }, [user, isLoading])
 
   const updateHistory = (data) => {
 
     setHistory((prev) => [...prev,
     ...data])
+  }
+  const updateTotal = (sum) => {
+    setTotal(sum)
+  }
+
+  const getHistoryBasketUpdate = (data) => {
+    setHistory([data, ...history])
   }
 
   const addToHistoryArchive = async (id) => {
@@ -48,6 +58,9 @@ export default function useHistory({ user, isLoading }) {
     history,
     updateHistory,
     addToHistoryArchive,
+    getHistoryBasketUpdate,
+    total,
+    updateTotal
   })
 }
 

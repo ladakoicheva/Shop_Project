@@ -1,18 +1,14 @@
-import React, { useEffect } from 'react'
+
 import './Menu.css'
 import { SketchPicker } from 'react-color';
-import { useState } from 'react';
 import { changeSettings } from '../../../services/firebase/db/settings';
 
 
 
-export default function Menu({ style, setStyle, changeStyle, closeStyle, updateStyles, user }) {
+export default function Menu({ style,  changeStyle, closeStyle, updateStyles, user }) {
 
-  const [currentColor, setCurrentColor] = useState("");
-  const [textSizeValue, setTextSizeValue] = useState("");
-
-
-
+ 
+  
 
 
   const getColor = (rgb, i) => {

@@ -6,15 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { addProduct } from '../../../services/firebase/db/products';
 import { useState } from 'react';
 import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
-import { useAuthContext } from '../../../store/features/useAuth';
+
+ function ProductsForm({ products, setProducts, onClose, product, editProductData,auth }) {
 
 
 
-function ProductsForm({ products, setProducts, onClose, product,editProductData }) {
-
-
-
-  const auth = useAuthContext()
   const navigate = useNavigate();
   const [img, setImg] = useState(null);
 
@@ -40,7 +36,7 @@ function ProductsForm({ products, setProducts, onClose, product,editProductData 
 
   const create = async (product) => {
     auth.openLoading()
-    const response = await addProduct(product, img?.file, auth.user.uid)
+    await addProduct(product, img?.file, auth.user.uid)
 
     auth.closeLoading()
     navigate(`/products/${auth.user.uid}`)
@@ -156,6 +152,5 @@ function ProductsForm({ products, setProducts, onClose, product,editProductData 
 
 
 
-
-
-export default Autorisation_HOC(ProductsForm)
+const AuthenticatedProductsForm = Autorisation_HOC(ProductsForm);
+export default AuthenticatedProductsForm;

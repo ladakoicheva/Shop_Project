@@ -1,17 +1,17 @@
-import { useMemo, useState } from 'react'
+import {  useState } from 'react'
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 import { getHistoryItem } from '../../../services/firebase/db/history';
 import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
 import './HistoryItemPage.css';
 import { useBasketContext } from '../../../store/features/useBasket';
-import { useAuthContext } from '../../../store/features/useAuth';
 
-function HistoryItemPage() {
+
+export function HistoryItemPage({auth}) {
   const [currentItem, setCurrentItem] = useState(null);
   const { id } = useParams();
-  const auth = useAuthContext();
-  const { basket, addToBasket, getBasketFormHistory } = useBasketContext()
+  const {user} = auth
+  const { basket,  getBasketFormHistory } = useBasketContext()
   const navigate = useNavigate();
 
   console.log(basket);
@@ -32,14 +32,12 @@ function HistoryItemPage() {
 
   useEffect(() => {
     const getCurrentItem = async () => {
-      const res = await getHistoryItem(auth.user.uid, id)
+      const res = await getHistoryItem(user.uid, id)
       if (res.ok) setCurrentItem(res.data)
-
-
     }
 
     getCurrentItem()
-  }, [auth.user.uid, id])
+  }, [user.uid, id])
 
   if (!currentItem) return <div>Loading...</div>
   return (
@@ -48,7 +46,7 @@ function HistoryItemPage() {
       <h2 className='history-date'>{new Date(currentItem.date).toLocaleDateString('ru-RU')}</h2>
 
       <ul className='productList'>
-        {currentItem.products?.map((el, index) => (
+        {currentItem.products?.map((el) => (
 
           <li className='product-item' key={el.id}>
             <div className='productImg'>
@@ -77,4 +75,6 @@ function HistoryItemPage() {
   )
 }
 
-export default Autorisation_HOC(HistoryItemPage)
+const HistoryCurrentItemPage = Autorisation_HOC(HistoryItemPage)
+
+export default HistoryCurrentItemPage

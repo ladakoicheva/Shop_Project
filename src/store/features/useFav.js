@@ -1,6 +1,5 @@
 import { createContext, useContext } from "react";
 import { addProductToFav, deleteProductFromFav, getAllFavProducts } from "../../services/firebase/db/favProducts";
-import { useAuthContext } from "./useAuth";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -12,31 +11,32 @@ export default function useFav({ user, isLoading }) {
 
 
   const [favorites, setFavorites] = useState([]);
-  
- 
+
+
 
   useEffect(() => {
 
 
     if (user && !isLoading) {
 
-    
+
       const getFav = async () => {
         const res = await getAllFavProducts(user.uid)
         if (res.ok) setFavorites(res.data)
       }
       getFav()
-    } else {
-      setFavorites([]);
     }
+    return () => {
+      setFavorites([]);
+    };
 
-  }, [user,isLoading])
+  }, [user, isLoading])
 
   const addToFav = async (ownersUid, productId) => {
     if (!user) return
 
     const res = await addProductToFav(user.uid, ownersUid, productId)
-  
+
     if (res.ok) {
       favorites.push(productId)
       console.log(favorites)
@@ -76,4 +76,4 @@ export default function useFav({ user, isLoading }) {
 }
 
 
-export const useFavContext = ()=>useContext(FavContext)
+export const useFavContext = () => useContext(FavContext)

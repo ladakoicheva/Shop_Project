@@ -2,14 +2,24 @@ import { useEffect, useState } from 'react'
 import { getHistory } from '../../services/firebase/db/history';
 import HistoryItemCard from './ui/HistoryItemCard/HistoryItemCard';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC';
-import { useHistoryContext } from '../../store/features/useHistory';
-import { useAuthContext } from '../../store/features/useAuth';
+import { connectLiveHistorySum } from '../../services/firebase/socket/history';
 
-const History = () => {
-  const history = useHistoryContext();
-  const {user} = useAuthContext()
+export const History = ({auth,historyContext}) => {
+  const history = historyContext
+  const { user } = auth
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false)
+
+  useEffect(() => {
+    const callback = (data) => {
+      history.updateTotal(data)
+
+    }
+    const unsubscribe = connectLiveHistorySum(callback, user.uid)
+
+    return unsubscribe;
+  
+  }, [history,user.uid])
 
 
   const getNextHistoryItems = async () => {
@@ -32,14 +42,14 @@ const History = () => {
   }
 
   const onAddHistory = (e) => {
-   
+
     if (isEnd) return;
 
     const teg = e.target;
     const scrollHeight = +teg.scrollHeight; // Высота скрола
     const scrollTop = +teg.scrollTop; // высота проскроленого
     const offsetHeight = +teg.offsetHeight; // высота кубика 
-  
+
 
     if (scrollHeight - scrollTop - offsetHeight <= 100) {
 
@@ -51,15 +61,15 @@ const History = () => {
 
   }
 
-  if ( history.history.length === 0) return <div>No items</div>
-  
+  if (history.history.length === 0) return <div>No items</div>
+
 
   return (
 
 
     <div onScroll={onAddHistory} style={{ height: 'calc(100vh - 60px)', overflow: 'auto', }}>
-
-      {history.history.map((el,index) => (
+      <h1>{history.total}</h1>
+      {history.history.map((el, index) => (
         <HistoryItemCard key={index} purchase={el} user={user} addToArchive={history.addToHistoryArchive} />
       ))}
     </div>
@@ -79,4 +89,5 @@ const History = () => {
 
 // log(...arr)
 // log('a', 's', 'd', 'f', 'g')
-export default Autorisation_HOC(History)
+const HistoryPage = Autorisation_HOC(History)
+export default HistoryPage;

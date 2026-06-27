@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { APP_AUTH } from "../../services/firebase";
 import { TYPE_MODAL } from "../../Components/Forms/typeModeHelper";
 import { createContext } from "react";
 import { getSettings } from "../../services/firebase/db/settings";
-import { getHistory } from "../../services/firebase/db/history";
+
 import { onLoginApi, onRegistartionApi } from "../../services/firebase/auth";
-import { archieveItem } from "../../services/firebase/db/history";
+
 
 export const AuthContext = createContext({
 
@@ -21,7 +21,6 @@ export default function useAuth() {
   const [isLoadingApp, setIsLoadingApp] = useState(true);
   const isLogin = !!user;
   const [loading, setLoading] = useState(false);
-  const [history, setHistory] = useState([]);
   const [settings, setSettings] = useState({
     bgbg: "rgba(255,255,255)",
     name: "shop",
@@ -100,12 +99,12 @@ export default function useAuth() {
   };
 
 
-  const openLoading = () => {
+  const openLoading = useCallback(() => {
     setLoading(true);
-  }
-  const closeLoading = () => {
+  },[setLoading])
+  const closeLoading = useCallback(() => {
     setLoading(false);
-  }
+  },[setLoading])
 
   return {
 
@@ -122,7 +121,7 @@ export default function useAuth() {
     updateStyles,
     openLoading,
     closeLoading,
-   
+
   }
 
 

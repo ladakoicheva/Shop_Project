@@ -1,4 +1,4 @@
-import { use, useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { minSort, maxSort } from "../../utils/sort";
 import ProductCard from "../../Components/ProductCard/ProductCard"
 import styles from './Products.module.css'
@@ -9,18 +9,14 @@ import ProductsForm from "../../Components/Forms/ProductsForm/ProductsForm"
 import { NoFound } from "../../uix/NoFound";
 import ShopName from "../../Components/FilterBg/ShopName";
 import { getSettings } from "../../services/firebase/db/settings";
-import useProductManager, { useProductContext } from "../../store/features/useProductManager";
-import { useAuthContext } from "../../store/features/useAuth";
+import { useCallback } from "react";
 
 
-
-
-
-export default function Products() {
-  const { openLoading, closeLoading, updateStyles, isLoadingApp, user } = useAuthContext()
-  const { setProductsData ,deleteProduct,editProductData} =  useProductContext()
+export default function Products({ auth, productManager }) {
+  const { openLoading, closeLoading, isLoadingApp, user } = auth;
+  const { setProductsData, deleteProduct, editProductData } = productManager;
   const [products, setProducts] = useState([]);
-  const [showProducts, setShowProducts] = useState([]);
+  const [showProducts, setShowProducts] = useState(products);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isOpenPage, setIsOpenPage] = useState(true);
   const [style, setStyle] = useState({
@@ -65,7 +61,7 @@ export default function Products() {
 
 
     }
-    
+
 
 
     uid && getProducts();
@@ -73,14 +69,14 @@ export default function Products() {
     getUserSettings();
     if (uid !== user?.uid && !isLoadingApp) localStorage.setItem('lastVisitedShop', uid)
 
-  }, [uid,isLoadingApp])
+  }, [uid, isLoadingApp, user?.uid, openLoading, closeLoading, setProductsData])
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    setShowProducts([...products])
-  }, [products])
+  //   setShowProducts([...products])
+  // }, [products])
 
 
   const deleteItem = async (product, uid, id) => {
@@ -92,16 +88,12 @@ export default function Products() {
   }
 
 
-
-
-
-  const filterProducts = (text, category, price) => {
-
+  const filterProducts = useCallback((text, category, price) => {
     const search = text.toLowerCase();
 
     const filtered = products.filter((el) => {
       const checkText = text == '' || el.name.toLowerCase().includes(search);
-      const checkCategory = category == 'All' || el.category === category;
+      const checkCategory = category == 'All' || el.xcategory === category;
 
       return checkText && checkCategory
     })
@@ -110,8 +102,8 @@ export default function Products() {
       filtered.sort(callback)
     }
     setShowProducts(filtered);
+  }, [products]);
 
-  }
 
   if (isOpenPage) return <></>
 
@@ -140,8 +132,8 @@ export default function Products() {
                 product={el}
                 style={style}
                 onEdit={() => setEditingProduct(el)}
-                deleteItem={()=>deleteItem(el,uid,el.id)}
-                
+                deleteItem={() => deleteItem(el, uid, el.id)}
+
               />
             </li>
           )}

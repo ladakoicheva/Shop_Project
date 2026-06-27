@@ -1,15 +1,14 @@
-import { useMemo, useState } from "react";
-import { useBasketContext } from "../../store/features/useBasket";
+import { useMemo } from "react";
 import BasketProductCard from "./BasketProductCard/BasketProductCard";
 import style from './BasketPage.module.css';
 import { saveHistory } from "../../services/firebase/db/history";
-import { count } from "firebase/firestore";
-import { useAuthContext } from "../../store/features/useAuth";
+import { updateTotal } from "../../services/firebase/db/history";
 
-export default function BasketPage() {
-  const { basket, addToBasket, deleteFromBasket, resetBasket } = useBasketContext();
-  const { user, history, updateHistory } = useAuthContext();
-  console.log(basket);
+export default function BasketPage({basketContext,historyContext,auth}) {
+  const { basket, addToBasket, deleteFromBasket, resetBasket } =basketContext
+  const { user} = auth
+  const { getHistoryBasketUpdate } = historyContext
+
 
   const basketsArr = useMemo(() => Object.values(basket), [basket]);
   const isEmpty = basketsArr.length == 0 ? true : false;
@@ -42,13 +41,16 @@ export default function BasketPage() {
       products: productsData
     };
     //   }
-    const res = await saveHistory(data, user.uid);
-    if (res.ok) {
+    const res = await Promise.all([updateTotal(total, user.uid), saveHistory(data, user.uid)])
+
+    
+    if (res) {
       resetBasket();
-      setHistory([data, ...history])//!
-      console.log(history)
+      getHistoryBasketUpdate(data)
+
+
     }
-    console.log(res)
+
   }
   if (isEmpty) return <div>No products</div>;
 
@@ -69,32 +71,10 @@ export default function BasketPage() {
 }
 
 
+//const ref = doc(...путь)
+//await updateDoc(ref,{ sum:increment(total)})
 
 
-const h = {
-  date: 1912313,
-  totalSum: 400,
-  discount: 0,
-  products: [
-    {
-      "price": 170,
-      "currency": "USD",
-      "img": "https://firebasestorage.googleapis.com/v0/b/shop-cffec.firebasestorage.app/o/477rycF7GFg17Xthw2aMU8xY0tX2%2Fb29b18f5-d9a9-44ca-9535-86f407fd8ac0?alt=media&token=46f4503d-c9f6-44c1-a229-7e248dc16e48",
-      "name": "Samsung Galaxy",
-      "id": "b29b18f5-d9a9-44ca-9535-86f407fd8ac0",
-      count: 5
-    },
-    {
-      "name": "Minimalist Ceramic Vase",
-      "img": "https://firebasestorage.googleapis.com/v0/b/shop-cffec.firebasestorage.app/o/477rycF7GFg17Xthw2aMU8xY0tX2%2Fbe789093-9f34-4a1b-a177-be8cfff8bb0d?alt=media&token=3f5232c7-58d3-487d-bebc-6f269bc1ced9",
-      "id": "be789093-9f34-4a1b-a177-be8cfff8bb0d",
-      "price": 890,
-      "currency": "UAH",
-      "count": 3
-    },
-
-  ]
-}
 
 
 

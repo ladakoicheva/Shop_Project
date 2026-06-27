@@ -1,15 +1,15 @@
 // saveUser.js
 
-import { doc, getDoc, setDoc,updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { APP_DB } from "..";
 
 export const changeSettings = async (uid, data) => {
-  
+
   try {
     const docLink = doc(APP_DB, "settings", uid)
     await setDoc(docLink, data, { merge: true });
-    
+
     console.log("Document successfully written!");
   } catch (error) {
     console.error("Error writing document:", error);
@@ -17,15 +17,15 @@ export const changeSettings = async (uid, data) => {
 }
 
 //{}
-export const getSettings = async (uid) =>{
+export const getSettings = async (uid) => {
   try {
     console.log(uid)
     const docLink = doc(APP_DB, "settings", uid)
     const response = await getDoc(docLink);
     const data = response.data();
-    return {ok : true, data}
+    return { ok: true, data }
   } catch (error) {
-    return {ok : false, data : null}
-    console.error("Error :", error);
+    return { ok: false, data: null, e: error }
+
   }
 }

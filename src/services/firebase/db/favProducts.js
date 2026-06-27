@@ -1,6 +1,6 @@
-import { doc, getDocs, getDoc, setDoc, deleteDoc,addDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
+import { doc, getDocs, setDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
 import { APP_DB } from "..";
-import { updateDoc } from "firebase/firestore/lite";
+
 
 
 
@@ -9,14 +9,14 @@ export const getAllFavProducts = async (uid) => {
     const colRef = collection(APP_DB, "user", uid, 'favorites');
     const docSnap = await getDocs(colRef);
     const allFav = []
-    const productsList = docSnap.docs.forEach((doc) => {
+     docSnap.docs.forEach((doc) => {
       const data = doc.data()
       if (data.favorites) allFav.push(...data.favorites);
     });
     return { ok: true, data: allFav }
   } catch (e) {
     return { ok: false, error: e }
-    console.log(e)
+    
   }
 }
 

@@ -36,7 +36,7 @@ export const addImgToFirebase = async (file, id, uid) => {
       const url = await getDownloadURL(snapShot.ref)
       return { ok: true, data: url }
     } catch (error) {
-      return { ok: false, data: null }
+      return { ok: false, data: null, e: error };
     }
   } else {
     return { ok: true, data: null };
@@ -83,7 +83,7 @@ export const getAllProducts = async (uid) => {
 export const getOneProduct = async (uid, id) => {
   const docLink = doc(APP_DB, 'user', uid, 'products', id);
   try {
-    const colRef = doc(APP_DB, "user", uid, 'products', id);
+    const colRef = docLink
     const docSnap = await getDoc(colRef);
 
     return { ok: true, data: docSnap.data() }
@@ -122,7 +122,7 @@ export const editProduct = async ( uid, id, newData, file) => {
 
   try {
 
-    const res = await updateDoc(docLink,newData);
+    await updateDoc(docLink,newData);
     return { ok: true, data: newData };
   } catch (e) {
     return { ok: false, error: e }

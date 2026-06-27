@@ -1,8 +1,5 @@
-import { createContext, useContext } from "react";
+import { createContext, useCallback, useContext } from "react";
 import { removeProduct, editProduct } from "../../services/firebase/db/products";
-
-import { useAuthContext } from "./useAuth";
-import { useBasketContext } from "./useBasket";
 import { useState } from "react";
 
 export const ProductContext = createContext({});
@@ -12,12 +9,12 @@ export default function useProductManager({ user, basket, updateBasketEditProduc
   
   const [products, setProducts] = useState([]);
 
-  const setProductsData = (data, currentUID) => {
+  const setProductsData = useCallback((data, currentUID) => {
     //! old user 
     if (!user) return;
     const uid = user.uid;
     if (currentUID === uid) setProducts(data);
-  }
+  },[user])
 
   const deleteProduct = async (product, uid, id) => {
     const res = await removeProduct(product, uid, id);

@@ -24,7 +24,7 @@ export default function FilterProducts({ filterProducts,products }) {
 
   useEffect(() => {
     filterProducts(searchValue, selectedCategory, price)
-  }, [searchValue, selectedCategory, price])
+  }, [searchValue, selectedCategory, price, filterProducts])
 
   return (
 

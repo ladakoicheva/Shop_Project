@@ -5,23 +5,21 @@ import { useState } from "react";
 import styles from './CurrentProductPage.module.css'
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import { useBasketContext } from "../../store/features/useBasket";
-import { useAuthContext } from "../../store/features/useAuth";
 
-export default function СurrentProductPage() {
+export default function CurrentProductPage({ basketContext, auth }) {
   const [currentProduct, setCurrentProduct] = useState(null);
 
   const navigate = useNavigate();
   const params = useParams();
-  const { basket, addToBasket, deleteFromBasket } = useBasketContext()
-  const store = useAuthContext()
+  const { basket, addToBasket, deleteFromBasket } = basketContext
+  const { openLoading, closeLoading } = auth
   const isInBasket = basket[currentProduct?.id]
 
   useEffect(() => {
 
     //loading
     async function getCurrentProduct() {
-      store.openLoading();
+      openLoading();
       const res = await getOneProduct(params.uid, params.id);
 
       if (res.ok) {
@@ -30,12 +28,12 @@ export default function СurrentProductPage() {
       if (res.ok && !res.data) {
         navigate("*")
       }
-      store.closeLoading();
+      closeLoading();
 
     }
     getCurrentProduct()
 
-  }, [params.uid, params.id])
+  }, [params.uid, params.id, navigate, openLoading, closeLoading])
 
   return (
     <>
