@@ -1,19 +1,20 @@
+import { createContext, useCallback, useContext } from "react";
 import { removeProduct, editProduct } from "../../services/firebase/db/products";
-import { useStoreContext } from "../store";
-import useBasket from "./useBasket";
+import { useState } from "react";
+
+export const ProductContext = createContext({});
 
 
-export default function useProductManager() {
-  const { products, setProducts, user } = useStoreContext();
-  const { basket, setBasket } = useBasket();
+export default function useProductManager({ user, basket, updateBasketEditProduct }) {
+  
+  const [products, setProducts] = useState([]);
 
-
-  const setProductsData = (data, currentUID) => {
+  const setProductsData = useCallback((data, currentUID) => {
     //! old user 
     if (!user) return;
     const uid = user.uid;
     if (currentUID === uid) setProducts(data);
-  }
+  },[user])
 
   const deleteProduct = async (product, uid, id) => {
     const res = await removeProduct(product, uid, id);
@@ -22,7 +23,7 @@ export default function useProductManager() {
       console.log(products)
       if (copy[id]) {
         delete copy[id];
-        setBasket(copy);
+        updateBasketEditProduct(copy);
       }
       const filtered = products.filter((el) => el.id !== id);
 
@@ -43,7 +44,7 @@ export default function useProductManager() {
 
       if (basketCopy[id]) {
         basketCopy[id].product = { ...basketCopy[id].product, ...res.data };
-        setBasket(basketCopy)
+        updateBasketEditProduct(basketCopy)
       }
 
       setProducts(copy)
@@ -55,9 +56,10 @@ export default function useProductManager() {
   }
   return {
     products,
-    user,
     deleteProduct,
     editProductData,
     setProductsData
   }
 }
+
+export const useProductContext = ()=>useContext(ProductContext)

@@ -1,7 +1,7 @@
 import ProductsForm from "../Components/Forms/ProductsForm/ProductsForm"
 
-export default function AddProducts() {
+export default function AddProducts({auth}) {
   return (
-    <ProductsForm />
+    <ProductsForm auth = {auth} />
   )
 }

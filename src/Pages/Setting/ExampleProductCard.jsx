@@ -1,8 +1,7 @@
 import style from '../../Components/ProductCard/ProductCard.module.css'
-import { useStoreContext } from '../../store/store';
-import { useEffect } from 'react';
 
-export const keyStyle = {
+
+ const keyStyle = {
   topBG: 'topBG',
   bottomBG: 'bottomBG',
   priceColor: 'priceColor',
@@ -11,7 +10,7 @@ export const keyStyle = {
 
 
 export default function ExampleProductCard({ openStyle, getStyle }) {
-  const store = useStoreContext()
+ 
 
   
   const [colorName, fontSizeName] = getStyle('name');

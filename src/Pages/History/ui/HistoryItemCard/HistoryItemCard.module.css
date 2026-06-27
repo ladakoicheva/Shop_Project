@@ -1,23 +1,33 @@
-
-.card{
+.card {
   position: relative;
   margin: 0 auto;
   max-width: 30%;
   background-color: white;
   padding: 30px;
   border-radius: 20px;
-  border:1px solid gray;
-  margin-top:20px;
+  border: 1px solid gray;
+  margin-top: 20px;
 }
 
-.card li{
+.card li {
   list-style: none;
 }
-.arrow{
+
+.arrow {
   position: absolute;
-  top:50%;
+  top: 50%;
   left: 80%;
   transform: translateY(-50%);
   font-size: 40px;
+  cursor: pointer;
+}
+
+.archive {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20%;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 }

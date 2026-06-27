@@ -1,17 +1,17 @@
 import styles from './Header.module.css'
-import { Link, useParams } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import { Autorisation } from '../Autorisation/Authorise/Autorisation'
 import FilterProducts from '../FilterProducts/FilterProducts'
 import useAuth from '../../store/features/useAuth'
 import { useMemo } from 'react'
-import useBasket from '../../store/features/useBasket'
+import { useBasketContext } from '../../store/features/useBasket'
 
 export default function Header() {
 
   const { isLogin, user } = useAuth();
-  const { basket } = useBasket();
+  const { basket } = useBasketContext();
   const lastVisitedShopUID = localStorage.getItem('lastVisitedShop') || "";
-  const params = useParams();
+  
 
   const memoNavigation = useMemo(() => {
     if (isLogin) {
@@ -23,7 +23,7 @@ export default function Header() {
         <Link to ='history'>History</Link>
       </>
     } 
-  }, [isLogin, user])
+  }, [isLogin, user, lastVisitedShopUID])
 
 
   return (

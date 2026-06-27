@@ -1,6 +1,6 @@
 
 import Modal from "../Modal/Modal";
-import { useEffect,useState } from "react";
+import { useState } from "react";
 import styles from './Authorisation.module.css'
 import useAuth from "../../../store/features/useAuth";
 

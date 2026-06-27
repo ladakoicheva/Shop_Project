@@ -3,18 +3,14 @@ import { useFormik } from 'formik';
 import IOSSwitch from '../../Switch';
 import { schema } from '../schemas/productsValidationSchema';
 import { useNavigate } from 'react-router-dom';
-import { useStoreContext } from '../../../store/store';
 import { addProduct } from '../../../services/firebase/db/products';
 import { useState } from 'react';
 import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
 
-
-
-function ProductsForm({ products, setProducts, onClose, product,editProductData }) {
+ function ProductsForm({ products, setProducts, onClose, product, editProductData,auth }) {
 
 
 
-  const store = useStoreContext();
   const navigate = useNavigate();
   const [img, setImg] = useState(null);
 
@@ -30,7 +26,7 @@ function ProductsForm({ products, setProducts, onClose, product,editProductData 
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      product ? updateItem(store.user.uid, product.id, { ...values, id: product.id }, img?.file) : create(values)
+      product ? updateItem(auth.user.uid, product.id, { ...values, id: product.id }, img?.file) : create(values)
     },
 
 
@@ -39,11 +35,11 @@ function ProductsForm({ products, setProducts, onClose, product,editProductData 
   //product, uid, id, newData, file
 
   const create = async (product) => {
-    store.openLoading()
-    const response = await addProduct(product, img?.file, store.user.uid)
+    auth.openLoading()
+    await addProduct(product, img?.file, auth.user.uid)
 
-    store.closeLoading()
-    navigate(`/products/${store.user.uid}`)
+    auth.closeLoading()
+    navigate(`/products/${auth.user.uid}`)
   }
 
   const updateItem = async (uid, id, newData, file) => {
@@ -156,6 +152,5 @@ function ProductsForm({ products, setProducts, onClose, product,editProductData 
 
 
 
-
-
-export default Autorisation_HOC(ProductsForm)
+const AuthenticatedProductsForm = Autorisation_HOC(ProductsForm);
+export default AuthenticatedProductsForm;

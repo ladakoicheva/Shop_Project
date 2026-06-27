@@ -4,13 +4,13 @@ import { useFormik } from 'formik';
 import { schema } from "../schemas/signInValidationSchema";
 import { TYPE_MODAL } from "../typeModeHelper";
 import { useState } from "react";
-import useAuth from '../../../store/features/useAuth';
+import { useAuthContext } from '../../../store/features/useAuth';
 
 
 
 export default function SignInForm({setModalOpen}) {
 
-  const { onLogin, setAuthMode } = useAuth();
+  const { onLogin, changeAuthMode } =useAuthContext()
   const [backError, setBackError] = useState(null);
 
   const formik = useFormik({
@@ -53,7 +53,7 @@ export default function SignInForm({setModalOpen}) {
         <div>{formik.errors.password}</div>
       ) : null}
 
-      <p>Do not have an account? <span onClick={() => setAuthMode(TYPE_MODAL.SING_UP)}>Sign Up</span></p>
+      <p>Do not have an account? <span onClick={() => changeAuthMode(TYPE_MODAL.SING_UP)}>Sign Up</span></p>
       <button type='submit'>Sign In</button>
       {backError && <div className="error">{backError}</div>}
     </form>

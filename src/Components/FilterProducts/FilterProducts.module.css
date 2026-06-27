@@ -7,7 +7,7 @@
 .filterProducts input {
   width: 50%;
   padding: 15px 20px;
-  background: url('/public/search-286-64.png') no-repeat left;
+  background: url('/search-286-64.png') no-repeat left;
   background-size: 20px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
