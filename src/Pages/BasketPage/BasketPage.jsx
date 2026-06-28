@@ -12,8 +12,6 @@ export default function BasketPage({basketContext,historyContext,auth}) {
 
   const basketsArr = useMemo(() => Object.values(basket), [basket]);
   const isEmpty = basketsArr.length == 0 ? true : false;
-  console.log(basketsArr)
-  console.log(isEmpty)
 
   const total = useMemo(() => {
     return basketsArr.reduce((acc, el) => {
@@ -46,7 +44,7 @@ export default function BasketPage({basketContext,historyContext,auth}) {
     
     if (res) {
       resetBasket();
-      getHistoryBasketUpdate(data)
+      getHistoryBasketUpdate(res[1].data)
 
 
     }

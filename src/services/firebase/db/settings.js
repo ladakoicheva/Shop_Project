@@ -10,7 +10,7 @@ export const changeSettings = async (uid, data) => {
     const docLink = doc(APP_DB, "settings", uid)
     await setDoc(docLink, data, { merge: true });
 
-    console.log("Document successfully written!");
+  
   } catch (error) {
     console.error("Error writing document:", error);
   }
@@ -19,7 +19,7 @@ export const changeSettings = async (uid, data) => {
 //{}
 export const getSettings = async (uid) => {
   try {
-    console.log(uid)
+   
     const docLink = doc(APP_DB, "settings", uid)
     const response = await getDoc(docLink);
     const data = response.data();

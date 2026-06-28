@@ -1,11 +1,12 @@
 .productCard {
-
-  height: 100%;
   width: 100%;
   background: rgb(255, 255, 255);
   transition: .3s all;
   position: relative;
   font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .product {
@@ -19,13 +20,15 @@
 }
 
 .img {
-  height: 50%;
   width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: gray;
   position: relative;
   display: flex;
   justify-content: center;
   align-content: center;
-  
+  overflow: hidden;
+
 }
 
 .productCard img {
@@ -72,7 +75,7 @@
   width: 40px;
   object-fit: contain;
   align-self: flex-start;
-  
+
 
 }
 
@@ -143,5 +146,3 @@
   position: absolute;
   top: 5%
 }
-
-

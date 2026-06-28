@@ -5,7 +5,7 @@ import { useState } from "react";
 export const ProductContext = createContext({});
 
 
-export default function useProductManager({ user, basket, updateBasketEditProduct }) {
+export default function useProductManager({ user, basket}) {
   
   const [products, setProducts] = useState([]);
 
@@ -20,10 +20,10 @@ export default function useProductManager({ user, basket, updateBasketEditProduc
     const res = await removeProduct(product, uid, id);
     const copy = { ...basket }
     if (res.ok) {
-      console.log(products)
+     
       if (copy[id]) {
         delete copy[id];
-        updateBasketEditProduct(copy);
+        basket.updateBasketEditProduct(copy);
       }
       const filtered = products.filter((el) => el.id !== id);
 
@@ -44,7 +44,7 @@ export default function useProductManager({ user, basket, updateBasketEditProduc
 
       if (basketCopy[id]) {
         basketCopy[id].product = { ...basketCopy[id].product, ...res.data };
-        updateBasketEditProduct(basketCopy)
+        basket.updateBasketEditProduct(basketCopy)
       }
 
       setProducts(copy)

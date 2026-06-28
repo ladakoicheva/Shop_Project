@@ -2,14 +2,13 @@ import styles from './Header.module.css'
 import { Link} from 'react-router-dom'
 import { Autorisation } from '../Autorisation/Authorise/Autorisation'
 import FilterProducts from '../FilterProducts/FilterProducts'
-import useAuth from '../../store/features/useAuth'
 import { useMemo } from 'react'
-import { useBasketContext } from '../../store/features/useBasket'
 
-export default function Header() {
 
-  const { isLogin, user } = useAuth();
-  const { basket } = useBasketContext();
+export default function Header({auth,basketContext}) {
+
+  const { isLogin, user } = auth;
+  const { basket } = basketContext
   const lastVisitedShopUID = localStorage.getItem('lastVisitedShop') || "";
   
 

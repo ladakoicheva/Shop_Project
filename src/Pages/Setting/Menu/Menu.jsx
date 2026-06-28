@@ -23,7 +23,7 @@ export default function Menu({ style,  changeStyle, closeStyle, updateStyles, us
         dataToSave[style.type + type] = style.datas[i]
       }
     })
-    console.log(dataToSave)
+    
 
     closeStyle();
     changeSettings(user.uid, dataToSave);

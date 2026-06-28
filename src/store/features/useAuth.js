@@ -3,10 +3,8 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import { APP_AUTH } from "../../services/firebase";
 import { TYPE_MODAL } from "../../Components/Forms/typeModeHelper";
 import { createContext } from "react";
-import { getSettings } from "../../services/firebase/db/settings";
-
 import { onLoginApi, onRegistartionApi } from "../../services/firebase/auth";
-
+import { connectLiveSetting } from "../../services/firebase/socket/setting";
 
 export const AuthContext = createContext({
 
@@ -36,22 +34,40 @@ export default function useAuth() {
   useEffect(() => {
 
 
-    onAuthStateChanged(APP_AUTH, (user) => {
 
-      const getUserSetting = async () => {
-        const response = await getSettings(user.uid);
-        if (response.ok) setSettings(prev => ({ ...prev, ...response.data }))
-      }
+    const unsubscribe = onAuthStateChanged(APP_AUTH, (user) => {
+
+
+      // const getUserSetting = async () => {
+      //   const response = await getSettings(user.uid);
+      //   if (response.ok) setSettings(prev => ({ ...prev, ...response.data }))
+      // }
       if (user) {
+
         setUser(user)
-        getUserSetting()
 
       } else {
         setUser(null)
       }
       setIsLoadingApp(false)
     })
+    return unsubscribe;
+
   }, [])
+
+  useEffect(() => {
+    if (!user) return;
+
+    const callBack = (data) => {
+      setSettings(prev => ({ ...prev, ...data }))
+    }
+    const unsubscribe = connectLiveSetting(callBack, user.uid);
+
+    return unsubscribe
+
+  }, [user])
+
+
 
 
 
@@ -67,9 +83,9 @@ export default function useAuth() {
   const logOut = async () => {
     try {
       const res = await signOut(APP_AUTH)
-      if (res) console.log('sign out successfull');
+      if (res) return { ok: true, data: null }
     } catch (err) {
-      console.log(err);
+      return { ok: false, data: null, e: err }
     }
 
 
@@ -101,10 +117,10 @@ export default function useAuth() {
 
   const openLoading = useCallback(() => {
     setLoading(true);
-  },[setLoading])
+  }, [setLoading])
   const closeLoading = useCallback(() => {
     setLoading(false);
-  },[setLoading])
+  }, [setLoading])
 
   return {
 

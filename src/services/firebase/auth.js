@@ -10,7 +10,6 @@ export const onRegistartionApi = async (email, password) => {
     );
     return { ok: true, data: data.user }
   } catch (error) {
-    console.log(error)
     return { ok: false, message: error.message, code: error.code }
   }
 }
@@ -26,7 +25,7 @@ export const onLoginApi = async (email, password) => {
     )
     return { ok: true, data: data.user }
   } catch (error) {
-    console.log(error)
+   
     return { ok: false, message: error.message, code: error.code }
   }
 }

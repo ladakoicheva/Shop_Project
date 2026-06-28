@@ -20,8 +20,7 @@ export const addProduct = async (product, file, uid) => {
 
 
   } catch (e) {
-    console.log(e)
-    return { ok: false, data: null }
+    return { ok: false, data: null ,e:e}
   }
 
 }
@@ -69,7 +68,7 @@ export const getAllProducts = async (uid) => {
       ...doc.data()
     }));
 
-    console.log(docSnap)
+
 
 
 
@@ -98,7 +97,6 @@ export const removeProduct = async (product, uid, id) => {
   try {
     const docRef = doc(APP_DB, "user", uid, 'products', id);
     await deleteDoc(docRef);
-    console.log(product)
     if (product.img) await deleteImgFromStore(uid, id)
 
 

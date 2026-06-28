@@ -7,7 +7,7 @@ import { useEffect } from "react";
 export const FavContext = createContext({})
 
 
-export default function useFav({ user, isLoading }) {
+export default function useFav({ auth }) {
 
 
   const [favorites, setFavorites] = useState([]);
@@ -16,34 +16,32 @@ export default function useFav({ user, isLoading }) {
 
   useEffect(() => {
 
-
-    if (user && !isLoading) {
+    let ignore = false
+    if (auth.user?.uid && !auth.isLoading && !ignore) {
 
 
       const getFav = async () => {
-        const res = await getAllFavProducts(user.uid)
+        const res = await getAllFavProducts(auth.user.uid)
         if (res.ok) setFavorites(res.data)
       }
       getFav()
     }
     return () => {
       setFavorites([]);
+      ignore = true;
     };
 
-  }, [user, isLoading])
+  }, [auth.user?.uid, auth.isLoading])
 
   const addToFav = async (ownersUid, productId) => {
-    if (!user) return
+    if (!auth.user.uid) return
 
-    const res = await addProductToFav(user.uid, ownersUid, productId)
+    const res = await addProductToFav(auth.user.uid, ownersUid, productId)
 
     if (res.ok) {
       favorites.push(productId)
-      console.log(favorites)
 
       setFavorites([...favorites]);
-    } else {
-      console.log(res.text)
     }
 
 
@@ -51,8 +49,8 @@ export default function useFav({ user, isLoading }) {
   }
   const deleteItemFromFav = async (ownersUid, productId) => {
 
-    if (!user) return
-    const res = await deleteProductFromFav(user?.uid, ownersUid, productId)
+    if (!auth.user.uid) return
+    const res = await deleteProductFromFav(auth.user.uid, ownersUid, productId)
 
     if (res.ok) {
       const copy = [...favorites]
@@ -62,10 +60,7 @@ export default function useFav({ user, isLoading }) {
         setFavorites(copy);
       }
 
-    } else {
-      console.log(res.text);
     }
-
   }
   return {
     favorites,

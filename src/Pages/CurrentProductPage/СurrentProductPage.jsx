@@ -17,12 +17,13 @@ export default function CurrentProductPage({ basketContext, auth }) {
 
   useEffect(() => {
 
+    let ignore = false
     //loading
     async function getCurrentProduct() {
       openLoading();
       const res = await getOneProduct(params.uid, params.id);
 
-      if (res.ok) {
+      if (res.ok && !ignore) {
         setCurrentProduct(res.data)
       }
       if (res.ok && !res.data) {
@@ -32,6 +33,10 @@ export default function CurrentProductPage({ basketContext, auth }) {
 
     }
     getCurrentProduct()
+
+    return () => {
+      ignore = true;
+    }
 
   }, [params.uid, params.id, navigate, openLoading, closeLoading])
 

@@ -12,13 +12,11 @@ export const archieveItem = async (uid, purchaseId) => {
     return { ok: true, data: null };
 
   } catch (e) {
-    console.log(e);
     return { ok: false, data: null, e: e };
   }
 }
 
 export const getHistoryItem = async (uid, id) => {
-  console.log(uid, id)
   try {
     const docLink = doc(APP_DB, "user", uid, 'history', id);
     const res = await getDoc(docLink)
@@ -34,8 +32,8 @@ export const saveHistory = async (data, uid) => {
   const id = uuidv4();
   try {
     const docLink = doc(APP_DB, "user", uid, 'history', id);
-    await setDoc(docLink, { ...data, id, isArchived: false }, { merge: true });
-    return { ok: true, data: data }
+     await setDoc(docLink, { ...data, id, isArchived: false }, { merge: true });
+    return { ok: true, data: { ...data, id, isArchived: false } }
 
   } catch (error) {
     return { ok: false, data: null, e: error }
@@ -56,7 +54,7 @@ export const getHistory = async (uid) => {
     //   orderBy("date", "desc"),
     //   limit(5)
     // );
-    console.log('--------------------');
+  
 
     const docQuery = query(
       docLink,
@@ -77,13 +75,12 @@ export const getHistory = async (uid) => {
       if (data) datas.push(data);
     });
 
-    console.log(datas, 'sss');
 
 
     return { ok: true, data: datas }
 
   } catch (error) {
-    console.log(error);
+   
 
     return { ok: false, data: null, e: error }
   }
@@ -93,7 +90,7 @@ export const getHistory = async (uid) => {
 export const updateTotal = async (purchaseTotal, uid) => {
   try {
     const docLink = doc(APP_DB, "user", uid);
-    await updateDoc(docLink, { sum: increment(purchaseTotal) });
+    await setDoc(docLink, { sum: increment(purchaseTotal) },{merge:true});
     return { ok: true, data: null }
   } catch (e) {
     return { ok: false, e: e }

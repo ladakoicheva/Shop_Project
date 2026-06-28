@@ -36,7 +36,7 @@ export const History = ({auth,historyContext}) => {
       history.updateHistory(res.data);
 
     }
-    console.log(res);
+ 
     setIsLoading(false)
 
   }

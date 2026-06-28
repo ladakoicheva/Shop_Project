@@ -11,10 +11,10 @@ export function HistoryItemPage({auth}) {
   const [currentItem, setCurrentItem] = useState(null);
   const { id } = useParams();
   const {user} = auth
-  const { basket,  getBasketFormHistory } = useBasketContext()
+  const {   getBasketFormHistory } = useBasketContext()
   const navigate = useNavigate();
 
-  console.log(basket);
+  console.log(currentItem)
 
   const repeatPurchase = () => {
    

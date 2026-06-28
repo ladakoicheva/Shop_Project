@@ -8,9 +8,8 @@ import { useParams } from "react-router-dom";
 import ProductsForm from "../../Components/Forms/ProductsForm/ProductsForm"
 import { NoFound } from "../../uix/NoFound";
 import ShopName from "../../Components/FilterBg/ShopName";
-import { getSettings } from "../../services/firebase/db/settings";
 import { useCallback } from "react";
-
+import { connectLiveSetting } from "../../services/firebase/socket/setting";
 
 export default function Products({ auth, productManager }) {
   const { openLoading, closeLoading, isLoadingApp, user } = auth;
@@ -32,23 +31,22 @@ export default function Products({ auth, productManager }) {
     setProducts(data)
   }
 
-  console.log(style)
+
 
 
   useEffect(() => {
 
-    const getUserSettings = async () => {
-      const response = await getSettings(uid)
-      if (response.ok && response.data) {
-        setStyle(response.data)
-      }
-
+    let ignore = false;
+    const callBack = (data) => {
+      setStyle(prev => ({ ...prev, ...data }))
     }
+    const unsubsctibe = connectLiveSetting(callBack, uid);
+
     const getProducts = async () => {
       setIsOpenPage(true)
       openLoading();
       const res = await getAllProducts(uid)
-      if (res.ok) {
+      if (res.ok && !ignore) {
         const products = res.data;
         setShowProducts(products)
         setProducts(products)
@@ -61,13 +59,14 @@ export default function Products({ auth, productManager }) {
 
 
     }
+    if (uid) getProducts()
 
-
-
-    uid && getProducts();
-
-    getUserSettings();
     if (uid !== user?.uid && !isLoadingApp) localStorage.setItem('lastVisitedShop', uid)
+
+    return () => {
+      ignore = true
+      unsubsctibe();
+    }
 
   }, [uid, isLoadingApp, user?.uid, openLoading, closeLoading, setProductsData])
 
@@ -118,6 +117,7 @@ export default function Products({ auth, productManager }) {
           product={editingProduct}
           onClose={() => setEditingProduct(null)}
           editProductData={editProductData}
+          auth={auth}
         />
       )}
 

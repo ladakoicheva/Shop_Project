@@ -28,9 +28,9 @@ function App() {
 
   const basket = useBasket();
   const user = useAuth();
-  const fav = useFav({ user: user.user, isLoading: user.isLoadingApp });
-  const history = useHistory({ user: user.user, isLoading: user.isLoadingApp })
-  const products = useProductManager({ user: user.user, basket: basket.basket, updateBasketEditProduct: basket.updateBasketEditProduct });
+  const fav = useFav({ auth: user});
+  const history = useHistory({ auth: user })
+  const products = useProductManager({ user: user.user, basket: basket});
 
 
   return (
@@ -38,7 +38,7 @@ function App() {
       <AuthContext.Provider value={user}>
         <BasketContext.Provider value={basket} >
           <ProductContext.Provider value={products}>
-            <Header />
+            <Header auth={user} basketContext={basket} />
             {user.loading && <Loading />}
             <FavContext.Provider value={fav}>
               <HistoryContext.Provider value={history}>
