@@ -2,28 +2,27 @@ import styles from './ProductCard.module.css'
 import { getUANtoUSD } from '../../utils/convector'
 import { Link, useParams } from 'react-router-dom'
 import { images } from '../../utils/images'
-import { useMemo } from 'react'
-import { useBasketContext } from '../../store/features/useBasket'
-import useAuth from '../../store/features/useAuth'
+import { useCallback, useMemo } from 'react'
 import { useFavContext } from '../../store/features/useFav';
+import { removeProduct } from '../../services/firebase/db/products'
+import { addToBasket } from '../../redux/basket/basket'
 
 
-export default function ProductCard({ product, onEdit, deleteItem, style }) {
 
-  const { addToBasket, deleteFromBasket, basket } = useBasketContext();
-  const { user } = useAuth();
+export default function ProductCard({ product, onEdit, style, basketContext ,auth}) {
+
+  const { user } = auth
   const { deleteItemFromFav, addToFav, favorites } = useFavContext();
 
-  const isInBasket = basket[product.id];
+  const isInBasket = basketContext.data[product.id];
   const params = useParams();
   const isOwner = params.uid === user?.uid;
+ 
 
-  // useState({
-  //   name: ['black', '16'],
-  //   price: ['black', '14'],
-  //   bg: ['rgb(255, 255, 255)']
-  // })
-
+  const deleteItem = useCallback(async () => {
+    const res = await removeProduct(product, user.uid, product.id);
+    if(res.ok) basketContext.deleteFromBasket()
+  }, [product, user,basketContext])
 
   const favorit = useMemo(() => {
     if (!user) return null
@@ -37,7 +36,7 @@ export default function ProductCard({ product, onEdit, deleteItem, style }) {
       src: isInFav ? images.star.on : images.star.off
     }
 
-  }, [favorites, user,  product.id])
+  }, [favorites, user, product.id])
 
   const onFavClick = () => {
     !favorit.is ? addToFav(params.uid, product.id) : deleteItemFromFav(params.uid, product.id);
@@ -64,9 +63,10 @@ export default function ProductCard({ product, onEdit, deleteItem, style }) {
           <div className={styles.buyInfo}  >
             <h2 style={{ color: style.pricecolor, fontSize: `${style.pricefontSize}px` }}>{product.currency == 'UAH' ? getUANtoUSD(product.price) : product.price} USD</h2 >
             <div className={styles.basketBtns} >
-              <button onClick={() => addToBasket(product)} >+</button>
-              {basket[product.id]?.count}
-              {isInBasket && <button onClick={() => deleteFromBasket(product)}>-</button>}
+              <button onClick={basketContext.addToBasket} >+</button>
+              {basketContext.data[product.id]?.count}
+              {isInBasket && <button onClick={basketContext.deleteFromBasket
+              }>-</button>}
             </div>
           </div>
 

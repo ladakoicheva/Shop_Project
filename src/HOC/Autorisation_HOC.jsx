@@ -6,10 +6,10 @@ export const Autorisation_HOC = (Component) => (props) => {
 
   const { isLoadingApp, isLogin} = props.auth
  
-  const Children = Component;
+ 
 
  if (isLogin) {
-    return <Children {...props} />
+   return <Component {...props} />
   }
   // useEffect(() => {
   //  openLoading();

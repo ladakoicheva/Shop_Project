@@ -6,13 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { addProduct } from '../../../services/firebase/db/products';
 import { useState } from 'react';
 import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
+import { editProduct } from '../../../services/firebase/db/products';
+import { updateBasketEditProduct } from '../../../redux/basket/basket';
+import { useDispatch, useSelector } from 'react-redux';
 
- function ProductsForm({ products, setProducts, onClose, product, editProductData,auth }) {
-
+function ProductsForm({ onClose, product, auth}) {
 
 
   const navigate = useNavigate();
   const [img, setImg] = useState(null);
+  const dispatch = useDispatch()
+  const basket = useSelector((s)=>s.basket.data)
 
   const formik = useFormik({
     initialValues: {
@@ -49,15 +53,26 @@ import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
     for (const key in product) {
       if (product[key] !== newData[key]) fieldsToUpdate[key] = newData[key]
     }
-    const dataToUpdate = await editProductData(uid, id, fieldsToUpdate, file);
-
-    if (dataToUpdate) {
-      const copy = [...products];
-      const index = copy.findIndex((el) => el.id == id);
-      copy[index] = { ...copy[index], ...dataToUpdate };
-      setProducts(copy)
+    if (fieldsToUpdate) {
+      const res = await editProduct(uid, id, fieldsToUpdate, file);
+      const basketCopy = {...basket};
+      if (basketCopy[id] && res.ok) {
+        basketCopy[id].product = { ...basketCopy[id].product, ...res.data };
+        
+        // basketContext.updateBasketEditProduct(basketCopy)
+        
+        dispatch(updateBasketEditProduct(basketCopy))
+      }
+      if (res.ok) onClose()
     }
-    onClose()
+
+    // if (dataToUpdate) {
+    //   const copy = [...products];
+    //   const index = copy.findIndex((el) => el.id == id);
+    //   copy[index] = { ...copy[index], ...dataToUpdate };
+    //   setProducts(copy)
+    // }
+
 
   }
 

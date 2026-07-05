@@ -29,19 +29,21 @@ export default function useBasket() {
 
       return copy
     })
-  }
+  }//!
 
   const getBasketFormHistory = (data) => {
-    setBasket({ ...data, ...basket })
+    setBasket({ ...data, ...basket }) //!
   }
 
   const updateBasketEditProduct = (data) => {
-    setBasket(data);
+    setBasket(data)//!
   }
 
   const deleteFromBasket = (product) => {
+    console.log(product);
     const copy = { ...basket }
     const id = product.id
+    if (!copy[id]) return;
     copy[id].count--
     if (copy[id].count === 0) delete copy[id];
 
@@ -49,7 +51,7 @@ export default function useBasket() {
   }
 
   const resetBasket = () => {
-    setBasket({});
+    setBasket({});//
   }
 
 

@@ -11,14 +11,12 @@ export default function useHistory({  auth }) {
 
   useEffect(() => {
 
-    let ignore = false;
-
     const getUserHistory = async () => {
 
 
       const res = await getHistory(auth.user.uid)
       // const total = await getTotal(user.uid);
-      if (res.ok && !ignore) {
+      if (res.ok ) {
         setHistory(res.data);
         // setTotal(total.data)
       }
@@ -28,7 +26,7 @@ export default function useHistory({  auth }) {
     }
     return () => {
       setHistory([]);
-      ignore = true;
+  
     };
 
   }, [auth.user, auth.isLoading])

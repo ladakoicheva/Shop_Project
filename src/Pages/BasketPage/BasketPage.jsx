@@ -3,11 +3,24 @@ import BasketProductCard from "./BasketProductCard/BasketProductCard";
 import style from './BasketPage.module.css';
 import { saveHistory } from "../../services/firebase/db/history";
 import { updateTotal } from "../../services/firebase/db/history";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToBasket,
+  deleteFromBasket,
+  resetBasket,
+} from "../../redux/basket/basket";
 
-export default function BasketPage({basketContext,historyContext,auth}) {
-  const { basket, addToBasket, deleteFromBasket, resetBasket } =basketContext
-  const { user} = auth
+
+
+export default function BasketPage({ historyContext, auth }) {
+  // const { basket, deleteFromBasket, resetBasket } =basketContext
+  const { user } = auth
   const { getHistoryBasketUpdate } = historyContext
+
+  const basket = useSelector((s) => s.basket.data);
+  const dispatch = useDispatch();
+
+
 
 
   const basketsArr = useMemo(() => Object.values(basket), [basket]);
@@ -41,9 +54,9 @@ export default function BasketPage({basketContext,historyContext,auth}) {
     //   }
     const res = await Promise.all([updateTotal(total, user.uid), saveHistory(data, user.uid)])
 
-    
+
     if (res) {
-      resetBasket();
+      dispatch(resetBasket());
       getHistoryBasketUpdate(res[1].data)
 
 
@@ -56,7 +69,7 @@ export default function BasketPage({basketContext,historyContext,auth}) {
     <>
       <ul className={style.wrapper}>{
         basketsArr.map((el) => <li key={el.product.id}>
-          <BasketProductCard data={el} addToBasket={addToBasket} deleteFromBasket={deleteFromBasket} />
+          <BasketProductCard data={el} deleteFromBasket={() => dispatch(deleteFromBasket(el.product))} addToBasket={() => dispatch(addToBasket(el.product))} />
         </li>)
       }
         <h1>Total:{total}</h1>

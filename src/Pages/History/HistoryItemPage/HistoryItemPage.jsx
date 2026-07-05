@@ -5,14 +5,16 @@ import { getHistoryItem } from '../../../services/firebase/db/history';
 import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
 import './HistoryItemPage.css';
 import { useBasketContext } from '../../../store/features/useBasket';
-
+import { useDispatch } from 'react-redux';
+import { getBasketFormHistory } from '../../../redux/basket/basket';
 
 export function HistoryItemPage({auth}) {
   const [currentItem, setCurrentItem] = useState(null);
   const { id } = useParams();
   const {user} = auth
-  const {   getBasketFormHistory } = useBasketContext()
+  // const {   getBasketFormHistory } = useBasketContext()
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   console.log(currentItem)
 
@@ -24,7 +26,8 @@ export function HistoryItemPage({auth}) {
       return acc;
     }, {});
 
-    getBasketFormHistory(productsData)
+    // getBasketFormHistory(productsData);
+    dispatch(getBasketFormHistory(productsData));
 
     navigate('/basket');
   }

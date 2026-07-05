@@ -32,9 +32,6 @@ export default function useAuth() {
 
 
   useEffect(() => {
-
-
-
     const unsubscribe = onAuthStateChanged(APP_AUTH, (user) => {
 
 
@@ -62,7 +59,6 @@ export default function useAuth() {
       setSettings(prev => ({ ...prev, ...data }))
     }
     const unsubscribe = connectLiveSetting(callBack, user.uid);
-
     return unsubscribe
 
   }, [user])

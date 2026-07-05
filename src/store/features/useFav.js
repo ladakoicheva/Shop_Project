@@ -16,8 +16,7 @@ export default function useFav({ auth }) {
 
   useEffect(() => {
 
-    let ignore = false
-    if (auth.user?.uid && !auth.isLoading && !ignore) {
+    if (auth.user?.uid && !auth.isLoading ) {
 
 
       const getFav = async () => {
@@ -28,7 +27,6 @@ export default function useFav({ auth }) {
     }
     return () => {
       setFavorites([]);
-      ignore = true;
     };
 
   }, [auth.user?.uid, auth.isLoading])

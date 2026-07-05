@@ -5,25 +5,28 @@ import { useState } from "react";
 import styles from './CurrentProductPage.module.css'
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import { addToBasket,deleteFromBasket } from "../../redux/basket/basket";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function CurrentProductPage({ basketContext, auth }) {
+export default function CurrentProductPage({  auth }) {
   const [currentProduct, setCurrentProduct] = useState(null);
 
   const navigate = useNavigate();
   const params = useParams();
-  const { basket, addToBasket, deleteFromBasket } = basketContext
+  const dispatch = useDispatch();
+  const basket = useSelector((s)=>s.basket.data)
   const { openLoading, closeLoading } = auth
   const isInBasket = basket[currentProduct?.id]
 
   useEffect(() => {
 
-    let ignore = false
+    
     //loading
     async function getCurrentProduct() {
       openLoading();
       const res = await getOneProduct(params.uid, params.id);
 
-      if (res.ok && !ignore) {
+      if (res.ok) {
         setCurrentProduct(res.data)
       }
       if (res.ok && !res.data) {
@@ -34,9 +37,7 @@ export default function CurrentProductPage({ basketContext, auth }) {
     }
     getCurrentProduct()
 
-    return () => {
-      ignore = true;
-    }
+    
 
   }, [params.uid, params.id, navigate, openLoading, closeLoading])
 
@@ -64,12 +65,12 @@ export default function CurrentProductPage({ basketContext, auth }) {
             <h3>{currentProduct.price} {currentProduct.currency}</h3>
             <div className={styles.btns}>
               {!isInBasket ?
-                <button onClick={() => addToBasket(currentProduct)} >Add to basket</button>
+                <button onClick={() => dispatch(addToBasket(currentProduct))} >Add to basket</button>
                 :
                 <div className={styles.basketBtns} >
-                  <button onClick={() => addToBasket(currentProduct)} >+</button>
+                  <button onClick={() => dispatch(addToBasket(currentProduct))} >+</button>
                   {basket[currentProduct.id]?.count}
-                  <button onClick={() => deleteFromBasket(currentProduct)}>-</button>
+                  <button onClick={() => dispatch(deleteFromBasket(currentProduct))}>-</button>
                 </div>
               }
               <button>Buy now</button>
