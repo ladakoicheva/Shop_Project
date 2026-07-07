@@ -9,14 +9,16 @@ import { Autorisation_HOC } from '../../../HOC/Autorisation_HOC';
 import { editProduct } from '../../../services/firebase/db/products';
 import { updateBasketEditProduct } from '../../../redux/basket/basket';
 import { useDispatch, useSelector } from 'react-redux';
+import { openLoading } from '../../../redux/loading/loading';
+import { closeLoading } from '../../../redux/loading/loading';
 
-function ProductsForm({ onClose, product, auth}) {
+function ProductsForm({ onClose, product  }) {
 
-
+  const auth = useSelector((s) => s.auth)
   const navigate = useNavigate();
   const [img, setImg] = useState(null);
   const dispatch = useDispatch()
-  const basket = useSelector((s)=>s.basket.data)
+  const basket = useSelector((s) => s.basket.data)
 
   const formik = useFormik({
     initialValues: {
@@ -39,11 +41,10 @@ function ProductsForm({ onClose, product, auth}) {
   //product, uid, id, newData, file
 
   const create = async (product) => {
-    auth.openLoading()
+    dispatch(openLoading())
     await addProduct(product, img?.file, auth.user.uid)
-
-    auth.closeLoading()
     navigate(`/products/${auth.user.uid}`)
+    dispatch(closeLoading())
   }
 
   const updateItem = async (uid, id, newData, file) => {
@@ -55,12 +56,12 @@ function ProductsForm({ onClose, product, auth}) {
     }
     if (fieldsToUpdate) {
       const res = await editProduct(uid, id, fieldsToUpdate, file);
-      const basketCopy = {...basket};
+      const basketCopy = { ...basket };
       if (basketCopy[id] && res.ok) {
         basketCopy[id].product = { ...basketCopy[id].product, ...res.data };
-        
+
         // basketContext.updateBasketEditProduct(basketCopy)
-        
+
         dispatch(updateBasketEditProduct(basketCopy))
       }
       if (res.ok) onClose()

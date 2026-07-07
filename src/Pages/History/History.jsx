@@ -3,10 +3,11 @@ import { getHistory } from '../../services/firebase/db/history';
 import HistoryItemCard from './ui/HistoryItemCard/HistoryItemCard';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC';
 import { connectLiveHistorySum } from '../../services/firebase/socket/history';
+import { useSelector } from 'react-redux';
 
-export const History = ({auth,historyContext}) => {
+export const History = ({historyContext}) => {
   const history = historyContext
-  const { user } = auth
+  const { user } = useSelector((s)=>s.auth)
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false)
 
@@ -70,7 +71,7 @@ export const History = ({auth,historyContext}) => {
     <div onScroll={onAddHistory} style={{ height: 'calc(100vh - 60px)', overflow: 'auto', }}>
       <h1>{history.total}</h1>
       {history.history.map((el, index) => (
-        <HistoryItemCard key={index} purchase={el} user={user} addToArchive={history.addToHistoryArchive} />
+        <HistoryItemCard key={index} purchase={el}  addToArchive={history.addToHistoryArchive} />
       ))}
     </div>
 

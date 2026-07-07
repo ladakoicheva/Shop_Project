@@ -6,15 +6,15 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 
 
-export default function Header({auth}) {
+export default function Header({}) {
 
-  const { isLogin, user } = auth;
+  const {  user } = useSelector((s)=>s.auth)
   const basket = useSelector((s)=>s.basket.data)
-  const lastVisitedShopUID = localStorage.getItem('lastVisitedShop') || "";
+
   
 
   const memoNavigation = useMemo(() => {
-    if (isLogin) {
+    if (!!user) {
       return <>
         {/* <Link to={"products/" + lastVisitedShopUID}>Home</Link> */}
         <Link to={"products/" + user.uid}>My Products</Link>
@@ -24,7 +24,7 @@ export default function Header({auth}) {
         <Link to='test'>Test</Link>
       </>
     } 
-  }, [isLogin, user, lastVisitedShopUID])
+  }, [ user])
 
 
   return (

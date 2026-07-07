@@ -7,7 +7,6 @@ export const connectToAllProducts = (uid, callback) => {
   const unsubscribe = onSnapshot(link, (snapshot) => {
     console.log(snapshot)
     snapshot.docChanges().forEach((change) => {
-     
       const data = {
         id: change.doc.id,
         ...change.doc.data(),

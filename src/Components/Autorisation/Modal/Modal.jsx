@@ -3,9 +3,10 @@ import SignUpForm from "../../Forms/SignUpForm/SignUpForm";
 import { TYPE_MODAL } from "../../Forms/typeModeHelper";
 import styles from './Modal.module.css'
 import  { useAuthContext } from "../../../store/features/useAuth";
+import { useSelector } from "react-redux";
 
 export default function Modal({setModalOpen}) {
-  const { authMode } = useAuthContext();
+  const { authMode } = useSelector((s)=>s.auth)
   
 
   return (

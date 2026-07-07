@@ -2,12 +2,12 @@
 import './Menu.css'
 import { SketchPicker } from 'react-color';
 import { changeSettings } from '../../../services/firebase/db/settings';
-
+import { useDispatch } from 'react-redux';
 
 
 export default function Menu({ style,  changeStyle, closeStyle, updateStyles, user }) {
-
- 
+  const dispatch = useDispatch();
+  
   
 
 
@@ -28,7 +28,7 @@ export default function Menu({ style,  changeStyle, closeStyle, updateStyles, us
     closeStyle();
     changeSettings(user.uid, dataToSave);
 
-    updateStyles(dataToSave);
+    dispatch(updateStyles(dataToSave));
   }
 
 

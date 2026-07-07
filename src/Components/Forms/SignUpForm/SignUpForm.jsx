@@ -3,13 +3,15 @@ import { useFormik } from 'formik';
 import { schema } from "../schemas/signUpValidationSchema";
 import { useState } from 'react';
 import { TYPE_MODAL } from '../typeModeHelper';
-import  { useAuthContext } from '../../../store/features/useAuth';
+import { useAuthContext } from '../../../store/features/useAuth';
+import { onRegistration } from '../../../redux/auth/auth';
+import { useDispatch } from 'react-redux';
+import { changeAuthMode } from '../../../redux/auth/auth';
 
+export default function SignUpForm({ setModalOpen }) {
 
-export default function SignUpForm({setModalOpen}) {
-
-  const { onRegistration, changeAuthMode } = useAuthContext();
   const [backError, setBackError] = useState(null);
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -26,9 +28,9 @@ export default function SignUpForm({setModalOpen}) {
 
 
   const userSignUp = async (email, password) => {
-    const userData = await onRegistration(email, password);
-    if (!userData.ok) {
-      setBackError(userData.code)
+    const userData = await dispatch(onRegistration({ email, password }));
+    if (!userData.payload.ok) {
+      setBackError(userData.payload.code)
     } else {
       setModalOpen(false)
     }
@@ -57,7 +59,7 @@ export default function SignUpForm({setModalOpen}) {
         <div>{formik.errors.confPassword}</div>
       ) : null}
 
-      <p>Already have an account? <span onClick={() => changeAuthMode(TYPE_MODAL.SING_IN)}>Sign In</span></p>
+      <p>Already have an account? <span onClick={() => dispatch(changeAuthMode(TYPE_MODAL.SING_IN))}>Sign In</span></p>
       <button type='submit'>Sign Up</button>
       {backError && <div className="error">{backError}</div>}
     </form>

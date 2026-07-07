@@ -14,16 +14,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToBasket } from "../../redux/basket/basket";
 import { deleteFromBasket } from "../../redux/basket/basket";
 
-export default function Products({ auth, productManager }) {
-  const {  user } = auth;
-  const { setProductsData,  editProductData, isLoadingApp } = productManager;
+export default function Products({ productManager }) {
+  const auth = useSelector((s) => s.auth)
+  const { setProductsData, editProductData } = productManager;
   const [products, setProducts] = useState([]);
   const [showProducts, setShowProducts] = useState(products);
   const [editingProduct, setEditingProduct] = useState(null);
   const basket = useSelector((s) => s.basket.data);
   const dispatch = useDispatch();
 
-  
+
+
   // const [isOpenPage, setIsOpenPage] = useState(true);
   const [style, setStyle] = useState({
     bgbg: "rgba(255,255,255)",
@@ -54,24 +55,23 @@ export default function Products({ auth, productManager }) {
 
 
 
-    // if (uid !== user?.uid && !isLoadingApp) localStorage.setItem('lastVisitedShop', uid)
 
     return unsubsctibe
 
-  }, [uid, user?.uid,isLoadingApp ])
+  }, [uid])
 
 
 
   useEffect(() => {
 
     const addProduct = (data) => {
-      setProducts((products) => [data, ...products])
-      setProductsData((products) => [data, ...products])
-      setShowProducts((products) => [data, ...products]);
+      setProducts((products) => [...products, data])
+      setProductsData((products) => [...products, data])
+
     }
 
     const updateProducts = (data) => {
-      
+
       const updateStateProducts = (products) => {
         const copy = [...products]
         const index = copy.findIndex((el) => el.id == data.id);
@@ -87,22 +87,21 @@ export default function Products({ auth, productManager }) {
       // }
 
       setProducts((products) => updateStateProducts(products))
-      setShowProducts((products) => updateStateProducts(products))
+      // setShowProducts((products) => updateStateProducts(products))
       setProductsData((products) => updateStateProducts(products))
 
     }
 
     const deleteProduct = (data) => {
-      console.log(data,data.id)
       setProducts((products) => products.filter((el) => el.id !== data.id));
-      setShowProducts((products) => products.filter((el) => el.id !== data.id));
+      // setShowProducts((products) => products.filter((el) => el.id !== data.id));
       setProductsData((products) => products.filter((el) => el.id !== data.id))
-      // deleteFromBasket(data);
+      dispatch(deleteFromBasket(data))
 
     }
 
     const liveConnectProducts = (type, data) => {
-      
+
 
       switch (type) {
         case "added":
@@ -119,12 +118,12 @@ export default function Products({ auth, productManager }) {
     const unsubscribe = connectToAllProducts(uid, liveConnectProducts);
     return () => {
       unsubscribe();
-  
+
     };
-  }, [uid, user])
+  }, [uid])
 
 
- 
+
 
 
   const filterProducts = useCallback((text, category, price) => {
@@ -152,9 +151,8 @@ export default function Products({ auth, productManager }) {
         <ProductsForm
           product={editingProduct}
           onClose={() => setEditingProduct(null)}
-          editProductData={editProductData}
-          auth={auth}
-         
+
+
         />
       )}
 
@@ -169,7 +167,7 @@ export default function Products({ auth, productManager }) {
                   addToBasket: () => dispatch(addToBasket(el)),
                   data: basket,
                   deleteFromBasket: () => dispatch(deleteFromBasket(el))
-          
+
                 }}
                 auth={auth}
                 key={el.id}

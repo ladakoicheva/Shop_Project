@@ -72,7 +72,7 @@ export default function useAuth() {
     if (userData.ok) {
       setUser(userData.data);
     }
-    return { ok: userData.ok, message: userData.message, code: userData.code }
+    return { ok: userData.ok, message: userData.message, code: userData.code }//!
 
   }
 
@@ -85,7 +85,7 @@ export default function useAuth() {
     }
 
 
-  }
+  }//!
 
 
   const onRegistration = async (email, password) => {
@@ -95,44 +95,46 @@ export default function useAuth() {
     if (userData.ok) {
       setUser(userData.data)
     }
-    return { ok: userData.ok, message: userData.message, code: userData.code }
+    return { ok: userData.ok, message: userData.message, code: userData.code }//!
   }
 
 
   const changeAuthMode = (value) => {
     setAuthMode(value)
-  }
+  }//!
 
   const updateStyles = (newSettingsObject) => {
     setSettings((prevSettings) => ({
       ...prevSettings,
       ...newSettingsObject
     }));
-  };
+  };//!
 
 
   const openLoading = useCallback(() => {
-    setLoading(true);
-  }, [setLoading])
-  const closeLoading = useCallback(() => {
+    setLoading(true);//!
+  }, [])
+  const closeLoading = useCallback(() => {//!
     setLoading(false);
-  }, [setLoading])
+  }, [])
 
   return {
-
-    user,
-    authMode,
     isLoadingApp,
     isLogin,
     loading,
+    openLoading,
+    closeLoading,
+
+
+
+    user,
+    authMode,
     settings,
     onLogin,
     logOut,
     onRegistration,
     changeAuthMode,
     updateStyles,
-    openLoading,
-    closeLoading,
 
   }
 

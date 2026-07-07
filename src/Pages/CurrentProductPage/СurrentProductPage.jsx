@@ -7,15 +7,16 @@ import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { addToBasket,deleteFromBasket } from "../../redux/basket/basket";
 import { useDispatch, useSelector } from "react-redux";
+import { openLoading,closeLoading } from "../../redux/loading/loading";
 
-export default function CurrentProductPage({  auth }) {
+export default function CurrentProductPage() {
   const [currentProduct, setCurrentProduct] = useState(null);
 
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
   const basket = useSelector((s)=>s.basket.data)
-  const { openLoading, closeLoading } = auth
+  // const { openLoading, closeLoading } = auth
   const isInBasket = basket[currentProduct?.id]
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function CurrentProductPage({  auth }) {
     
     //loading
     async function getCurrentProduct() {
-      openLoading();
+      dispatch(openLoading());
       const res = await getOneProduct(params.uid, params.id);
 
       if (res.ok) {
@@ -32,14 +33,14 @@ export default function CurrentProductPage({  auth }) {
       if (res.ok && !res.data) {
         navigate("*")
       }
-      closeLoading();
+      dispatch(closeLoading());
 
     }
     getCurrentProduct()
 
     
 
-  }, [params.uid, params.id, navigate, openLoading, closeLoading])
+  }, [params.uid, params.id])
 
   return (
     <>

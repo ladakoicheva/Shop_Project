@@ -12,8 +12,6 @@ import NoFound from './Pages/404Page/NoFound.jsx';
 import FilterBg from './Components/FilterBg/ShopName.jsx';
 import History from './Pages/History/History.jsx';
 import HistoryItemPage from './Pages/History/HistoryItemPage/HistoryItemPage.jsx';
-import useAuth from './store/features/useAuth.js';
-import { AuthContext } from './store/features/useAuth.js';
 import useFav, { FavContext } from './store/features/useFav.js';
 import useProductManager from './store/features/useProductManager.js';
 import { ProductContext } from './store/features/useProductManager.js';
@@ -22,6 +20,7 @@ import useHistory from './store/features/useHistory.js';
 import Test from './Components/Test.jsx';
 import { LocalStorageComponent } from './LocalStorage/LocalStorageComponent.jsx';
 import useBasket from './store/features/useBasket.js';
+import useAuth from './store/features/useAuth.js';
 
 
 function App() {
@@ -37,29 +36,28 @@ function App() {
 
   return (
     <BrowserRouter >
-      <AuthContext.Provider value={user}>
           <ProductContext.Provider value={products}>
 
             <Header auth={user}  />
-            {user.loading && <Loading />}
+            <Loading />
             <FavContext.Provider value={fav}>
               <HistoryContext.Provider value={history}>
                 <Routes>
-                  <Route path='/add' element={<AddProducts auth={user} />} />
-                  <Route path='/products/:uid' element={<Products auth={user} productManager={products}  />} />
-                  <Route path='/products/:uid/product/:id' element={<CurrentProductPage  auth={user} />} />
-                  <Route path='basket' element={<BasketPage historyContext={history} auth={user} />} />
-                  <Route path='setting' element={<Setting auth={user} />} />
-                  <Route path='history' element={<History auth={user} historyContext={history} />} />
-                  <Route path='/history/:id' element={<HistoryItemPage auth={user} />} />
+                  <Route path='/add' element={<AddProducts  />} />
+                  <Route path='/products/:uid' element={<Products  productManager={products}  />} />
+                  <Route path='/products/:uid/product/:id' element={<CurrentProductPage/>} />
+                  <Route path='basket' element={<BasketPage historyContext={history}  />} />
+                  <Route path='setting' element={<Setting  />} />
+                  <Route path='history' element={<History  historyContext={history} />} />
+                  <Route path='/history/:id' element={<HistoryItemPage  />} />
                   <Route path='*' element={<NoFound />}></Route>
                   <Route path='test' element={<Test />}></Route>
-                </Routes>
+              </Routes>
+              
                 <LocalStorageComponent />
               </HistoryContext.Provider>
             </FavContext.Provider>
           </ProductContext.Provider>
-      </AuthContext.Provider>
     </BrowserRouter>
   )
 }

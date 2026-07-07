@@ -4,6 +4,8 @@ import { Autorisation_HOC } from '../../HOC/Autorisation_HOC'
 import ExampleProductCard from './ExampleProductCard'
 import Menu from './Menu/Menu';
 import styles from './Setting.module.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { updateStyles } from '../../redux/auth/auth';
 
 const typesConfig = {
   bg: {
@@ -25,14 +27,11 @@ const typesConfig = {
   },
 }
 
-export function Setting({auth}) {
+export function Setting() {
 
-  const { user, settings, updateStyles } = auth;
+  const { user, settings } = useSelector((s) => s.auth);
   const [name, setName] = useState(settings.name);
-
- 
-
-
+  const dispatch = useDispatch();
   const [style, setStyle] = useState({
     isOpen: false,
     types: [],
@@ -40,8 +39,8 @@ export function Setting({auth}) {
     title: [],
     type: null
   })
- 
-  
+
+
   // useEffect(() => {
   //   if (settings.name) setName(settings.name);
   // }, [settings.name]);
@@ -67,12 +66,12 @@ export function Setting({auth}) {
     }
 
     switch (type) {
-      case 'name': return [settings.namecolor , settings.namefontSize ];
-      case 'price': return [settings.pricecolor , settings.pricefontSize ];
-      case 'bg': return [settings.bgbg ];
+      case 'name': return [settings.namecolor, settings.namefontSize];
+      case 'price': return [settings.pricecolor, settings.pricefontSize];
+      case 'bg': return [settings.bgbg];
       default: return []
     }
-    
+
   }
 
 
@@ -138,10 +137,10 @@ export function Setting({auth}) {
       <input type="text" placeholder='your shop`s name' value={name} onChange={(e) => setName(e.target.value)} />
       <button onClick={() => {
         changeSettings(user.uid, { name })
-        updateStyles({ name });
+        dispatch(updateStyles({ name }));
       }}>Save</button>
       <div className={styles.exampleCard}>
-        <ExampleProductCard getStyle={getStyle} openStyle={openStyle}  />
+        <ExampleProductCard getStyle={getStyle} openStyle={openStyle} />
         {style.isOpen && <Menu user={user} updateStyles={updateStyles} closeStyle={closeStyle} style={style} changeStyle={changeStyle} setStyle={setStyle} />}
       </div>
     </div>
