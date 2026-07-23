@@ -6,7 +6,7 @@ import type { productI } from "../../../../types/types";
 import type { ResponseI } from "../../../../types/types";
 
 //?
-export const addProduct = async (product:productI, file:any, uid:string):Promise<ResponseI<productI|null>> => {
+export const addProduct = async (product:Omit<productI, 'id'>, file:any, uid:string):Promise<ResponseI<productI|null>> => {
   try {
     const id = uuidv4()
 
@@ -115,10 +115,10 @@ export const removeProduct = async (product:productI, uid:string, id:string):Pro
 }
 
 
-export const editProduct = async ( uid:string, id:string, newData:any, file:any):Promise<ResponseI<any>> => {
+export const editProduct = async (uid: string, id: string, newData:Partial<productI>, file:File):Promise<ResponseI<any>> => {
   
   const docLink = doc(APP_DB, 'user', uid, 'products', id);
-
+  
   if (file) {
     const url = await addImgToFirebase(file, id, uid);
     newData['img'] = url.data
@@ -127,9 +127,11 @@ export const editProduct = async ( uid:string, id:string, newData:any, file:any)
 
   try {
 
-    await updateDoc(docLink,newData);
+    await updateDoc(docLink, newData);
+    
     return { ok: true, data: newData };
   } catch (e) {
+    console.log(e);
        const error = e as string
     return { ok: false, e: error }
   }

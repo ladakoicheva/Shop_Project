@@ -1,4 +1,4 @@
-import  { useState } from 'react'
+import  {  useState } from 'react'
 import { changeSettings } from '../../services/firebase/db/settings';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC'
 import ExampleProductCard from './ExampleProductCard'
@@ -7,60 +7,38 @@ import styles from './Setting.module.css'
 import { useAppDispatch } from '../../redux/type';
 import { updateStyles } from '../../redux/auth/auth';
 import { useAppSelector } from '../../redux/type';
-
- export enum styleConfigE {
-  bg = 'bg',
-  color = 'color',
-  padding = 'padding',
-  fontSize = 'fontSize',
-  
-}
+import type { styleConfigE, styleSettingI, typesConfigI } from './type';
+import { styleConfig, typeStyleE } from './type';
 
 
 
-interface styleI{
-    isOpen: boolean,
-    types: string[],
-    datas: string[],
-    title: string[],
-    type: string|null
-}
+
 interface typeI{
   datas: string[]
   title: string[]
-  types: string[]
+  types: styleConfigE[]
 }
 
-type styleConfigT = {
-    type: string;
-    text: string;
-  };
 
-export interface typesConfigI{
-    [styleConfigE.bg] : styleConfigT
-    [styleConfigE.padding] : styleConfigT
-    [styleConfigE.fontSize] : styleConfigT
-    [styleConfigE.color] : styleConfigT
-}
 
 
 
 const typesConfig:typesConfigI = {
   bg: {
-    type: 'bg',
+    type: styleConfig.bg,
     text: 'Цвет фона'
 
   },
   color: {
-    type: 'color',
+    type: styleConfig.color,
     text: 'Цвет текста'
   },
   padding: {
-    type: 'padding',
+    type: styleConfig.padding,
     text: 'Отступы'
   },
   fontSize: {
-    type: 'fontSize',
+    type: styleConfig.fontSize,
     text: 'Размер текста'
   },
 }
@@ -69,12 +47,11 @@ const typesConfig:typesConfigI = {
 export function Setting() {
 
   // const { user, settings } = useSelector((s) => s.auth);
-  const { user, settings } = useAppSelector((s) => s.auth);
-
-
+  const { user, settings  } = useAppSelector((s) => s.auth);
+  const [currency, setCurrency] = useState(settings.currency)
   const [name, setName] = useState<string>(settings.name);
   const dispatch = useAppDispatch();
-  const [style, setStyle] = useState<styleI>({
+  const [style, setStyle] = useState<styleSettingI>({
     isOpen: false,
     types: [],
     datas: [],
@@ -83,25 +60,9 @@ export function Setting() {
   })
 
 
-  // useEffect(() => {
-  //   if (settings.name) setName(settings.name);
-  // }, [settings.name]);
-  // // {
-  //   "isOpen": true,
-  //     "types": [
-  //       "color",
-  //       "fontSize"
-  //     ],
-  //       "title": [
-  //         "Цвет текста",
-  //         "Размер текста"
-  //       ],
-  //         "datas": [
-  //           "rgb(81,56,56)",
-  //           "16"
-  //         ],
-  //           "type": "name"
-  // }
+ 
+
+
   const getStyle = (type:string):string[] => {
    
   //  console.log('type',type)
@@ -121,13 +82,14 @@ export function Setting() {
 
 
 
-  const openStyle = (keys:styleConfigE[], type:string) => {
+  const openStyle = (keys:styleConfigE[], type:typeStyleE) => {
     console.log('keys --- ', keys)
+    console.log('type --- ', type)
     // console.log('type',type);
-    const types = keys.reduce((type:typeI, key:styleConfigE) => {
-      const t = typesConfig[key];
-      
-    
+    const types = keys.reduce((type: typeI, key: styleConfigE) => {
+      console.log(key)
+      const t  = typesConfig[key];
+      console.log('r --- ', t)
       type.types.push(t.type);
       type.title.push(t.text);
       return type;
@@ -135,6 +97,7 @@ export function Setting() {
     types.datas = getStyle(type);
 
     setStyle({
+      
       isOpen: true,
       ...types,
       type
@@ -158,6 +121,7 @@ export function Setting() {
   // }
 
 
+    
 
   const changeStyle = (data:string, i: number) => {
     const newDatas = [...style.datas];
@@ -182,8 +146,12 @@ export function Setting() {
   return (
     <div>
       <input type="text" placeholder='your shop`s name' value={name} onChange={(e) => setName(e.target.value)} />
+      <select value={currency} onChange={(e) => setCurrency(e.target.value)} name="currency" id="currency">
+        <option value="UAH">UAH</option>
+         <option value="USD">USD</option>
+      </select>
       <button onClick={() => {
-        changeSettings(user?.uid!, { name })
+        changeSettings(user?.uid!, { name,currency })
         dispatch(updateStyles({ name }));
       }}>Save</button>
       <div className={styles.exampleCard}>

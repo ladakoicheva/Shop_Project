@@ -5,20 +5,15 @@ import { changeSettings } from '../../../services/firebase/db/settings';
 import { useAppDispatch } from '../../../redux/type';
 import type { userAuth } from '../../../redux/auth/type';
 import type { Settings } from '../../../redux/auth/type';
+import type { styleConfigE, styleSettingI } from '../type';
 
 
 
 
-interface styleI {
-  isOpen: boolean,
-  types: string[],
-  datas: string[],
-  title: string[],
-  type: string | null
-}
+
 
 type props = {
-  style: styleI,
+  style: styleSettingI,
   changeStyle: (valueToSave:string, i:number) => void,
   closeStyle: () => void,
   updateStyles: any,
@@ -28,11 +23,10 @@ type props = {
 export default function Menu({ style,  changeStyle, closeStyle, updateStyles, user }:props) {
   const dispatch = useAppDispatch();
   
-  
 
 
   const getColor = (rgb:RGBColor, i: number) => {
-    console.log(rgb);
+
     const valueToSave = `rgba(${rgb.r},${rgb.g},${rgb.b})`;
     changeStyle(valueToSave, i)
   }
@@ -41,7 +35,7 @@ export default function Menu({ style,  changeStyle, closeStyle, updateStyles, us
     const dataToSave:Partial<Settings> = {}
 
     style.types.forEach((type, i) => {
-      if (style.datas[i] !== undefined) {
+      if (style.datas[i] ) {
         const key = style.type + type as keyof Settings
         dataToSave[key] = style.datas[i]
       }
@@ -57,7 +51,7 @@ export default function Menu({ style,  changeStyle, closeStyle, updateStyles, us
   }
 
 
-  const getContentFromStyle = (type:string, i:number) => {
+  const getContentFromStyle = (type:styleConfigE, i:number) => {
     switch (type) {
       case 'color':
       case 'bg': return <SketchPicker className='picker' color={style.datas[0]} onChange={(color) => getColor(color.rgb, i)} />

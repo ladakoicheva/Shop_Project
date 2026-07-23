@@ -24,7 +24,7 @@ function ProductsForm({ onClose, product }: props) {
 
   const auth = useAppSelector((s) => s.auth)
   const navigate = useNavigate();
-  const [img, setImg] = useState<{ file: File|null, src: string } | null>( product? { file:null ,src:product.img }: null);
+  const [img, setImg] = useState<{ file: File|null, src: string|null } | null>( product? { file:null ,src:product.img }: null);
   const dispatch = useAppDispatch()
   const basket = useAppSelector((s) => s.basket.data)
 
@@ -40,8 +40,9 @@ function ProductsForm({ onClose, product }: props) {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      const dataToSave = { ...values, id: product.id }
-      product ? updateItem(auth?.user?.uid!, product.id, dataToSave, img?.file!) : create(dataToSave)
+     
+      const dataToSave = values 
+      product ? updateItem(auth?.user?.uid!, product.id, { ...dataToSave, id: product.id }, img?.file!) : create(dataToSave)
     },
 
 
@@ -49,23 +50,29 @@ function ProductsForm({ onClose, product }: props) {
 
   //product, uid, id, newData, file
 
-  const create = async (product:productI) => {
+  const create = async (product:Omit<productI, 'id'>) => {
     dispatch(openLoading())
     await addProduct(product, img?.file, auth?.user?.uid!)
     navigate(`/products/${auth?.user?.uid}`)
     dispatch(closeLoading())
   }
 
-  const updateItem = async (uid:string, id:string, newData:any, file:File) => {
 
-    const fieldsToUpdate:Partial<productI> = {};
 
-    for (const key of Object.keys(product) as (keyof productI)[]) {
+  
+  const updateItem = async (uid:string, id:string, newData:productI, file:File) => {
+
+    const fieldsToUpdate: Partial<productI> = {};
     
+for (const key in product) {
+  const productKey = key as keyof productI;
 
-      if (product[key] !== newData[key]) fieldsToUpdate[key] = newData[key]
-    }
-    if (fieldsToUpdate) {
+  if (product[productKey] !== newData[productKey]) {
+    (fieldsToUpdate as Record<keyof productI, productI[keyof productI]>)[productKey] = newData[productKey];
+  }
+}
+
+    if (Object.keys(fieldsToUpdate).length > 0) {
       const res = await editProduct(uid, id, fieldsToUpdate, file);
       const basketCopy = { ...basket };
       if (basketCopy[id] && res.ok) {
@@ -84,13 +91,6 @@ function ProductsForm({ onClose, product }: props) {
       if (res.ok) onClose()
     }
 
-    // if (dataToUpdate) {
-    //   const copy = [...products];
-    //   const index = copy.findIndex((el) => el.id == id);
-    //   copy[index] = { ...copy[index], ...dataToUpdate };
-    //   setProducts(copy)
-    // }
-
 
   }
 
@@ -99,16 +99,18 @@ function ProductsForm({ onClose, product }: props) {
 
 
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement> ) => {
-
-    const file = e.target?.files[0];
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   
+    if (!e.target.files) return;
+    const file = e.target.files[0];
    
 
     const reader = new FileReader();
 
 
     reader.onload = (event) => {
-      const src = event.target.result;
+      if (!event.target) return;
+      const src = event.target.result as string;
       setImg({ file: file, src: src });
     };
 
@@ -129,7 +131,7 @@ function ProductsForm({ onClose, product }: props) {
 
 
         {!img ? <input onChange={handleFileChange} type="file" id='img' accept="image/*" /> : <div className={styles.imgPreview}>
-          <ImageProduct src={img?.src} alt="productImg" className='' /> <span onClick={() => setImg(null)}>×</span>
+          <ImageProduct src={img?.src!} alt="productImg" className='' /> <span onClick={() => setImg(null)}>×</span>
         </div>}
 
 

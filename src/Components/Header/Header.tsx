@@ -3,14 +3,14 @@ import { Link} from 'react-router-dom'
 import { Autorisation } from '../Autorisation/Authorise/Autorisation'
 import { useMemo } from 'react'
 import { useAppSelector } from '../../redux/type'
-
+import BasketIcon from './BasketIcon'
 
 export default function Header({}) {
 
   const {  user } = useAppSelector((s)=>s.auth)
-  const basket = useAppSelector((s)=>s.basket.data)
 
-  
+
+  console.log('render header')
 
   const memoNavigation = useMemo(() => {
     if (!!user) {
@@ -36,12 +36,7 @@ export default function Header({}) {
 
         <div className={styles.userActions}>
           <Autorisation />
-          <div className={styles.basketWrapper}>
-            <Link to='/basket'><span className={styles.basketIcon}>🛒</span></Link>
-            {Object.keys(basket).length > 0 && (
-              <span className={styles.basketCount}>{Object.keys(basket).length}</span>
-            )}
-          </div>
+          <BasketIcon/>
         </div>
       </nav>
     </header>

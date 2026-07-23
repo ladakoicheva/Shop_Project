@@ -97,7 +97,7 @@ export const updateTotal = async (purchaseTotal:number, uid:string): Promise<Res
   try {
     const docLink = doc(APP_DB, "user", uid);
 
-    await setDoc(docLink, { sum: increment(+purchaseTotal.toFixed(2)) },{merge:true});
+    await setDoc(docLink, { sum: increment(+purchaseTotal) },{merge:true});
     return { ok: true, data: null }
   } catch (e) {
      const error = e as string

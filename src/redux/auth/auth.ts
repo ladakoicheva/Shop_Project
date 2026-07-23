@@ -18,7 +18,8 @@ const initialState : AuthState = {
     pricecolor: "black",
     pricefontSize: "24",
     currency:"UAH"
-  }
+  },
+  rates:{}
 }
 const auth = createSlice(
   {
@@ -34,7 +35,11 @@ const auth = createSlice(
       updateStyles(state, action : PayloadAction<Partial<Settings>>) {
         state.settings = { ...state.settings, ...action.payload }
 
-      }
+      },
+
+       updateRates(state, action: PayloadAction<{ [rate: string]: number }>) {
+      state.rates = action.payload;
+    }
     }
   }
 )
@@ -42,7 +47,7 @@ const auth = createSlice(
 
 
 export const onLogin = createAsyncThunk<
-  ResponseI<any>,
+  ResponseI<void>,
   userI,
   { dispatch: AppDispatch }
 >(
@@ -59,7 +64,7 @@ export const onLogin = createAsyncThunk<
 );
 
 export const onRegistration = createAsyncThunk<
-  ResponseI<any>,
+  ResponseI<void>,
   userI,
   { dispatch: AppDispatch }
 >(
@@ -100,4 +105,4 @@ export const logOut = createAsyncThunk<
 
 
 export default auth.reducer
-export const { changeUser, changeAuthMode, updateStyles } = auth.actions
+export const { changeUser, changeAuthMode, updateStyles, updateRates } = auth.actions

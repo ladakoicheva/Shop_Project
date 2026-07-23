@@ -31,12 +31,12 @@ export default function SignInForm({ setModalOpen}:props) {
 
   const userSignIn = async (email:string, password:string):Promise<void>=> {
     const userData = await dispatch(onLogin({ email, password }));
-
-    if (!userData.payload.ok ) {
-      setBackError(userData.payload.code)
+    const payload = userData.payload as { ok: boolean; code?: string };
+    if (!payload.ok  ) {
+      setBackError(payload.code!)
 
     } else {
-      setModalOpen(false)
+      setModalOpen(false) 
     }
   }
 

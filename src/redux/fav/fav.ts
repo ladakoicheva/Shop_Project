@@ -17,7 +17,7 @@ const fav = createSlice(
         state.favorites= action.payload
       },
       addItem(state,action:PayloadAction<string>) {
-        state.favorites = [...state.favorites,action.payload]
+        state.favorites.push(action.payload) 
       },
       deleteItem(state,action:PayloadAction<string>) {
         state.favorites = state.favorites.filter((el)=>el!==action.payload)

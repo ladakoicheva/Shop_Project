@@ -3,7 +3,7 @@ import { useAppSelector } from "../redux/type";
 
 
 
-export const Autorisation_HOC = (Component:React.ComponentType) => (props:any) => {
+export const Autorisation_HOC = (Component:React.ComponentType<any>) => (props:any) => {
 
   const { isLoadingApp} = useAppSelector((s)=>s.loading)
   const isLogin = useAppSelector((s)=>!!s.auth.user)

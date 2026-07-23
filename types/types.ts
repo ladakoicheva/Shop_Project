@@ -36,7 +36,7 @@ export interface productI {
    name: string,
   price:number
   currency: string,
-  img:string,
+  img:string | null,
   id: string
   count?: number,
   inStock?: boolean,

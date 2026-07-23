@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { minSort, maxSort } from "../../utils/sort";
 import ProductCard from "../../Components/ProductCard/ProductCard"
 import styles from './Products.module.css'
@@ -16,18 +16,17 @@ import { useAppDispatch, useAppSelector } from "../../redux/type";
 import type { productI } from "../../../types/types";
 import type{ settingsI } from "../../../types/types";
 
-
 export default function Products() {
-  const auth = useAppSelector((s)=>s.auth)
+  const auth = useAppSelector((s) => s.auth)
+  const [value, setValue] = useState('');
   const [products, setProducts] = useState<productI[]>([]);
   const [showProducts, setShowProducts] = useState<productI[]>(products);
-  const [editingProduct, setEditingProduct] = useState<productI|null>(null);
+  const [editingProduct, setEditingProduct] = useState<productI | null>(null);
+  const {  favorites } = useAppSelector((s)=>s.fav)
   const basket = useAppSelector((s) => s.basket.data);
+  const {isLoadingApp}= useAppSelector((s)=>s.loading)
   const dispatch = useAppDispatch();
 
- 
-
-  // const [isOpenPage, setIsOpenPage] = useState(true);
   const [style, setStyle] = useState({
     bgbg: "rgba(255,255,255)",
     name: "shop",
@@ -38,11 +37,6 @@ export default function Products() {
     currency:"UAH"
   });
   const { uid } = useParams();
-
-  // const setProductsLocal = (data) => {
-  //   setProducts(data)
-
-  // }
   
   useEffect(() => {
   setShowProducts(products)
@@ -55,21 +49,30 @@ export default function Products() {
       setStyle(prev => ({ ...prev, ...data }))
     }
     const unsubsctibe = connectLiveSetting(callBack, uid!);
-
-
-
-
     return unsubsctibe
 
   }, [uid])
 
 
+    // const favorit = useMemo(():isFavI|null => {
+    //   if (!user) return null
+  
+  
+  
+    //   const isInFav = favorites.includes(product.id);
+  
+    //   return {
+    //     is: isInFav,
+    //     src: isInFav ? images.star.on : images.star.off
+    //   }
+  
+    // }, [favorites, user, product.id])
 
   useEffect(() => {
 
     const addProduct = (data: productI):void => {
       setProducts((products) => [...products, data])
-      dispatch(setProductsData({ currentUID: uid!, user: auth.user, data }))
+      if(!isLoadingApp) dispatch(setProductsData({ currentUID: uid!, user: auth.user, data }))
 
     }
 
@@ -109,11 +112,8 @@ export default function Products() {
       }
     }
     const unsubscribe = connectToAllProducts(uid!, liveConnectProducts);
-    return () => {
-      unsubscribe();
-
-    };
-  }, [uid])
+    return unsubscribe
+  }, [uid,isLoadingApp])
 
 
 
@@ -135,27 +135,12 @@ export default function Products() {
     setShowProducts(filtered);
   };
 
-
-  return (
-
-    <div>
-      <ShopName name={style.name}></ShopName>
-      {editingProduct && (
-        <ProductsForm
-          product={editingProduct}
-          onClose={() => setEditingProduct(null)}
-
-
-        />
-      )}
-
-      <FilterProducts products={products}  filterProducts={filterProducts} />
-
-      {products.length >= 1
-        ? <ul className={styles.grid_template_columns}>
-          {showProducts && showProducts.map((el) =>
-            <li key={el.id}>
-              <ProductCard
+  const memoProducts = useMemo(() => {
+    const products = showProducts.map((el) => {
+    const isFavorit = favorites.includes(el.id);
+      return <ProductCard
+       
+               isFavorit={isFavorit}
                 basketContext={{
                   addToBasket: () => dispatch(addToBasket(el)),
                   data: basket,
@@ -169,9 +154,31 @@ export default function Products() {
                 product={el}
               // deleteItem={() => deleteItem(el, uid, el.id)}
 
-              />
-            </li>
-          )}
+              />}
+              )
+      return products
+  },[basket,auth.user,style,showProducts,favorites])
+
+
+  return (
+   
+
+    <div>
+        
+      <ShopName name={style.name}></ShopName>
+      {editingProduct && (
+        <ProductsForm
+          product={editingProduct}
+          onClose={() => setEditingProduct(null)}
+        />
+      )}
+      <FilterProducts products={products}  filterProducts={filterProducts} />
+    <input type="text" value={value} onChange={(e)=>setValue(e.target.value)} />
+      {products.length >= 1
+        ? <ul className={styles.grid_template_columns}>
+        
+          { memoProducts }
+         
         </ul> : <NoFound text="no products" />
       }
     </div>

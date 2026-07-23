@@ -13,7 +13,7 @@ type props = {
 
 export default function SignUpForm({ setModalOpen }:props) {
 
-  const [backError, setBackError] = useState(null);
+  const [backError, setBackError] = useState<string|null>(null);
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -32,10 +32,12 @@ export default function SignUpForm({ setModalOpen }:props) {
 
   const userSignUp = async (email: string, password:string) => {
     const userData = await dispatch(onRegistration({ email, password }));
-    if (!userData.payload.ok) {
-      setBackError(userData.payload.code)
+    const payload = userData.payload as { ok: boolean; code: string};
+    if (!payload.ok  ) {
+      setBackError(payload.code!)
+
     } else {
-      setModalOpen(false)
+      setModalOpen(false) 
     }
   }
   return (

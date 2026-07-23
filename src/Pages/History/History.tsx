@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getHistory } from '../../services/firebase/db/history';
 import HistoryItemCard from './ui/HistoryItemCard/HistoryItemCard';
 import { Autorisation_HOC } from '../../HOC/Autorisation_HOC';
@@ -27,6 +27,13 @@ export const History = () => {
 
   }, [user?.uid])
 
+
+  const memoCards = useMemo(() => {
+    return history.history.map((el, index) => (
+        <HistoryItemCard key={index} purchase={el} user ={user} />
+      ))
+  }, [history.history,user])
+  
 
   const getNextHistoryItems = async () => {
     if (isLoading && !user) return;
@@ -72,9 +79,7 @@ export const History = () => {
 
     <div onScroll={onAddHistory} style={{ height: 'calc(100vh - 60px)', overflow: 'auto', }}>
       <h1>{history.total}</h1>
-      {history.history.map((el, index) => (
-        <HistoryItemCard key={index} purchase={el} user ={user} />
-      ))}
+      {memoCards}
     </div>
 
   )

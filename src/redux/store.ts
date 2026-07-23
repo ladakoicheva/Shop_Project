@@ -4,6 +4,7 @@ import loadingReducer from './loading/loading'
 import authReducer from './auth/auth'
 import historyReducer from './history/history'
 import favReducer from './fav/fav'
+import productsReducer from './products/products'
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
     auth: authReducer,
     loading: loadingReducer,
     history: historyReducer,
-    fav:favReducer
+    fav: favReducer,
+    productsManager:productsReducer
     // name : 'NameReducer'
     //   test: {
     //     value: 0,

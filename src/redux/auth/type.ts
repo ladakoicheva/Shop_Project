@@ -64,4 +64,5 @@ export interface AuthState {
   user: userAuth;
   authMode: typeModalT;
   settings: Settings;
+  rates:{[rate:string]:number}
 }

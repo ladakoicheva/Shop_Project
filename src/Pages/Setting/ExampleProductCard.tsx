@@ -1,5 +1,6 @@
 import style from '../../Components/ProductCard/ProductCard.module.css'
-import  { styleConfigE } from './Setting'
+import { styleConfig, type styleConfigE } from './type'
+import { typeStyleE } from './type'
 
 
 
@@ -11,7 +12,7 @@ import  { styleConfigE } from './Setting'
 }
 
 type props = {
-  openStyle:(keys:styleConfigE[], type: styleConfigE)=>void
+  openStyle:(keys:styleConfigE[], type: typeStyleE)=>void
   getStyle:(name:string)=>string[]
 }
 
@@ -31,8 +32,8 @@ export default function ExampleProductCard({ openStyle, getStyle }:props) {
       <article className={style.productCard} style={{ maxWidth: '20%', background: bgColor }} >
         <div
           onClick={() => {
-          
-            openStyle(['bg'], 'bg')
+            const s = styleConfig.bg
+            openStyle([s], typeStyleE.bg)
           }}
           className={style.img} slot={keyStyle.topBG} >
           <img src='https://img.joomcdn.net/7395a4bf7ca6e4e56be137088a9ce9deb834c1e0_original.jpeg' alt="" slot={keyStyle.topBG} />
@@ -43,7 +44,8 @@ export default function ExampleProductCard({ openStyle, getStyle }:props) {
           <div style={{ width: 'fit-content' }} slot={keyStyle.nameColor} className={style.product}>
             <h3 onClick={() => {
               
-              openStyle(['color', 'fontSize'], 'name')
+              openStyle([styleConfig.color, styleConfig.fontSize], typeStyleE.name
+              )
             }} style={{ color: colorName, fontSize: `${fontSizeName}px` }} slot={keyStyle.nameColor}>Product name</h3>
           </div>
 
@@ -51,7 +53,7 @@ export default function ExampleProductCard({ openStyle, getStyle }:props) {
             <div slot={keyStyle.bottomBG} className={style.buyInfo} style={{ width: 'fit-content' }}>
               <h2 style={{ width: 'fit-content', color: colorPrice, fontSize: `${fontSizePrice}px` }} slot={keyStyle.priceColor} onClick={() => {
              
-                openStyle(['color', 'fontSize'], 'price')
+                openStyle([styleConfig.color, styleConfig.fontSize], typeStyleE.price)
               }}> 200 USD</h2>
             </div>
 

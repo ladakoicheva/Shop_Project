@@ -1,6 +1,7 @@
 import style from './BasketProductCard.module.css'
 import type { productI } from '../../../../types/types'
 import { ImageProduct } from '../../../utils/Image'
+import  { memo } from 'react'
 
 type props = {
   data: {count:number,product:productI},
@@ -9,14 +10,14 @@ type props = {
   
 }
 
-export default function BasketProductCard({ data , deleteFromBasket ,addToBasket }:props) {
-
+ function BasketProductCard({ data , deleteFromBasket ,addToBasket }:props) {
+  console.log('render card')
   return (
     <>
       <article className={style.basketProductCard}>
         <div className={style.basketProductCard__wrapper}>
           <div className={style.basketProductCard__image}>
-            <ImageProduct src={data.product.img} alt="productImg" className='' />
+            <ImageProduct src={data.product.img!} alt="productImg" className='' />
           </div>
           <div className={style.basketProductCard__productName}><h3>{data.product.name} </h3></div>
 
@@ -29,3 +30,10 @@ export default function BasketProductCard({ data , deleteFromBasket ,addToBasket
     </>
   )
 }
+
+const getIsRender = (prev: props, next: props): boolean => {
+   if(prev.data !== next.data)return false
+  return true
+}
+
+export default memo(BasketProductCard, getIsRender)
