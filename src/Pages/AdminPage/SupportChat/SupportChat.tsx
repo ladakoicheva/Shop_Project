@@ -15,11 +15,13 @@ export default function SupportChat({ messagesArr, changeInputValue, inputValue,
   
   return (
     <div className={styles.supportChat}>
-        { messagesArr.map((messageData) => {
+      <div className={styles.groupWrapper}>
+             { messagesArr.map((messageData) => {
           const date = messageData[0];
           const messagesArr = messageData[1]
           return <MessagesGroup key={ date} date={date} messagesArr = {messagesArr} />
         })}
+          </div>
         <div className={styles.messageInput} >
           <input
             onChange={(e) => changeInputValue(e.target.value)}

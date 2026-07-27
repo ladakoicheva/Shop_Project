@@ -26,11 +26,17 @@
   background: white;
   flex-basis: 80%;
   height: 80vh;
-  min-height: fit-content;
+
+}
+
+.groupWrapper{
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }
 .supportChat ul {
-  min-height: fit-content;
-  overflow-y: auto;
+ height: fit-content;
+  
   
 }
 

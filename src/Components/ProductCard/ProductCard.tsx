@@ -10,10 +10,7 @@ import type { AuthState } from '../../redux/auth/type'
 import Price from './Price'
 
 
-interface isFavI {
-  is: boolean,
-  src: string,
-}
+
 
 interface dataI{
   [id: string]: {

@@ -20,8 +20,8 @@ export default function Admin() {
     <div className={styles.wrapper}>
       <ChatHistory />
       <SupportChat messagesArr={messagesArr } changeInputValue={changeInputValue} inputValue={inputValue} handleKeyDown ={handleKeyDown}   sendMessage={ sendMessage} />
-   
-    </div>
+   </div>
+  
    
   )
 }
