@@ -4,8 +4,8 @@ import './Loading.css'
 import { useAppSelector } from '../../redux/type';
 
 export default function CircularIndeterminate() {
-  const {isLoading} = useAppSelector((s)=>s.loading)
-  if (!isLoading) return null;
+  const {isLoading,isLoadingApp} = useAppSelector((s)=>s.loading)
+  if (!isLoading && !isLoadingApp) return null;
   return (
     <Box className='loaderContainer' >
       <CircularProgress className='loader' aria-label="Loading…" />

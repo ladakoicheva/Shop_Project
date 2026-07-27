@@ -106,3 +106,7 @@ a:visited {
   position: sticky;
 
 }
+
+li{
+  list-style: none;
+}

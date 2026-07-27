@@ -9,7 +9,8 @@ export interface settingsI {
     namefontSize: string
     pricecolor: string
     pricefontSize: string
-    currency:string
+  currency: string
+  isAdmin:boolean
   }
 
 export interface authI {

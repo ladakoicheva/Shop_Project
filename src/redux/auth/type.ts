@@ -15,7 +15,9 @@ export interface Settings {
   namefontSize: string;
   pricecolor: string;
   pricefontSize: string;
-  currency:string
+  currency: string;
+  isAdmin:boolean
+
 }
 
 
@@ -63,6 +65,7 @@ export interface AuthResponse {
 export interface AuthState {
   user: userAuth;
   authMode: typeModalT;
-  settings: Settings;
-  rates:{[rate:string]:number}
+  settings: Omit<Settings,'isAdmin'>;
+  rates: { [rate: string]: number }
+  isAdmin:boolean,
 }

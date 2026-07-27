@@ -17,29 +17,37 @@ const initialState : AuthState = {
     namefontSize: "30",
     pricecolor: "black",
     pricefontSize: "24",
-    currency:"UAH"
+    currency: "UAH",
+    // isAdmin:false, //!
   },
-  rates:{}
+  rates: {},
+  isAdmin:false
 }
 const auth = createSlice(
   {
     name: 'auth',
     initialState,
     reducers: {
-      changeUser(state, action : PayloadAction<userAuth>) {
+      changeUser(state, action: PayloadAction<userAuth>) {
+         console.log('получили данные юзера')
         state.user = action.payload;
       },
       changeAuthMode(state, action : PayloadAction<typeModalT>) {
         state.authMode = action.payload;
       },
-      updateStyles(state, action : PayloadAction<Partial<Settings>>) {
+      updateStyles(state, action: PayloadAction<Partial<Settings>>) {
+       
         state.settings = { ...state.settings, ...action.payload }
 
       },
 
        updateRates(state, action: PayloadAction<{ [rate: string]: number }>) {
       state.rates = action.payload;
-    }
+      },
+      getIsAdmin(state, action: PayloadAction<boolean>) {
+          console.log(`пользователь админ : ${action.payload}`)
+         state.isAdmin = action.payload
+       }
     }
   }
 )
@@ -105,4 +113,4 @@ export const logOut = createAsyncThunk<
 
 
 export default auth.reducer
-export const { changeUser, changeAuthMode, updateStyles, updateRates } = auth.actions
+export const { changeUser, changeAuthMode, updateStyles, updateRates,  getIsAdmin } = auth.actions

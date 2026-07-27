@@ -12,7 +12,8 @@ export const Autorisation = () => {
   return (
 
     <div>
-      {!user ? <button onClick={() => setModalOpen(true)}>{authMode.text}</button> : <div className={styles.userInfo}><h4>{user.email}</h4> <button onClick={()=>dispatch(logOut())}>Log out</button></div>}
+      {!user  ? <button onClick={() => setModalOpen(true)}>{authMode.text}</button> :
+        <div className={styles.userInfo}><h4>{user.email}</h4> <button onClick={() => dispatch(logOut())}>Log out</button></div>}
       {modalOpen && <Modal  setModalOpen={ setModalOpen} />}
     </div>
 

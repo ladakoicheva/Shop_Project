@@ -36,7 +36,7 @@ type props = {
 
 
 function ProductCard({ product, onEdit, style, basketContext ,auth, isFavorit}:props) {
-console.log('render ProductCard');
+
 
   const { user ,rates} = auth
   

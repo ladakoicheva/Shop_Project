@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { connectToApp } from '../redux/think'
 import { useAppDispatch } from '../redux/type';
 import { updateRates } from '../redux/auth/auth';
+// import { connectLiveSetting } from '../services/firebase/socket/setting';
 
 
 export const LocalStorageComponent = () => {
   const basket = useAppSelector((s) => s.basket.data);
   const { currency } = useAppSelector((s) => s.auth.settings)
-  // const { rates} = useAppSelector((s) => s.auth)
   const dispatch = useAppDispatch()
   // console.log(rates)
   
@@ -19,12 +19,7 @@ export const LocalStorageComponent = () => {
    }, [basket])
   
   useEffect(() => {
-    dispatch(connectToApp())
-  }, []) //! autorisation user ...
-  
-
-  useEffect(() => {
-    const getRates = async () => {
+     const getRates = async () => {
       try {
         const res = await fetch(`https://open.er-api.com/v6/latest/${currency}`);
         const data = await res.json();
@@ -42,18 +37,20 @@ export const LocalStorageComponent = () => {
       }
         getRates();
         
-  },[])
+    dispatch(connectToApp())//! autorisation user ...
+  }, []) 
   
-    // useEffect(() => {
-    //   if (!user) return;
+
+//     useEffect(() => {
+//       if (!user ) return;
   
-    //   const callBack = (data:settingsI) => {
-    //     dispatch(updateStyles(data));
-    //   }
-    //   const unsubscribe = connectLiveSetting(callBack, user.uid);
-    //   return unsubscribe
+//       const callBack = (data:settingsI) => {
+//         dispatch(updateStyles(data));
+//       }
+//       const unsubscribe = connectLiveSetting(callBack, user.uid!);
+//       return unsubscribe
   
-    // }, [user])
+//     }, [user])
   
     
   return null;

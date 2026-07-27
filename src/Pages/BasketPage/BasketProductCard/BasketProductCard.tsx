@@ -10,8 +10,9 @@ type props = {
   
 }
 
+
  function BasketProductCard({ data , deleteFromBasket ,addToBasket }:props) {
-  console.log('render card')
+
   return (
     <>
       <article className={style.basketProductCard}>
@@ -32,7 +33,7 @@ type props = {
 }
 
 const getIsRender = (prev: props, next: props): boolean => {
-   if(prev.data !== next.data)return false
+  if (prev.data.count !== next.data.count) return false
   return true
 }
 

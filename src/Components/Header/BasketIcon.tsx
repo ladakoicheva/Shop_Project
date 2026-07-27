@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
 import styles from './Header.module.css'
 import { useAppSelector } from "../../redux/type"
+import  { memo } from "react"
 
 
 
-export default function BasketIcon() {
+ function BasketIcon() {
   const basket = useAppSelector((s) => s.basket.data)
   console.log('render basketicon')
   return (
@@ -18,3 +19,4 @@ export default function BasketIcon() {
 }
 
 
+export default memo(BasketIcon, () => true)

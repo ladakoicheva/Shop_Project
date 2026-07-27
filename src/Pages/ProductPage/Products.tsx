@@ -34,7 +34,8 @@ export default function Products() {
     namefontSize: "30",
     pricecolor: "black",
     pricefontSize: "24",
-    currency:"UAH"
+    currency: "UAH",
+    isAdmin:false
   });
   const { uid } = useParams();
   
@@ -53,6 +54,7 @@ export default function Products() {
 
   }, [uid])
 
+ 
 
     // const favorit = useMemo(():isFavI|null => {
     //   if (!user) return null

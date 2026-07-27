@@ -8,6 +8,7 @@ import { APP_AUTH } from "../services/firebase";
 import { connectLiveSetting } from "../services/firebase/socket/setting";
 import { updateStyles } from "./auth/auth";
 import type { settingsI } from "../../types/types";
+import { getIsAdmin } from "./auth/auth";
 
 
 export const connectToApp = createAsyncThunk<
@@ -17,47 +18,61 @@ export const connectToApp = createAsyncThunk<
   {dispatch : AppDispatch, state : RootState}
 >(
   'auth/connectToApp',
-  async (_, {dispatch, getState}) => {
-   
+  async (_, { dispatch, getState }) => {
+
+     dispatch(openLoadingApp());
+    const callBack = (data: settingsI) => {
+    const settings: Omit<settingsI,'isAdmin'> = {
+    bgbg: data.bgbg,
+    name: data.name,
+    namecolor: data.namecolor,
+    namefontSize: data.namefontSize,
+    pricecolor: data.pricecolor,
+    pricefontSize: data.pricefontSize,
+    currency: data.currency,
+    };
+      dispatch(updateStyles(settings));
+      dispatch(getIsAdmin(data.isAdmin))
+      dispatch(closeLoadingApp());
+      }
+        
     try {
       // const store: RootState = getState();
-      dispatch(openLoadingApp());
+     
       // autorisation start
-       onAuthStateChanged(APP_AUTH, (user) => {
-       
-        const isUser = !user;
-        if (isUser) return dispatch(changeUser(null));
-        
-        const userData = {
-          uid: user.uid,
-          email: user.email!
+      onAuthStateChanged(APP_AUTH, (user) => {
+        console.log('auth changed')
+          if (user) {
+          const userData = {
+          uid: user!.uid,
+          email: user!.email!
         }
-        
-        dispatch(changeUser(userData))
+            dispatch(changeUser(userData))
+            connectLiveSetting(callBack, user.uid);
+          } else {
+            dispatch(changeUser(null));
+        } 
+
+     
+     
+        // dispatch(closeLoadingApp());
         // autorisation end
         //setting connect
-          
-           const callBack = (data:settingsI) => {
-                dispatch(updateStyles(data));
-              }
-           connectLiveSetting(callBack, user.uid);
-                
-            
-           
-          
-        
-        //
-     
-        dispatch(closeLoadingApp());
-      })
+         
+            //! fix update page - логика последовательности поговорить 
+ })
 
-      // 
-
+      //
     }
+    
     catch (err) {
       if(err instanceof Error)  return { ok: false, data: null, message: err.message };
     }
-    return { ok: false, data: null, message: 'unknown error'};
+
+    return { ok: false, data: null, message: 'unknown error' };
+    
   })
 
 
+
+  

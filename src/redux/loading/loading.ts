@@ -17,6 +17,7 @@ const loading = createSlice(
         state.isLoading = true
       },
       closeLoadingApp(state) {
+        console.log('отработала авторизация')
         state.isLoadingApp = false
       },
       openLoadingApp(state) {
