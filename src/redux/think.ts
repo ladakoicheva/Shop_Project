@@ -33,7 +33,7 @@ export const connectToApp = createAsyncThunk<
     };
       dispatch(updateStyles(settings));
       dispatch(getIsAdmin(data.isAdmin))
-      dispatch(closeLoadingApp());
+ 
       }
         
     try {
@@ -49,9 +49,15 @@ export const connectToApp = createAsyncThunk<
         }
             dispatch(changeUser(userData))
             connectLiveSetting(callBack, user.uid);
+            
+            
           } else {
             dispatch(changeUser(null));
         } 
+      
+        setTimeout(() => {
+            dispatch(closeLoadingApp());
+          },200)
 
      
      

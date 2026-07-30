@@ -14,12 +14,21 @@ import { LocalStorageComponent } from './LocalStorage/LocalStorageComponent.js';
 import HistorySync from './Pages/History/HistorySync.js'
 import FavSync from './Components/FavSync.js';
 import Admin from './Pages/AdminPage/Admin.js';
-import { useAppSelector } from './redux/type.js';
-
+import { useAppDispatch, useAppSelector } from './redux/type.js';
+import { useEffect } from 'react';
+import { connectToApp } from './redux/think.js';
 
 function App() {
   const { isAdmin } = useAppSelector((s) => s.auth)
-  const {isLoadingApp} = useAppSelector((s)=>s.loading)
+  const { isLoadingApp } = useAppSelector((s) => s.loading)
+
+  const dispatch = useAppDispatch();
+
+  
+  useEffect(() => {
+      dispatch(connectToApp())//! autorisation user ...
+  }, [])
+  if(isLoadingApp) return  <Loading /> 
  
   // Сделать голосовые сообщение, распознавание голоса и голосовой ввод.
   return (
@@ -27,9 +36,9 @@ function App() {
     <BrowserRouter >
 
             <Header  />
-            <Loading />
+            <Loading /> 
            
-      {!isAdmin && !isLoadingApp  ? <Routes>
+      {!isAdmin ? <Routes>
         <Route path='/add' element={<AddProducts />} />
         <Route path='/products/:uid' element={<Products />} />
         <Route path='/products/:uid/product/:id' element={<CurrentProductPage />} />
@@ -38,8 +47,9 @@ function App() {
         <Route path='history' element={<History />} />
         <Route path='/history/:id' element={<HistoryItemPage />} />
         <Route path='*' element={<NoFound />}></Route> 
-      </Routes> :
-        !isLoadingApp ?<Admin />:null}
+      </Routes> : <Routes>
+          <Route path='/:email' element={ <Admin />}/>
+      </Routes>}
     
       <HistorySync />
         <FavSync/>

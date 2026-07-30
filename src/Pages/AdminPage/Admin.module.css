@@ -2,30 +2,34 @@
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-bottom: 5rem;
+  padding: 0 2rem 5rem 2rem;
 }
 
 .chatHistory {
+  display: flex;
+  flex-direction: column;
   border-radius: 40px;
   background: white;
   flex-basis: 20% ;
-  height: 80vh;
-  min-height: fit-content;
   margin-right: 2rem;
+  min-height:20vh;
+  max-height: 60vh;
+  overflow-y: scroll;
+  padding-bottom: 32px;
+
 }
 
 .supportChat{
+  padding: 0 1rem 0 1rem;
   display: flex;
   gap: 50px;
   flex-direction: column;
-  justify-content: flex-end;
-  align-content: flex-end;
   border-radius: 40px;
   background: white;
   flex-basis: 80%;
-  height: 80vh;
+  max-height: 80vh;
+  overflow-y: auto;
+ 
 
 }
 
@@ -35,18 +39,16 @@
   overflow-y: auto;
 }
 .supportChat ul {
- height: fit-content;
-  
-  
+ height: fit-content
 }
 
-.supportChat ul li{
-  text-align: right;
-  background: #80C56B;
+.message{
+  display: block;
+  background: #bf91d1;
   width: fit-content;
   height: fit-content;
   padding: 1rem;
-  margin-left: 80%;
+ 
   margin-bottom: 5px;
   
 }
@@ -55,9 +57,7 @@
 .messageInput input{
   border: none;
   background: rgb(198, 195, 195);
-  padding-top:10px;
-  padding-bottom: 10px;
-  padding-left: 40px;
+  padding: 10px 0 10px 40px;
   margin-bottom: 2rem;
   border-radius: 10px;
   font-size: 16px;
@@ -68,3 +68,25 @@
   outline: none;
 }
 
+
+.userEmail{
+  display: block;
+  margin: 0 auto;
+  margin-top: 2rem;
+  background: rgb(198, 195, 195);
+  width: 80%;
+  border-radius: 11px;
+  padding: 1rem;
+}
+.userEmail:hover{
+  background: rgba(198, 195, 195,0.9);
+}
+
+
+.sendBtn{
+  height: 2.2rem;
+  margin-left: 2px;
+  padding: 2px;
+  min-width: fit-content;
+  width: 3rem;
+}

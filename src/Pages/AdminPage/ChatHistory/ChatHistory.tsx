@@ -1,9 +1,19 @@
 import styles from '../Admin.module.css'
+import { Link } from 'react-router-dom';
+import type { messageDataI } from '../type';
 
+type props = {
+  messages : messageDataI
+}
 
-export default function ChatHistory() {
+export default function ChatHistory({ messages }:props) {
+  const userEmailsArr = Object.keys(messages);
   return (
-    <div className={styles.chatHistory}>empty</div>
+    <ul className={styles.chatHistory}>{
+      userEmailsArr.map((email) => {
+        return <Link  className = {styles.userEmail} key={email } to ={`/${email}`}>{email }</Link> 
+      })
+    }</ul>
   )
 }
 

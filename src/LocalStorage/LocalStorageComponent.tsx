@@ -1,6 +1,5 @@
 import { useAppSelector } from '../redux/type';
 import { useEffect } from 'react';
-import { connectToApp } from '../redux/think'
 import { useAppDispatch } from '../redux/type';
 import { updateRates } from '../redux/auth/auth';
 // import { connectLiveSetting } from '../services/firebase/socket/setting';
@@ -37,7 +36,7 @@ export const LocalStorageComponent = () => {
       }
         getRates();
         
-    dispatch(connectToApp())//! autorisation user ...
+  
   }, []) 
   
 
