@@ -7,6 +7,7 @@ import type { AuthState, Settings, typeModalT, userAuth, userI} from "./type";
 import type { AppDispatch } from "../store";
 import type { ResponseI } from "../../../types/types";
 
+
 const initialState : AuthState = {
   user: null,
   authMode: TYPE_MODAL.SIGN_UP,
@@ -21,7 +22,8 @@ const initialState : AuthState = {
     // isAdmin:false, //!
   },
   rates: {},
-  isAdmin:false
+  isAdmin: false,
+  
 }
 const auth = createSlice(
   {

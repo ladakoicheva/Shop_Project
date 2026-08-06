@@ -67,5 +67,6 @@ export interface AuthState {
   authMode: typeModalT;
   settings: Omit<Settings,'isAdmin'>;
   rates: { [rate: string]: number }
-  isAdmin:boolean,
+  isAdmin: boolean,
+  
 }

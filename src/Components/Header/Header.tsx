@@ -19,7 +19,7 @@ export default function Header() {
         <Link to="/add">Add product</Link>
         <Link to='setting'>Setting</Link>
         <Link to='history'>History</Link>
-       
+        
       </>
     } 
   }, [ user,isLoadingApp])

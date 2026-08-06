@@ -1,0 +1,105 @@
+.icon {
+  width: 60px;
+  height: 60px;
+  position: fixed;
+  bottom: 50px;
+  left: 95%;
+  cursor: pointer;
+}
+
+.modal {
+  height: 40vh;
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: palevioletred;
+  position: fixed;
+  bottom: 160px;
+  right: 30px;
+  z-index: 100;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.header {
+  background-color: palevioletred;
+  border-radius: 10px;
+  height: fit-content;
+  padding: 1rem;
+  color: white;
+
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  background-color: white;
+
+
+}
+
+.date {
+  color: gray;
+
+
+}
+
+.time {
+  color: gray;
+  align-self: flex-end;
+
+}
+
+
+.messages {
+  padding-right: 5px;
+  padding-left: 5px;
+  height: 90%;
+  overflow-y: scroll;
+
+}
+
+
+.message {
+  display: flex;
+  justify-self: flex-end;
+  margin-bottom: 5px;
+
+}
+
+
+
+.messageText {
+  margin-top: 10px;
+  background-color: palevioletred;
+  border-radius: 10px;
+  width: fit-content;
+  padding: 5px;
+
+
+}
+
+.input {
+  width: 100%;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background: white;
+  padding: 20px 10px 20px 10px;
+  border: none;
+  border-top: 1px solid gray;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+
+
+
+
+.input:focus {
+  outline: none;
+
+}

@@ -17,26 +17,30 @@ import Admin from './Pages/AdminPage/Admin.js';
 import { useAppDispatch, useAppSelector } from './redux/type.js';
 import { useEffect } from 'react';
 import { connectToApp } from './redux/think.js';
+import Chat from './Pages/BasketPage/userChatModal/Chat.js';
+
 
 function App() {
-  const { isAdmin } = useAppSelector((s) => s.auth)
-  const { isLoadingApp } = useAppSelector((s) => s.loading)
-
+  const { isAdmin,user } = useAppSelector((s) => s.auth)
+  const { isLoadingApp,isLoading} = useAppSelector((s) => s.loading)
+  
   const dispatch = useAppDispatch();
-
+  console.log(isLoadingApp)
   
   useEffect(() => {
       dispatch(connectToApp())//! autorisation user ...
   }, [])
-  if(isLoadingApp) return  <Loading /> 
- 
+  if (isLoadingApp || isLoading) return <Loading /> 
+  
+
   // Сделать голосовые сообщение, распознавание голоса и голосовой ввод.
   return (
   
     <BrowserRouter >
 
             <Header  />
-            <Loading /> 
+          
+      {!isAdmin ||! user?.email ?  <Chat />:null}
            
       {!isAdmin ? <Routes>
         <Route path='/add' element={<AddProducts />} />

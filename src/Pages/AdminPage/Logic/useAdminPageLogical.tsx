@@ -1,38 +1,43 @@
-import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
 import type { messageDataI } from '../type';
-import initialMessages from '../initialMessages.json'
+import { useEffect, useState } from 'react';
+import { adminSendMessage } from '../../../services/firebase/db/support';
+import { adminGetMessages } from '../../../services/firebase/db/support';
+
 
 export default function useAdminPageLogical() {
   const [inputValue, setInputValue] = useState<string>('');
-  
-  const [messages, setMessages] = useState<messageDataI>(initialMessages)
+  const [messages, setMessages] = useState<messageDataI>({})
 
-  //     const handleKeyDown = (e:React.KeyboardEvent) => {
-  //   if (e.key === 'Enter') {
-     
-  //     // sendMessage(inputValue)
-  //   }
-  // };
-  // const sendMessage = (value: string) => {
-  //     if(!value)return
-  
-  //   const messageData: MessageItem = {
-  //         time: new Date().toLocaleTimeString(),
-  //         message: value,
-  //         id: uuidv4(),
-  //         is:true
-  //   }
-  //  setMessages((prev) => {
-  //     const existingDateMessages = prev[new Date().toLocaleDateString()] || [];
-  //     return {
-  //       ...prev,
-  //       [new Date().toLocaleDateString()]: [...existingDateMessages, messageData] 
-  //     };
-  //  });
-  //   setInputValue('')
+  useEffect(() => {
+    const getMessages = async () => {
+      const res = await adminGetMessages();
+      console.log(res.ok);
+      if (res.ok) setMessages(res.data as messageDataI);
+    }
 
-  // }
+    getMessages();
+    console.log('start');
+    
+  }, []);
+
+  
+  const sendMessage = async(email:string) => {
+       if (inputValue.trim() === "") return
+      const res = await adminSendMessage(email, inputValue);
+      
+      if (res.ok) { 
+        setMessages((prevMessages) => ({
+        ...prevMessages,
+        [email]: {
+        ...(prevMessages[email] || {}),
+        ...res.data                     
+  }
+}));
+        setInputValue("");
+      } 
+      
+    }
+  
   const changeInputValue = (value:string) => {
     setInputValue(value)
   }
@@ -42,7 +47,7 @@ export default function useAdminPageLogical() {
       inputValue,
       messages,
       // handleKeyDown,
-      // sendMessage,
+      sendMessage,
       changeInputValue,
       
 

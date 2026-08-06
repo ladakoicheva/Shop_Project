@@ -8,6 +8,7 @@ import { updateRates } from '../redux/auth/auth';
 export const LocalStorageComponent = () => {
   const basket = useAppSelector((s) => s.basket.data);
   const { currency } = useAppSelector((s) => s.auth.settings)
+ 
   const dispatch = useAppDispatch()
   // console.log(rates)
   
@@ -39,6 +40,7 @@ export const LocalStorageComponent = () => {
   
   }, []) 
   
+
 
 //     useEffect(() => {
 //       if (!user ) return;

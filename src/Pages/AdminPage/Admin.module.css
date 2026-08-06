@@ -76,7 +76,12 @@
   background: rgb(198, 195, 195);
   width: 80%;
   border-radius: 11px;
-  padding: 1rem;
+  padding: 0.5rem;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
 }
 .userEmail:hover{
   background: rgba(198, 195, 195,0.9);
