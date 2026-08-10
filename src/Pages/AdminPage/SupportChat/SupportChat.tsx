@@ -3,7 +3,9 @@ import type { messageDataI } from '../type';
 import { useParams } from 'react-router-dom';
 import type { Params } from 'react-router-dom';
 import { getDateDDMMYYYY } from '../../../utils/getDate';
-import { useMemo, } from 'react';
+import { useEffect, useMemo, useRef, } from 'react';
+import type { MessageItem } from '../../../redux/supportChat/type';
+import { scrollDown } from '../../../utils/scroll';
 
 type props = {
   messages:messageDataI
@@ -20,24 +22,25 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
 
   const params = useParams<Params<string>>();
   const email = params.email || "" as string;
+  const ref = useRef(null);
+
   
 
- 
   const messagesMemo = useMemo(() => {
     const mess = messages[email]
     if (!mess ) return <div>start messaging...</div>
-    const messageArr = Object.entries(mess);
     
-   const showMessages = [] 
-   let currentDate = '';
-   for (let index = 0; index < messageArr.length; index++) {
-     const [time, messageItem] = messageArr[index];
-     const date = getDateDDMMYYYY(+time)
-    
-     const isNeededDate = date !== currentDate 
-     currentDate = date
-     
-    showMessages.push(<li key={time}>
+    let currentDate = '';
+    const times = Object.keys(mess);
+    //@ts-ignore
+    times.sort((a: string, b: string) => a - b);
+    const showMessages = times.map((time: string) => {
+      //@ts-ignore
+      const messageItem = mess[time] as MessageItem;
+      const date = getDateDDMMYYYY(+time);
+      const isNeededDate = date !== currentDate;
+      currentDate = date;
+      return <li key={time}>
        
       {isNeededDate && <h2>{currentDate}</h2> }
        <span style={{
@@ -45,17 +48,21 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
       marginLeft: messageItem.is ? 'auto ' : 0,
       marginRight: messageItem.is ? 0 : 'auto ',
 } } className={styles.message}>{messageItem.message}</span>
-      </li>)
-   }
+      </li>
+    })
    return showMessages
-},[email,messages])
+  }, [email, messages])
+  
+   useEffect(() => {
+      scrollDown(ref);
+    },[messagesMemo])
 
 
   return (
     <div className={styles.supportChat}>
       <h1>{params.email}</h1>
       
-      <div className={styles.groupWrapper}>
+      <div  ref={ ref} className={styles.groupWrapper}>
         <ul> {messagesMemo}</ul>
         
       </div>
@@ -69,7 +76,8 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
         
           />
             
-        <button onClick={() => sendMessage(email)} className={styles.sendBtn}>Send</button></div>
+        <button onClick={() => sendMessage(email)}
+        className={styles.sendBtn}>Send</button></div>
       </div>
   )
 }
@@ -80,7 +88,7 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
 //отображение только при клике. ++( добавить messages в массив зависимостей)
 //если сообщений нет выводить текст ++
 
-// Рефакторинг кода
+// Рефакторинг кода 
 
 
 //  для клиента после отправки смс лоадинг что то типо админ думает и скоро даст ответ  +

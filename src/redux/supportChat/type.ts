@@ -8,7 +8,7 @@ export interface MessageItem {
 export interface stateI {
   isOpen: boolean,
   isincoming: boolean,
-  adminAnswerLoading: boolean,
+  // adminAnswerLoading: boolean,
 
 }
 

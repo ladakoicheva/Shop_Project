@@ -1,16 +1,16 @@
 import styles from './Chat.module.css'
 import {  useAppSelector } from '../../../redux/type'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { getDateDDMMYYYY } from '../../../utils/getDate'
 import { formatTime } from '../../../utils/formatTime'
 import useUserChatLogical from './useUserChatLogical'
 import { Fragment } from 'react'
+import { scrollDown } from '../../../utils/scroll'
 
 
 export default function ChatModal() {
 
-  const { isOpen, adminAnswerLoading } = useAppSelector((s) => s.support)
- 
+  const { isOpen} = useAppSelector((s) => s.support)
   const {
     messages,
     value,
@@ -18,61 +18,73 @@ export default function ChatModal() {
     sendMessage,
    } = useUserChatLogical();
   
-  
-  console.log(messages)
-  
+  const ref = useRef(null)
+  const isLoadingNeeded = useMemo(() => {
+
+    const arr = Object.keys(messages)  ;
+    const key = arr[arr.length-1]
+    if (arr.length === 0) return false
+
+    return messages[key].is
+  },[messages])
+
+
   const memoMessages = useMemo(() => {
-   
- 
-    if ( Object.keys(messages).length === 0) return <div>No messages...</div >;//! edit after add api
-    const messagesArr = Object.entries(messages)
+    if ( Object.keys(messages).length === 0) return <div>No messages...</div >;
+    const times = Object.keys(messages);
+    //@ts-ignore
+    times.sort((a: string, b: string) => a - b);
     let currentDate = '';
-    const messagesDataToShow = [];
+    const res = times.map((time) => {
+       //@ts-ignore
+      const messageItem = messages[time]
     
-    for (let index = 0; index < messagesArr.length; index++) {
-      const [time, messagesItems] = messagesArr[index];
       const date = getDateDDMMYYYY(+time);
       const formatedTime = formatTime(+time);
       const isNeededDate = date !== currentDate;
       currentDate = date;
-    messagesDataToShow.push(
-
-    <Fragment key={time}>
+      return  <Fragment key={time}>
       {isNeededDate && <div className={styles.date}>{date}</div>}
           <li className={styles.message} style={{
-            marginRight: messagesItems.is ? 'auto' : 0,
-            marginLeft:messagesItems.is?0:'auto'
+            marginRight: messageItem.is ? 'auto' : 0,
+            marginLeft:messageItem.is?0:'auto'
            }}>
         <span className={styles.time}>{formatedTime}</span>
             <div
               className={styles.messageText}
               style={{
-                color:  messagesItems.is?'black':'white',
-                background: messagesItems.is?'#E2E8F0':'palevioletred'
+                color:  messageItem.is?'black':'white',
+                background: messageItem.is?'#E2E8F0':'palevioletred'
               }}
-            >{messagesItems.message}</div>
-      </li>
+          >{messageItem.message}
+          </div>
+        </li>
+    
     </Fragment>
 
-);
-      
-       
-      
-    }
-    return messagesDataToShow
+    })
+ 
+    return res;
   }, [messages]);
-   if (!isOpen) return null;
-    
+
+
+
+  useEffect(() => {
+    scrollDown(ref)
+  },[memoMessages, isOpen])
+ 
+      if (!isOpen) return null;
   return (
     <div className={styles.modal}>
       <header className={styles.header}>Admin</header>
-      <div className={styles.chat}>
+      <div  className={styles.chat}>
         
-        <ul className={styles.messages}>
-           {memoMessages}
+        <ul ref = {ref}  className={styles.messages}>
+          {memoMessages}
+              {! isLoadingNeeded  && <div>Админ скоро ответит вам...</div>}
         </ul>
 
-        {adminAnswerLoading && <div>Админ скоро ответит вам...</div>}
+        {/* {adminAnswerLoading && <div>Админ скоро ответит вам...</div>} */}
         
         <input value={value} className={styles.input} type="text" placeholder='Message...' onChange={(e) => updateValue(e.target.value)}
           onKeyDown={(e) => {

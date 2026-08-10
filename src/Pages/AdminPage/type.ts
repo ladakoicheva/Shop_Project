@@ -7,5 +7,5 @@ export interface messageDataI {
 }
 
 export interface messageDataUserI{
-      [time: number]: MessageItem;
+      [time: string]: MessageItem;
 }

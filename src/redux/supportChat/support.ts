@@ -6,7 +6,7 @@ import type { stateI } from "./type";
 const initialState:stateI = {
   isOpen: false,
   isincoming : false,
-  adminAnswerLoading:false,
+  // adminAnswerLoading:false,
   
 }
 
@@ -20,12 +20,7 @@ const support = createSlice({
     closeModal(state) {
       state.isOpen = false
     },
-    openAdminLoading(state) {
-      state.adminAnswerLoading = true
-    },
-    closeAdminLoading(state) {
-      state.adminAnswerLoading = false
-    },
+
 
 
    
@@ -37,6 +32,6 @@ const support = createSlice({
   //     "id": "a1b2",
   //     "is": false
   //   },
-export const { openModal, closeModal,   openAdminLoading, closeAdminLoading
+export const { openModal, closeModal,  
   } = support.actions
 export default support.reducer;

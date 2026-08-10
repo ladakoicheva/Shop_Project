@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/type";
 import { clientGetMessages } from "../../../services/firebase/db/support";
 import type { messageDataUserI } from "../../AdminPage/type";
 import { clientSendMessage } from "../../../services/firebase/db/support";
-import { openAdminLoading } from "../../../redux/supportChat/support";
+
 
 
 export default function useUserChatLogical() {
@@ -29,7 +29,7 @@ export default function useUserChatLogical() {
     if (res.ok) { 
       setMessages({ ...messages, ...res.data });
       setValue("");
-      dispatch(openAdminLoading())
+    
     } 
     
   }
