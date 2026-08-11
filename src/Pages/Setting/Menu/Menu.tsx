@@ -32,12 +32,12 @@ export default function Menu({ style,  changeStyle, closeStyle, updateStyles, us
   }
 
   const saveSettings = () => {
-    const dataToSave:Partial<Settings> = {}
+    const dataToSave = {} as Partial<Settings>
 
     style.types.forEach((type, i) => {
       if (style.datas[i] ) {
         const key = style.type + type as keyof Settings
-        dataToSave[key] = style.datas[i]
+        (dataToSave[key] as string) = style.datas[i]
       }
     })
 

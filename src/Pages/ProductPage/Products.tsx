@@ -24,7 +24,6 @@ export default function Products() {
   const [editingProduct, setEditingProduct] = useState<productI | null>(null);
   const {  favorites } = useAppSelector((s)=>s.fav)
   const basket = useAppSelector((s) => s.basket.data);
-  const {isLoadingApp}= useAppSelector((s)=>s.loading)
   const dispatch = useAppDispatch();
 
   const [style, setStyle] = useState({
@@ -52,29 +51,15 @@ export default function Products() {
     const unsubsctibe = connectLiveSetting(callBack, uid!);
     return unsubsctibe
 
-  }, [uid])
+  }, [uid,auth.user])
 
  
-
-    // const favorit = useMemo(():isFavI|null => {
-    //   if (!user) return null
-  
-  
-  
-    //   const isInFav = favorites.includes(product.id);
-  
-    //   return {
-    //     is: isInFav,
-    //     src: isInFav ? images.star.on : images.star.off
-    //   }
-  
-    // }, [favorites, user, product.id])
 
   useEffect(() => {
 
     const addProduct = (data: productI):void => {
       setProducts((products) => [...products, data])
-      if(!isLoadingApp) dispatch(setProductsData({ currentUID: uid!, user: auth.user, data }))
+      dispatch(setProductsData({ currentUID: uid!, user: auth.user, data }))
 
     }
 
@@ -115,7 +100,7 @@ export default function Products() {
     }
     const unsubscribe = connectToAllProducts(uid!, liveConnectProducts);
     return unsubscribe
-  }, [uid,isLoadingApp])
+  }, [uid])
 
 
 

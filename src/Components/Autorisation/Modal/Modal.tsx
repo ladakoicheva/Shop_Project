@@ -15,7 +15,9 @@ export default function Modal({setModalOpen}:props) {
   return (
 
     <div className={styles.modal}>
-      <div className={styles.modalHeader}><h3>{authMode.text}</h3>  <span onClick={() => setModalOpen(false)} className={styles.closeBtn}>✕</span> </div>
+      <div className={styles.modalHeader}><h3>{authMode.text}</h3>
+        <span onClick={() => setModalOpen(false)} className={styles.closeBtn}>✕</span>
+      </div>
       <hr />
       {authMode.type === TYPE_MODAL.SIGN_UP.type
         ? <SignUpForm setModalOpen={setModalOpen} />

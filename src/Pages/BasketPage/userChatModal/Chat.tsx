@@ -9,10 +9,10 @@ export default function Chat() {
   const { isOpen } = useAppSelector((s) => s.support);
   const { user } = useAppSelector((s) => s.auth);
  
-
+  if(!user) return null
   return (
     <>
-     {user?.email && <ChatModal />} 
+      <ChatModal />
       <div onClick={() => dispatch( !isOpen ?openModal():closeModal() )}>
       <img className={styles.icon} src="/chat.png" alt="chatIcon" />
     </div>

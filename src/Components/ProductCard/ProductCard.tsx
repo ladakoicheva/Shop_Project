@@ -36,40 +36,22 @@ function ProductCard({ product, onEdit, style, basketContext ,auth, isFavorit}:p
 
 
   const { user ,rates} = auth
-  
-  // const {  favorites } = useAppSelector((s)=>s.fav)
-
   const isInBasket = basketContext.data[product.id];
   const params = useParams<{uid:string}>();
   const isOwner = params.uid === user?.uid;
   const dispatch = useAppDispatch()
- 
-
   const deleteItem = async () => {
-    if (!user || !user.uid) return;
+    if (!user?.uid) return;
   
     const res = await removeProduct(product, user.uid, product.id);//!
     if(res.ok) basketContext.deleteFromBasket()
   }
 
-  // const favorit = useMemo(():isFavI|null => {
-  //   if (!user) return null
-
-
-
-  //   const isInFav = favorites.includes(product.id);
-
-  //   return {
-  //     is: isInFav,
-  //     src: isInFav ? images.star.on : images.star.off
-  //   }
-
-  // }, [favorites, user, product.id])
-
   const onFavClick = () => {
-    if(!params.uid && !user?.uid && user) return
-    !isFavorit ? dispatch(addToFav({ uid: user?.uid!, ownersUid: params.uid!, productId: product.id }))
-              : dispatch(deleteItemFromFav({ uid: user?.uid!, ownersUid: params?.uid!, productId: product.id }));
+    if(!params.uid && !user?.uid ) return
+    !isFavorit ?
+      dispatch(addToFav({ uid: user?.uid!, ownersUid: params.uid!, productId: product.id }))
+      : dispatch(deleteItemFromFav({ uid: user?.uid!, ownersUid: params?.uid!, productId: product.id }));
   }
   return (
     <li>
