@@ -6,15 +6,20 @@ import ChatModal from './ChatModal'
 
 export default function Chat() {
   const dispatch = useAppDispatch()
-  const { isOpen } = useAppSelector((s) => s.support);
+  const { isOpen,isincoming } = useAppSelector((s) => s.support);
   const { user } = useAppSelector((s) => s.auth);
+  console.log(isincoming)
  
   if(!user) return null
   return (
     <>
       <ChatModal />
-      <div onClick={() => dispatch( !isOpen ?openModal():closeModal() )}>
-      <img className={styles.icon} src="/chat.png" alt="chatIcon" />
+      <div onClick={() => dispatch(!isOpen ? openModal() : closeModal())}>
+
+        <div className={styles.wrapper}>
+          {isincoming && <span className={styles.notification}></span>}
+      <img className={styles.icon} src="/chat.png" alt="chatIcon" /></div>
+      
     </div>
     </>
    

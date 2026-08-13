@@ -21,6 +21,13 @@ const support = createSlice({
       state.isOpen = false
     },
 
+    setIsIncoming(state) {
+      state.isincoming = true
+    },
+
+     setNotIsIncoming(state) {
+      state.isincoming = false
+    },
 
 
    
@@ -32,6 +39,10 @@ const support = createSlice({
   //     "id": "a1b2",
   //     "is": false
   //   },
-export const { openModal, closeModal,  
+export const {
+  openModal,
+  closeModal,
+  setIsIncoming,
+  setNotIsIncoming,
   } = support.actions
 export default support.reducer;

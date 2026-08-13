@@ -19,7 +19,7 @@ type props = {
 
 
 export default function SupportChat({ messages, changeInputValue, inputValue, sendMessage }: props) {
-
+  
   const params = useParams<Params<string>>();
   const email = params.email || "" as string;
   const ref = useRef(null);
@@ -28,7 +28,7 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
 
   const messagesMemo = useMemo(() => {
     const mess = messages[email]
-    if (!mess ) return <div>start messaging...</div>
+    if (!mess || Object.keys(mess).length == 0) return <div>start messaging...</div>
     
     let currentDate = '';
     const times = Object.keys(mess);

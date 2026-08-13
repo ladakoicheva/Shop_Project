@@ -2,10 +2,12 @@ import type { MessageItem } from "../../redux/supportChat/type";
 
 export interface messageDataI {
   [email: string]: {
-    [time: number]: MessageItem;
+    [time: string]: MessageItem;
   }
 }
 
 export interface messageDataUserI{
-      [time: string]: MessageItem;
+ 
+  [time: string]: MessageItem;
+  
 }

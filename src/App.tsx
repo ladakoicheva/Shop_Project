@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
       dispatch(connectToApp())//! autorisation user ...
   }, [])
-  if (isLoadingApp || isLoading) return <Loading /> 
+  if (isLoadingApp ) return <Loading /> 
   
 
   // Сделать голосовые сообщение, распознавание голоса и голосовой ввод.
@@ -40,9 +40,10 @@ function App() {
 
             <Header  />
           
-      {!isAdmin ||! user?.email ?  <Chat />:null}
+      {!isAdmin && <Chat />}
            
       {!isAdmin ? <Routes>
+         
         <Route path='/add' element={<AddProducts />} />
         <Route path='/products/:uid' element={<Products />} />
         <Route path='/products/:uid/product/:id' element={<CurrentProductPage />} />
