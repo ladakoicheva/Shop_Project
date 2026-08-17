@@ -42,17 +42,26 @@
  height: fit-content
 }
 
-.message{
+.messageClient,.messageAdmin{
   display: block;
-  background: #bf91d1;
+  /* background: #bf91d1; */
   width: fit-content;
   height: fit-content;
   padding: 1rem;
- 
   margin-bottom: 5px;
   
 }
 
+.messageClient{
+  background-color: #bf91d1;
+  margin-right: auto;
+}
+.messageAdmin{
+  background-color: #80C56B;
+  margin-left: auto;
+}
+
+   
 
 .messageInput input{
   border: none;
@@ -70,6 +79,7 @@
 
 
 .userEmail{
+  position: relative;
   display: block;
   margin: 0 auto;
   margin-top: 2rem;
@@ -94,4 +104,18 @@
   padding: 2px;
   min-width: fit-content;
   width: 3rem;
+}
+
+
+
+.notification{
+  position: absolute;
+  top:40%;
+  right: 10px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 50%;
+  z-index: 100;
 }

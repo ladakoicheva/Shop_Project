@@ -11,7 +11,19 @@ export default function ChatHistory({ messages }:props) {
   return (
     <ul className={styles.chatHistory}>{
       userEmailsArr.map((email) => {
-        return <Link  className = {styles.userEmail} key={email } to ={`/${email}`}>{email }</Link> 
+        return (
+        
+            <Link
+          className={styles.userEmail} key={email}
+            to={`/${email}`}>{email}
+            {messages[email].isIncomingAdmin &&
+              <span className={styles.notification}></span>}
+          </Link>
+    
+       
+         
+        )
+        
       })
     }</ul>
   )

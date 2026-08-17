@@ -2,12 +2,14 @@ import type { messageDataI } from '../type';
 import { useEffect, useState } from 'react';
 import { adminSendMessage } from '../../../services/firebase/db/support';
 import { connectLiveChatAdmin } from '../../../services/firebase/socket/chat';
-import { useAppDispatch } from '../../../redux/type';
+import { adminEditMessage } from '../../../services/firebase/db/support';
+// import { useAppDispatch } from '../../../redux/type';
 
 export default function useAdminPageLogical() {
   const [inputValue, setInputValue] = useState<string>('');
-  const [messages, setMessages] = useState<messageDataI>({})
-  const dispatch = useAppDispatch();
+  const [messages, setMessages] = useState<messageDataI>({});
+  const [isEditing,setIsEditing]= useState({is:false,time:''})
+  // const dispatch = useAppDispatch();
 
 
   useEffect(() => {
@@ -17,7 +19,10 @@ export default function useAdminPageLogical() {
     //   if (res.ok) setMessages(res.data as messageDataI);
     // }
     const callback = (data: messageDataI) => {
-      setMessages(data);
+      
+      setMessages((prev) => {
+        return {...prev,...data}
+      });
     };
     const unsubscribe = connectLiveChatAdmin(callback);
 
@@ -50,14 +55,27 @@ export default function useAdminPageLogical() {
     setInputValue(value)
   }
 
+  const editMessage = async(email:string,message:string,time:string) => {
+    const res = await adminEditMessage(email, message, time);
+    if (res.ok) {
+      setInputValue('')
+      setIsEditing({is:false,time:''})
+    }
+  }
+
+  const setEdit = (data:{is:boolean,time:string}) => {
+    setIsEditing(data)
+  }
+
   return (
     {
       inputValue,
       messages,
-      // handleKeyDown,
+      editMessage,
+      isEditing,
       sendMessage,
       changeInputValue,
-      
+      setEdit
 
     }
   )

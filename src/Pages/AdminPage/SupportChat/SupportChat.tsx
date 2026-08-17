@@ -6,28 +6,41 @@ import { getDateDDMMYYYY } from '../../../utils/getDate';
 import { useEffect, useMemo, useRef, } from 'react';
 import type { MessageItem } from '../../../redux/supportChat/type';
 import { scrollDown } from '../../../utils/scroll';
+import { adminReadMessage } from '../../../services/firebase/db/support';
+import { adminEditMessage } from '../../../services/firebase/db/support';
+import { useState } from 'react';
 
 type props = {
   messages:messageDataI
   changeInputValue: (value: string) => void,
   inputValue: string,
   sendMessage :(email:string)=>void
- 
+  isEditing: { is: boolean; time: string; },
+  setIsEditing:(data:{ is: boolean; time: string; })=>void,
+  editMessage: (email: string, message: string, time: string) => void
+  
 }
 
 
 
 
-export default function SupportChat({ messages, changeInputValue, inputValue, sendMessage }: props) {
+export default function SupportChat({ messages, changeInputValue, inputValue, sendMessage,editMessage,isEditing,setIsEditing }: props) {
   
   const params = useParams<Params<string>>();
   const email = params.email || "" as string;
   const ref = useRef(null);
-
+  // const [isEditing,setIsEditing]= useState({is:false,time:''})
   
 
   const messagesMemo = useMemo(() => {
-    const mess = messages[email]
+    const editMessage = (messageText:string,time:string) => {
+      setIsEditing({is:true,time});
+      changeInputValue(messageText)
+
+    }
+    const mess = {...messages[email]}
+    delete mess.isIncoming
+    delete mess.isIncomingAdmin
     if (!mess || Object.keys(mess).length == 0) return <div>start messaging...</div>
     
     let currentDate = '';
@@ -40,14 +53,14 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
       const date = getDateDDMMYYYY(+time);
       const isNeededDate = date !== currentDate;
       currentDate = date;
-      return <li key={time}>
+      return <li  key={time}>
        
       {isNeededDate && <h2>{currentDate}</h2> }
-       <span style={{
-      backgroundColor:messageItem.is? '#80C56B': '#bf91d1',
-      marginLeft: messageItem.is ? 'auto ' : 0,
-      marginRight: messageItem.is ? 0 : 'auto ',
-} } className={styles.message}>{messageItem.message}</span>
+        <span
+          onDoubleClick={() => messageItem.is ? editMessage(messageItem.message, time) : null}
+          className={messageItem.is ? styles.messageAdmin : styles.messageClient}>
+          {messageItem.message}
+        </span>
       </li>
     })
    return showMessages
@@ -57,6 +70,9 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
       scrollDown(ref);
     },[messagesMemo])
 
+  useEffect(() => {
+    adminReadMessage(email);
+  },[email,messagesMemo])
 
   return (
     <div className={styles.supportChat}>
@@ -76,7 +92,7 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
         
           />
             
-        <button onClick={() => sendMessage(email)}
+        <button onClick={() => isEditing.is ?editMessage(email,inputValue,isEditing.time):sendMessage(email)}
         className={styles.sendBtn}>Send</button></div>
       </div>
   )

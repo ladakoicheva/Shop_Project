@@ -3,20 +3,23 @@ import styles from './Admin.module.css'
 import ChatHistory from './ChatHistory/ChatHistory';
 import SupportChat from './SupportChat/SupportChat';
 import { useAppSelector } from '../../redux/type';
+import { useParams } from 'react-router-dom';
 
 
 
 export default function Admin() {
   const {isincoming} = useAppSelector((s)=>s.support)
-  console.log('render admin page')
+  const params = useParams()
   // const {messages} = useAppSelector((s) => s.support);
   // adminGetMessages()
    const{
       inputValue,
       messages,
-      // handleKeyDown,
+      editMessage,
+      isEditing,
       sendMessage,
-      changeInputValue,
+     changeInputValue,
+      setEdit,
     }= useAdminPageLogical()
 
   console.log(messages)
@@ -25,7 +28,16 @@ export default function Admin() {
   return (
     <div className={styles.wrapper}>
       <ChatHistory messages = {messages} />
-      <SupportChat messages={messages} changeInputValue={changeInputValue} inputValue={inputValue} sendMessage = {sendMessage} />
+      {params.email &&
+        <SupportChat
+          messages={messages}
+        changeInputValue={changeInputValue}
+        inputValue={inputValue}
+        editMessage={editMessage}
+        isEditing={isEditing}
+        setIsEditing = {setEdit}
+          sendMessage={sendMessage}
+        />}
    </div>
   
    

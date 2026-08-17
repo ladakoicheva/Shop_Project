@@ -53,6 +53,7 @@ function App() {
         <Route path='/history/:id' element={<HistoryItemPage />} />
         <Route path='*' element={<NoFound />}></Route> 
       </Routes> : <Routes>
+          <Route path='/' element={ <Admin />}/>
           <Route path='/:email' element={ <Admin />}/>
       </Routes>}
     
@@ -67,3 +68,4 @@ function App() {
 }
 
 export default App
+//если нет имейла в юрл скрыть блок с сообщениями

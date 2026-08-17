@@ -1,5 +1,7 @@
-import { createSlice,type PayloadAction  } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,type PayloadAction  } from "@reduxjs/toolkit";
 import type { stateI } from "./type";
+import type { RootState } from "../store";
+import { clientReadMessage } from "../../services/firebase/db/support";
 
 
 
@@ -32,6 +34,18 @@ const support = createSlice({
 
    
   }
+})
+
+export const readMessage = createAsyncThunk(
+  'support/readMessage'
+  , async (_, { dispatch, getState }) => {
+    const store: RootState = getState() as RootState;
+    const userEmail = store.auth.user?.email as string;
+    const res = await clientReadMessage(userEmail);
+    if(res.ok) dispatch(setNotIsIncoming());
+    
+  
+  
 })
 
   // "1779261300000": {

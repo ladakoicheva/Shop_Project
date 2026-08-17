@@ -4,7 +4,6 @@ import type { messageDataUserI } from "../../AdminPage/type";
 import { clientSendMessage } from "../../../services/firebase/db/support";
 import { connectLiveChatClient } from "../../../services/firebase/socket/chat";
 import { setIsIncoming } from "../../../redux/supportChat/support";
-import { setNotIsIncoming } from "../../../redux/supportChat/support";
 import { useMemo } from "react";
 import { scrollDown } from "../../../utils/scroll";
 import { Fragment } from "react";
@@ -12,7 +11,7 @@ import { getDateDDMMYYYY } from "../../../utils/getDate";
 import { formatTime } from "../../../utils/formatTime";
 import { useRef } from "react";
 import styles from './Chat.module.css';
-import { clientReadMessage } from "../../../services/firebase/db/support";
+import { readMessage } from "../../../redux/supportChat/support";
 
 export default function useUserChatLogical() {
   const { user } = useAppSelector((s) => s.auth)
@@ -48,7 +47,7 @@ export default function useUserChatLogical() {
 
   useEffect(() => {
     if (!user?.email) return
-    // getMessages(user?.email);
+    
     const callback = (data: messageDataUserI) => {
       
       // const messagesArr = Object.values(data);
@@ -56,8 +55,10 @@ export default function useUserChatLogical() {
       // const getLS = localStorage.getItem('lastMessage') as string
       // const lastMessage = messagesArr[length - 1];
       // const lastMessageLS = JSON.parse(getLS);
+    
       if (data.isIncoming) dispatch(setIsIncoming());
       delete data.isIncoming;
+      delete data.isIncomingAdmin
       
       setMessages(data);
 
@@ -65,7 +66,7 @@ export default function useUserChatLogical() {
      
       
       // if (lastMessageLS && lastMessageLS.id === lastMessage.id) return;
-      
+        //  if (lastMessage.is) dispatch(setIsIncoming());
 
      
 
@@ -144,9 +145,10 @@ export default function useUserChatLogical() {
   useEffect(() => {
     scrollDown(ref)
     if (isOpen) {
-      clientReadMessage(user?.email!);
-      dispatch(setNotIsIncoming())
-      console.log('close in');
+      // clientReadMessage(user?.email!);
+      // dispatch(setNotIsIncoming())
+      // console.log('close in');
+      dispatch(readMessage())
       
     }
   },[memoMessages, isOpen])

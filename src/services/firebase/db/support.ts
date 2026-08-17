@@ -1,7 +1,9 @@
-import { doc, getDocs, getDoc,deleteDoc,collection,setDoc,updateDoc} from "firebase/firestore";
+import { doc, getDocs, getDoc,collection,setDoc,updateDoc} from "firebase/firestore";
 import { APP_DB } from "..";
 import type { messageDataUserI, messageDataI } from "../../../Pages/AdminPage/type";
 import { v4 as uuidv4 } from 'uuid';
+
+//--------------аdmin---------------------
 
 export const adminGetMessages = async () => {
   const colRef = collection(APP_DB, "messages");
@@ -46,21 +48,37 @@ export const adminSendMessage = async(userEmail:string,  message:string ) => {
   
 }
 
-// export const adminDeleteMessages = async (userEmail:string,timeUnix:string) => {
-//   const docRef = doc(APP_DB, 'messages', userEmail, timeUnix);
-
-//     try {
-//     await deleteDoc(docRef);
+export const adminReadMessage = async(userEmail:string) => {
+  const colRef = doc(APP_DB, "messages", userEmail);
+ 
+  try {
+    await updateDoc(colRef, { isIncomingAdmin:false});
+    return { ok: true, data: null}
+   
+  } catch (error) {
+    const e = error as string
+    return {ok:false,data:null,e:e}
+  }
   
-//     return { ok: true, data: null }
-//     } catch (error) {
-//     const e = error as string
-//     return {ok:false,data:null,e:e}
-//   }
+}
 
-// }
+
+export const adminEditMessage = async(userEmail:string,  message:string ,time:string) => {
+  const colRef = doc(APP_DB, "messages", userEmail);
+  
+
+  try {
+    await setDoc(colRef, { [time]: { message } },{merge:true});
+    return { ok: true, data: null}
+   
+  } catch (error) {
+    const e = error as string
+    return {ok:false,data:null,e:e}
+  }
+  
+}
     
-
+//--------------------client---------------------------
 
 export const clientGetMessages = async (userEmail:string) => {
     const docLink = doc(APP_DB, "messages",userEmail);
@@ -93,7 +111,11 @@ export const clientSendMessage = async(userEmail:string,  message:string ) => {
     }
   }
   try {
-    await setDoc(colRef, { ...dataToSend, isIncoming:false},{merge:true});
+    await setDoc(colRef, {
+      ...dataToSend,
+      isIncoming: false,
+      isIncomingAdmin:true,
+    }, { merge: true });
     return { ok: true, data: dataToSend}
    
   } catch (error) {

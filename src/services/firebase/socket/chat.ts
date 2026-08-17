@@ -8,11 +8,20 @@ export const connectLiveChatAdmin = (callBack:(data:messageDataI)=>void) => {
   const link = collection(APP_DB, 'messages');
   const data = {} as messageDataI
   const unsubscribe = onSnapshot(link, (snapshot) => {
-     snapshot.docs.forEach((doc) => {
+    // snapshot.docChanges().forEach((change) => { 
+    //   console.log(change, 'change');
+    //   console.log(change.doc.data(), 'data');
+      
+    // })
+
+    snapshot.docChanges().forEach((change) => {
+      const doc = change.doc;
+      console.log(doc.data(), 'ddddd')
+      console.log(doc.id, 'ddddd')
        
         data[doc.id]= {...doc.data(),}
           callBack( data)
-        });
+     });
   
   })
   return unsubscribe
