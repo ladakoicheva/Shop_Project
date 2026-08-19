@@ -4,13 +4,17 @@ import { adminSendMessage } from '../../../services/firebase/db/support';
 import { connectLiveChatAdmin } from '../../../services/firebase/socket/chat';
 import { adminEditMessage } from '../../../services/firebase/db/support';
 // import { useAppDispatch } from '../../../redux/type';
+import { useAppSelector } from '../../../redux/type';
+import { adminDeleteMessage } from '../../../services/firebase/db/support';
+import type { MessageItem } from '../../../redux/supportChat/type';
 
 export default function useAdminPageLogical() {
   const [inputValue, setInputValue] = useState<string>('');
   const [messages, setMessages] = useState<messageDataI>({});
-  const [isEditing,setIsEditing]= useState({is:false,time:''})
+  const [isEditing, setIsEditing] = useState({ is: false, time: '' })
+  
   // const dispatch = useAppDispatch();
-
+const {user} = useAppSelector((s)=>s.auth)
 
   useEffect(() => {
     // const getMessages = async () => {
@@ -33,9 +37,10 @@ export default function useAdminPageLogical() {
   }, []);
 
   
-  const sendMessage = async(email:string) => {
-       if (inputValue.trim() === "") return
-      const res = await adminSendMessage(email, inputValue);
+  const sendMessage = async (email: string, file: File | null) => {
+      
+       if (inputValue.trim() === "" && !file) return
+      const res = await adminSendMessage(email, inputValue,file,user?.uid! );
       
     if (res.ok) {
         setMessages((prevMessages) => ({
@@ -63,6 +68,13 @@ export default function useAdminPageLogical() {
     }
   }
 
+  const deleteMessage = async (email: string, message: MessageItem, time: string) => {
+     await adminDeleteMessage(email, message, time,user?.uid!);
+   
+  }
+
+
+
   const setEdit = (data:{is:boolean,time:string}) => {
     setIsEditing(data)
   }
@@ -75,7 +87,8 @@ export default function useAdminPageLogical() {
       isEditing,
       sendMessage,
       changeInputValue,
-      setEdit
+      setEdit,
+       deleteMessage
 
     }
   )

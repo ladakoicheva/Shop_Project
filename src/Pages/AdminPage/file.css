@@ -1,0 +1,36 @@
+.cont-file-c {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: fit-content;
+  height: fit-content;
+}
+.file-c {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.img-c{
+  position: absolute;
+  bottom:70px;
+  left: 20px;
+  width:  100px;
+  /* height: 100px; */
+}
+
+.img-c  span{
+  cursor: pointer;
+ position: absolute;
+ top: 0;
+ right: 0;
+ font-size: large;
+}
+
+.img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

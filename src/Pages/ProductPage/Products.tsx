@@ -88,13 +88,13 @@ export default function Products() {
 
       switch (type) {
         case "added":
-          console.log('added')
+        
           return addProduct(data)
         case "modified":
-          console.log("Обновлен:", data);
+          
           return updateProducts(data)
         case "removed":
-          console.log("Удален:", data);
+         
           return deleteItem(data);
       }
     }

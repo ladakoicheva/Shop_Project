@@ -8,7 +8,7 @@ export default function Chat() {
   const dispatch = useAppDispatch()
   const { isOpen,isincoming } = useAppSelector((s) => s.support);
   const { user } = useAppSelector((s) => s.auth);
-  console.log(isincoming)
+
  
   if(!user) return null
   return (

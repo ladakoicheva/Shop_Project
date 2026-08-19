@@ -16,8 +16,7 @@ export function HistoryItemPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  console.log(currentItem)
-
+  
   const repeatPurchase = () => {
     if(!currentItem)return
    
@@ -55,7 +54,7 @@ export function HistoryItemPage() {
 
           <li className='product-item' key={el.id}>
             <div className='productImg'>
-              <img src={el.img} alt={el.name} />
+              <img src={el.img!} alt={el.name} />
             </div>
 
             <div className='product-info'>

@@ -2,6 +2,7 @@ export interface MessageItem {
   id: string;
   message: string;
   is: boolean;
+  file?:string,
 }
 
 

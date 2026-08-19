@@ -25,8 +25,7 @@ function App() {
   const { isLoadingApp,isLoading} = useAppSelector((s) => s.loading)
   
   const dispatch = useAppDispatch();
-  console.log(isLoadingApp)
-  
+ 
   useEffect(() => {
       dispatch(connectToApp())//! autorisation user ...
   }, [])

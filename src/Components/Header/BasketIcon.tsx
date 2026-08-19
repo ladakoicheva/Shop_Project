@@ -7,7 +7,7 @@ import  { memo } from "react"
 
  function BasketIcon() {
   const basket = useAppSelector((s) => s.basket.data)
-  console.log('render basketicon')
+
   return (
    <div className={styles.basketWrapper}>
             <Link to='/basket'><span className={styles.basketIcon}>🛒</span></Link>

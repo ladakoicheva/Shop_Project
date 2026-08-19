@@ -1,8 +1,10 @@
-import { doc, getDocs, getDoc,collection,setDoc,updateDoc} from "firebase/firestore";
+import { doc, getDocs, getDoc,collection,setDoc,updateDoc,deleteDoc,deleteField} from "firebase/firestore";
 import { APP_DB } from "..";
 import type { messageDataUserI, messageDataI } from "../../../Pages/AdminPage/type";
 import { v4 as uuidv4 } from 'uuid';
-
+import { addImgToFirebase } from "./products";
+import type { MessageItem } from "../../../redux/supportChat/type";
+import { deleteImgFromStore } from "./products";
 //--------------аdmin---------------------
 
 export const adminGetMessages = async () => {
@@ -27,17 +29,27 @@ export const adminGetMessages = async () => {
 
 }
 
-export const adminSendMessage = async(userEmail:string,  message:string ) => {
+export const adminSendMessage = async (userEmail: string, message: string, file: File | null = null, uid: string) => {
+  console.log(file)
   const colRef = doc(APP_DB, "messages", userEmail);
   const time = Date.now()
-  const dataToSend :messageDataUserI= {
+  const id = uuidv4()
+   const dataToSend :messageDataUserI= {
     [time]: {
       is: true,
       message,
-      id: uuidv4(),
+      id,
+     
     }
   }
+
   try {
+    if (file) {
+    const res = await addImgToFirebase(file, id, uid);
+    console.log(res)
+    const data = res.data as string
+    if(res.ok) dataToSend[time]['file'] = data
+  }
     await setDoc(colRef, { ...dataToSend, isIncoming: true },{merge:true});
     return { ok: true, data: dataToSend}
    
@@ -47,6 +59,47 @@ export const adminSendMessage = async(userEmail:string,  message:string ) => {
   }
   
 }
+
+export const adminDeleteMessage = async (userEmail: string, message:MessageItem ,time:string, uid: string) => {
+  const docRef = doc(APP_DB, "messages", userEmail );
+
+  try {
+    if (message.file) {
+    const res = await  deleteImgFromStore(uid,message.id)
+      console.log(res)
+      if(!res.ok) throw Error('unable to delete img')
+  
+  }
+     await updateDoc(docRef, {
+    [time]: deleteField()
+});
+    
+    return { ok: true, data: null }
+    
+   
+  } catch (error) {
+    const e = error as string
+    return {ok:false,data:null,e:e}
+  }
+  
+}
+// export const addImgToFirebase = async (file:any, id:string, uid:string):Promise<ResponseI<string|null>> => {
+//   if (file) {
+//     try {
+//       const link = ref(APP_STORAGE, `${uid}/${id}`);
+//       const snapShot = await uploadBytes(link, file)
+//       const url = await getDownloadURL(snapShot.ref)
+//       return { ok: true, data: url }
+//     } catch (e) {
+//       const error = e as string
+//       return { ok: false, data: null, e: error };
+//     }
+//   } else {
+//     return { ok: true, data: null };
+//   }
+
+
+
 
 export const adminReadMessage = async(userEmail:string) => {
   const colRef = doc(APP_DB, "messages", userEmail);

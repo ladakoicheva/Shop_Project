@@ -25,7 +25,7 @@ export const LocalStorageComponent = () => {
       try {
         const res = await fetch(`https://open.er-api.com/v6/latest/${currency}`);
         const data = await res.json();
-        console.log(data)
+        
         if (res.ok) {
           const ratesObj = {
             UAH: data.rates.UAH,
