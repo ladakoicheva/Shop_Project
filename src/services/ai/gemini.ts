@@ -27,68 +27,59 @@ export const generateSupportReply = async (
   const systemInstruction = supportSystemPromptRaw.replace('{{userEmail}}', userEmail);
 
   if (apiKey) {
-    try {
-      const contents = [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: `${systemInstruction}\n\nВот история переписки с клиентом:\n${conversationHistory.join(
-                '\n'
-              )}\n\nСгенерируй следующий краткий и вежливый ответ от имени службы поддержки:`,
-            },
-          ],
-        },
-      ];
+    const candidateModels = [
+      'gemini-3.1-flash-lite',
+      'gemini-3.5-flash-lite',
+      'gemini-3.6-flash',
+      'gemini-3.5-flash',
+      'gemini-flash-latest',
+    ];
 
-      // Primary: gemini-2.0-flash
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+    const contents = [
+      {
+        role: 'user',
+        parts: [
+          {
+            text: `${systemInstruction}\n\nВот история переписки с клиентом:\n${conversationHistory.join(
+              '\n'
+            )}\n\nСгенерируй следующий краткий и вежливый ответ от имени службы поддержки:`,
           },
-          body: JSON.stringify({ contents }),
-        }
-      );
+        ],
+      },
+    ];
 
-      if (response.ok) {
-        const data = await response.json();
-        const candidateText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (candidateText && candidateText.trim()) {
-          return candidateText.trim();
-        }
-      } else {
-        const errText = await response.text();
-        console.warn('Gemini 2.0 Flash call failed status:', response.status, errText);
-
-        // Fallback: gemini-1.5-flash
-        const fallbackResp = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    for (const model of candidateModels) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ contents }),
           }
         );
-        if (fallbackResp.ok) {
-          const fallbackData = await fallbackResp.json();
-          const text = fallbackData?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text && text.trim()) return text.trim();
+
+        if (response.ok) {
+          const data = await response.json();
+          const candidateText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (candidateText && candidateText.trim()) {
+            return candidateText.trim();
+          }
         } else {
-          const fallbackErrText = await fallbackResp.text();
-          console.error('Gemini 1.5 Flash fallback call failed status:', fallbackResp.status, fallbackErrText);
+          const errText = await response.text();
+          console.warn(`Gemini model ${model} call status ${response.status}:`, errText.slice(0, 150));
         }
+      } catch (err) {
+        console.error(`Error calling Gemini model ${model}:`, err);
       }
-    } catch (err) {
-      console.error('Error calling Gemini API:', err);
     }
   } else {
     console.warn('No Gemini API key found in VITE_GEMINI_API_KEY or VITE_FIREBASE_API_KEY');
   }
 
-  // Smart fallback if API Key is not set or API call fails
+  // Smart fallback if API Key is not set or all API calls hit limit
   return getFallbackReply(lastClientMessage || '');
 };
 
