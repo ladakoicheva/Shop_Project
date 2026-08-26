@@ -1,13 +1,13 @@
 
 
 .cont {
-  width: 500px;
+  /* width: 500px;
   height: 500px;
   background-color: green;
 
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 5px; */
 }
 .elem {
   flex: 50px 1;

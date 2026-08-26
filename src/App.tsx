@@ -50,9 +50,11 @@ function App() {
         <Route path='setting' element={<Setting />} />
         <Route path='history' element={<History />} />
         <Route path='/history/:id' element={<HistoryItemPage />} />
+       
         <Route path='*' element={<NoFound />}></Route> 
       </Routes> : <Routes>
-          <Route path='/' element={ <Admin />}/>
+          <Route path='/' element={<Admin />} />
+     
           <Route path='/:email' element={ <Admin />}/>
       </Routes>}
     

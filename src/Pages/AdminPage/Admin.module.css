@@ -116,6 +116,8 @@
 .fileImg{
   cursor: pointer;
   width: 60%;
+  min-width: 100px;
+  max-width: 250px;
 }
 
 .notification{

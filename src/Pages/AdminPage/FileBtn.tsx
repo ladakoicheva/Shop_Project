@@ -1,18 +1,23 @@
 import './file.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { messageDataI } from './type';
 
 type props = {
   getFile: (data: { imgFile: File, url: string }|null) => void,
-  url: string | null
+  messages: messageDataI
   
 }
 
-export default function FileBtn({getFile,url}:props) {
+export default function FileBtn({getFile,messages}:props) {
 
   const [file, setFile] = useState<null|{imgFile:File,url:string}>(null);
   
+  useEffect(() => {
+    if (!file?.imgFile) return;
+    setFile(null);
+  },[messages])
   
-  
+
   const previewFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(! e.target.files) return
     const inputFile = e.target.files[0];
@@ -30,13 +35,13 @@ export default function FileBtn({getFile,url}:props) {
   return (
     <>
       <div className='cont-file-c'>
-        {!url && <button className='plus-c'>+</button>}
+        {!file?.imgFile  && <button className='plus-c'>+</button>}
       <input type="file" onChange={previewFile} className='file-c' />
 
    
       </div>
       
-         {url &&  <div className='img-c'><img src={url }  className='img'/> <span onClick={()=>getFile(null)}>×</span></div>}
+         {file?.url &&  <div className='img-c'><img src={file?.url }  className='img'/> <span onClick={()=>setFile(null)}>×</span></div>}
     </>
     
   )

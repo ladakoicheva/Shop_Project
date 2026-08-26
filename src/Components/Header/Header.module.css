@@ -24,6 +24,7 @@
 }
 
 .basketWrapper {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -84,4 +85,16 @@
 .header h4 {
   font-size: 1.2rem;
   margin: 0;
+}
+
+.basketCount{
+  position: absolute;
+  font-size: 10px;
+  top: -5px;
+  left: 10px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  color: white;
+  background: red;
 }

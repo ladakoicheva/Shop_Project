@@ -36,6 +36,7 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
   const getFile = (file:{ imgFile: File, url: string}|null) => {
     setFile(file)
   }
+  
   // const {user} = useAppSelector((s)=>s.auth)
 
   const messagesMemo = useMemo(() => {
@@ -64,6 +65,7 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
         {isNeededDate && <h2>{currentDate}</h2>}
         
         <div
+        
           onDoubleClick={() => messageItem.is ? editMessage(messageItem.message, time) : null}
           className={messageItem.is ? styles.messageAdmin : styles.messageClient}>
           
@@ -78,7 +80,7 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
   
    useEffect(() => {
      scrollDown(ref);
-     if(file) setFile(null)
+  
     },[messagesMemo])
 
   useEffect(() => {
@@ -107,7 +109,7 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
           <button onClick={() => isEditing.is ? editMessage(email, inputValue, isEditing.time) : sendMessage(email,file?.imgFile!)}//
         
             className={styles.sendBtn}>Send</button>
-          <FileBtn getFile={getFile} url = {file?.url!} />
+          <FileBtn getFile={getFile} messages = {messages} />
           
       </div>
         {/* <button onClick={()=>setUploadFile(true)}>+</button> */}
