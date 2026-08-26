@@ -1,6 +1,6 @@
 import './App.css'
 import CurrentProductPage from './Pages/CurrentProductPage/СurrentProductPage.js'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import AddProducts from './Pages/AddProdcuts.js';
 import Products from './Pages/ProductPage/Products.js';
 import Header from './Components/Header/Header.js';
@@ -35,7 +35,7 @@ function App() {
   // Сделать голосовые сообщение, распознавание голоса и голосовой ввод.
   return (
   
-    <BrowserRouter >
+    <HashRouter>
 
             <Header  />
           
@@ -65,7 +65,7 @@ function App() {
         
            
          
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
