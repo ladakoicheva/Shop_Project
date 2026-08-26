@@ -1,77 +1,76 @@
-import style from '../../Components/ProductCard/ProductCard.module.css'
-import { styleConfig, type styleConfigE } from './type'
-import { typeStyleE } from './type'
-
-
-
- const keyStyle = {
-  topBG: 'topBG',
-  bottomBG: 'bottomBG',
-  priceColor: 'priceColor',
-  nameColor: 'nameColor'
-}
+import style from '../../Components/ProductCard/ProductCard.module.css';
+import { styleConfig, type styleConfigE } from './type';
+import { typeStyleE } from './type';
 
 type props = {
-  openStyle:(keys:styleConfigE[], type: typeStyleE)=>void
-  getStyle:(name:string)=>string[]
-}
+  openStyle: (keys: styleConfigE[], type: typeStyleE) => void;
+  getStyle: (name: string) => string[];
+};
 
-export default function ExampleProductCard({ openStyle, getStyle }:props) {
- 
-
-  
+export default function ExampleProductCard({ openStyle, getStyle }: props) {
   const [colorName, fontSizeName] = getStyle('name');
   const [colorPrice, fontSizePrice] = getStyle('price');
   const [bgColor] = getStyle('bg');
 
-
-
-
   return (
-    <>
-      <article className={style.productCard} style={{ maxWidth: '20%', background: bgColor }} >
-        <div
-          onClick={() => {
-            const s = styleConfig.bg
-            openStyle([s], typeStyleE.bg)
+    <article
+      className={style.productCard}
+      style={{
+        width: '100%',
+        maxWidth: '280px',
+        background: bgColor || '#ffffff',
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        const s = styleConfig.bg;
+        openStyle([s], typeStyleE.bg);
+      }}
+    >
+      <div className={style.imgWrapper}>
+        <img
+          className={style.productImg}
+          src="https://img.joomcdn.net/7395a4bf7ca6e4e56be137088a9ce9deb834c1e0_original.jpeg"
+          alt="Preview Product"
+        />
+        <span className={`${style.inStockBadge} ${style.inStock}`}>✓ В наличии</span>
+      </div>
+
+      <div className={style.productHeader}>
+        <h3
+          onClick={(e) => {
+            e.stopPropagation();
+            openStyle([styleConfig.color, styleConfig.fontSize], typeStyleE.name);
           }}
-          className={style.img} slot={keyStyle.topBG} >
-          <img src='https://img.joomcdn.net/7395a4bf7ca6e4e56be137088a9ce9deb834c1e0_original.jpeg' alt="" slot={keyStyle.topBG} />
-          <span className={style.inStockSpan} style={{ color: 'green' }} slot={keyStyle.topBG}> ◉ in Stock</span>
-        </div>
-        <div  slot={keyStyle.bottomBG}>
+          className={style.productName}
+          style={{
+            color: colorName,
+            fontSize: fontSizeName ? `${fontSizeName}px` : undefined,
+          }}
+        >
+          Образец товара
+        </h3>
+      </div>
 
-          <div style={{ width: 'fit-content' }} slot={keyStyle.nameColor} className={style.product}>
-            <h3 onClick={() => {
-              
-              openStyle([styleConfig.color, styleConfig.fontSize], typeStyleE.name
-              )
-            }} style={{ color: colorName, fontSize: `${fontSizeName}px` }} slot={keyStyle.nameColor}>Product name</h3>
+      <section className={style.infoSection}>
+        <div className={style.buyRow}>
+          <h2
+            onClick={(e) => {
+              e.stopPropagation();
+              openStyle([styleConfig.color, styleConfig.fontSize], typeStyleE.price);
+            }}
+            style={{
+              color: colorPrice || '#10b981',
+              fontSize: fontSizePrice ? `${fontSizePrice}px` : '1.3rem',
+              fontWeight: 800,
+            }}
+          >
+            200 USD
+          </h2>
+          <div className={style.basketControls}>
+            <button className={style.actionBtn}>+</button>
           </div>
-
-          <section className={style.info} slot={keyStyle.bottomBG}>
-            <div slot={keyStyle.bottomBG} className={style.buyInfo} style={{ width: 'fit-content' }}>
-              <h2 style={{ width: 'fit-content', color: colorPrice, fontSize: `${fontSizePrice}px` }} slot={keyStyle.priceColor} onClick={() => {
-             
-                openStyle([styleConfig.color, styleConfig.fontSize], typeStyleE.price)
-              }}> 200 USD</h2>
-            </div>
-
-          </section>
-
         </div>
-
-      </article>
-
-    </>
-  )
+      </section>
+    </article>
+  );
 }
-
-// const openName = () => {
-//   setStyle({
-//     isOpen: true,
-//     types: ['color', 'fontSize'],
-//     datas: ['#000000', '16'],
-//     title: ['Цвет текста', 'Размер текста']
-//   })
-// }

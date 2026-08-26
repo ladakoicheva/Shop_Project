@@ -1,87 +1,144 @@
-import { useNavigate, useParams } from "react-router-dom"
-import { getOneProduct } from "../../services/firebase/db/products";
-import { useEffect } from "react";
-import { useState } from "react";
-import styles from './CurrentProductPage.module.css'
-import { Link } from "react-router-dom";
-import { addToBasket,deleteFromBasket } from "../../redux/basket/basket";
-import { useAppDispatch,useAppSelector } from "../../redux/type";
-import { openLoading, closeLoading } from "../../redux/loading/loading";
-import type { productI } from "../../../types/types";
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { getOneProduct } from '../../services/firebase/db/products';
+import { useEffect, useState } from 'react';
+import styles from './CurrentProductPage.module.css';
+import { addToBasket, deleteFromBasket } from '../../redux/basket/basket';
+import { useAppDispatch, useAppSelector } from '../../redux/type';
+import { openLoading, closeLoading } from '../../redux/loading/loading';
+import type { productI } from '../../../types/types';
+import { CartIcon, CheckIcon, CloseIcon } from '../../utils/svgIcons';
+import { convector } from '../../utils/convector';
 
 export default function CurrentProductPage() {
-  const [currentProduct, setCurrentProduct] = useState<productI|null>(null);
+  const [currentProduct, setCurrentProduct] = useState<productI | null>(null);
 
   const navigate = useNavigate();
-  const params = useParams();
+  const params = useParams<{ uid: string; id: string }>();
   const dispatch = useAppDispatch();
-  const basket = useAppSelector((s)=>s.basket.data)
-  // const { openLoading, closeLoading } = auth
-  const isInBasket = currentProduct ?basket[currentProduct.id]:false
+  const { settings, rates } = useAppSelector((s) => s.auth);
+  const basket = useAppSelector((s) => s.basket.data);
+  const isInBasket = currentProduct ? basket[currentProduct.id] : false;
 
   useEffect(() => {
-
-    
-    //loading
     async function getCurrentProduct() {
+      if (!params.uid || !params.id) return;
       dispatch(openLoading());
-      const res = await getOneProduct(params.uid!, params.id!);
+      const res = await getOneProduct(params.uid, params.id);
 
-      if (res.ok) {
-        setCurrentProduct(res.data!)
-      }
-      if (res.ok && !res.data) {
-        navigate("*")
+      if (res.ok && res.data) {
+        setCurrentProduct(res.data);
+      } else if (res.ok && !res.data) {
+        navigate('*');
       }
       dispatch(closeLoading());
-
     }
-    getCurrentProduct()
+    getCurrentProduct();
+  }, [params.uid, params.id, dispatch, navigate]);
 
-    
+  if (!currentProduct) return null;
 
-  }, [params.uid, params.id])
+  const convertedPrice = convector(
+    settings.currency || 'USD',
+    currentProduct.currency || 'USD',
+    currentProduct.price,
+    rates
+  );
 
   return (
-    <>
-      {currentProduct &&
-        <div className={styles.wrapper}>
+    <div className={styles.container}>
+      {/* Breadcrumb Navigation */}
+      <nav className={styles.breadcrumb}>
+        <Link to={`/products/${params.uid}`}>Каталог товаров</Link>
+        <span>&gt;</span>
+        <span>{currentProduct.name}</span>
+      </nav>
 
-          <aside className={styles.productImg}>
-            <nav>
-              <Link to={`/products/${params.uid}`}>Products &gt; </Link>
-              <Link to={`/products/${params.uid}/product/${params.id}`}>{currentProduct.name} </Link>
-            </nav>
-            <img src={currentProduct.img ? currentProduct.img : '/No-Image.svg.png'} alt="" />
-          </aside>
-          <section className={styles.productInfo}>
-            <h1>{currentProduct.name}</h1>
-            <h2>{currentProduct.inStock ?
-              'in Stock' : 'out of Stock'}</h2>
-            <span>
-              {currentProduct.rating}/5
+      {/* Main Product Card */}
+      <div className={styles.productCard}>
+        {/* Left Gallery */}
+        <div className={styles.imgGallery}>
+          <img
+            className={styles.productImg}
+            src={currentProduct.img ? currentProduct.img : '/No-Image.svg.png'}
+            alt={currentProduct.name}
+          />
+        </div>
+
+        {/* Right Details */}
+        <div className={styles.details}>
+          <h1 className={styles.title}>{currentProduct.name}</h1>
+
+          <div className={styles.statusRow}>
+            <span
+              className={`${styles.stockBadge} ${
+                currentProduct.inStock ? styles.inStock : styles.outOfStock
+              }`}
+            >
+              {currentProduct.inStock ? (
+                <>
+                  <CheckIcon size={16} color="#059669" /> В наличии
+                </>
+              ) : (
+                <>
+                  <CloseIcon size={16} color="#e11d48" /> Нет в наличии
+                </>
+              )}
             </span>
-            {currentProduct.category}
 
-            <h3>{currentProduct.price} {currentProduct.currency}</h3>
-            <div className={styles.btns}>
-              {!isInBasket ?
-                <button onClick={() => dispatch(addToBasket(currentProduct))} >Add to basket</button>
-                :
-                <div className={styles.basketBtns} >
-                  <button onClick={() => dispatch(addToBasket(currentProduct))} >+</button>
-                  {basket[currentProduct.id]?.count}
-                  <button onClick={() => dispatch(deleteFromBasket(currentProduct))}>-</button>
-                </div>
-              }
-              <button>Buy now</button>
-            </div>
+            {currentProduct.rating && (
+              <span className={styles.ratingBadge}>★ {currentProduct.rating} / 5</span>
+            )}
 
+            {currentProduct.category && (
+              <span className={styles.categoryTag}>{currentProduct.category}</span>
+            )}
+          </div>
 
-          </section>
+          <div className={styles.priceBox}>
+            <span className={styles.price}>{convertedPrice}</span>
+            <span className={styles.currency}>{settings.currency || 'USD'}</span>
+          </div>
 
-        </div >
-      }</>
-  )
+          <div className={styles.actionRow}>
+            {!isInBasket ? (
+              <button
+                className={styles.addBtn}
+                onClick={() => dispatch(addToBasket(currentProduct))}
+                style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              >
+                <CartIcon size={20} color="#ffffff" />
+                <span>Добавить в корзину</span>
+              </button>
+            ) : (
+              <div className={styles.quantityControls}>
+                <button
+                  className={styles.qtyBtn}
+                  onClick={() => dispatch(addToBasket(currentProduct))}
+                >
+                  +
+                </button>
+                <span className={styles.qtyCount}>{basket[currentProduct.id]?.count}</span>
+                <button
+                  className={styles.qtyBtn}
+                  onClick={() => dispatch(deleteFromBasket(currentProduct))}
+                >
+                  -
+                </button>
+              </div>
+            )}
+
+            <button
+              className={styles.buyNowBtn}
+              onClick={() => {
+                if (!isInBasket) dispatch(addToBasket(currentProduct));
+                navigate('/basket');
+              }}
+            >
+              Купить сейчас
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
-

@@ -1,49 +1,89 @@
 .filterProducts {
-  margin: 0 auto;
- width: 70vw;
+  width: 92%;
+  max-width: 1240px;
+  margin: 2rem auto 1.5rem auto;
 }
 
-
-.filterProducts input {
-  width: 50%;
-  padding: 15px 20px;
-  background: url('/search-286-64.png') no-repeat left;
-  background-size: 20px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  outline: none;
+.searchBar {
+  background: white;
+  border-radius: 20px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.06);
+  border: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  transition: all 0.3s ease;
 }
 
-.selectBgRight {
-
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+.searchBar:focus-within {
+  border-color: #10b981;
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15);
 }
 
-.filterProducts input,
-select {
+.searchInputWrapper {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  padding: 10px 18px;
+  background: #f8fafc;
+  border-radius: 14px;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+}
 
-  background-color: white;
+.searchIcon {
+  font-size: 1.2rem;
+}
+
+.searchInput {
+  width: 100%;
   border: none;
-
-
-}
-
-.filterProducts input{
-  border-right: 1px solid rgb(211, 207, 207);
-}
-
-
-.filterProducts select {
-  width: 25%;
-  padding: 14px 20px;
+  background: transparent;
   outline: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
 }
 
-.filterProducts select:focus {
-  outline: none;
+.selectGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.filterProducts input:focus {
+.selectInput {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
   outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.selectInput:hover,
+.selectInput:focus {
+  border-color: #10b981;
+  background: white;
+  color: #10b981;
+}
+
+@media (max-width: 768px) {
+  .searchBar {
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .searchInputWrapper,
+  .selectGroup,
+  .selectInput {
+    width: 100%;
+  }
 }

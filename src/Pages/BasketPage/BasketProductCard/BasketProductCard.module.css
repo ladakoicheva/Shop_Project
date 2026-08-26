@@ -1,63 +1,94 @@
 .basketProductCard {
-  border: 1px solid gray;
-  border-radius: 15px;
-  padding-top: 30px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 30px;
-  height: 100%;
-  width: 100%;
   background: white;
-
+  border-radius: 18px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.basketProductCard__wrapper {
+.basketProductCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
 
+.wrapper {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
-  gap: 15px;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
 }
 
-.basketProductCard__image {
-  width: 100px;
-  height: 100px;
-  border-radius: 20%;
-
+.imageWrapper {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8fafc;
   flex-shrink: 0;
-
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.basketProductCard__image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.productName {
+  flex: 1;
+  min-width: 160px;
 }
 
+.productTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
 
-.basketBtn {
+.quantityGroup {
   display: flex;
   align-items: center;
   gap: 10px;
-
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 12px;
 }
 
-.basketProductCard__productName {
-  flex-basis: 30%;
- 
+.qtyBtn {
+  background: white;
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.basketProductCard__productQuantity,
-.basketProductCard__productPrice {
-  flex-basis: 15%;
- 
+.countText {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #0f172a;
+  min-width: 20px;
+  text-align: center;
 }
 
+.priceDisplay {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #00a046;
+  min-width: 100px;
+  text-align: right;
+}
 
-.basketBtn button {
-  padding: 5px 10px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+@media (max-width: 640px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .priceDisplay {
+    text-align: left;
+  }
 }

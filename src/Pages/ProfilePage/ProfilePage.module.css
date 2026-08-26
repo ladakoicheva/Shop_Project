@@ -1,0 +1,235 @@
+.profileWrapper {
+  max-width: 1240px;
+  width: 92%;
+  margin: 2rem auto 4rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* User Card Hero */
+.userHeroCard {
+  background: white;
+  border-radius: 28px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 35px rgba(16, 185, 129, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  border: 1px solid #e2e8f0;
+}
+
+.userAvatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  font-weight: 900;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.userEmail {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.userBadges {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.roleBadge {
+  background-color: #d1fae5;
+  color: #047857;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.uidBadge {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Tabs Navigation */
+.tabsNav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 2px;
+  overflow-x: auto;
+}
+
+.tabBtn {
+  background: transparent;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 14px 22px;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tabBtn:hover {
+  color: #10b981;
+}
+
+.activeTab {
+  color: #10b981;
+  border-bottom-color: #10b981;
+  background-color: #ecfdf5;
+}
+
+/* Tab Content Area */
+.tabContent {
+  background: white;
+  border-radius: 28px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  min-height: 400px;
+}
+
+/* Favorites Grid */
+.favGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.favCard {
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.favCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(16, 185, 129, 0.12);
+}
+
+.favImgWrapper {
+  width: 100%;
+  height: 160px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.favImgPlaceholder {
+  font-size: 2.5rem;
+}
+
+.favInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.favTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.favPrice {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.favActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.viewBtn {
+  flex: 1;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.removeFavBtn {
+  background: #ffe4e6;
+  color: #f43f5e;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .profileWrapper {
+    width: 95%;
+    margin-top: 1rem;
+  }
+
+  .userHeroCard {
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .userBadges {
+    justify-content: center;
+  }
+
+  .tabContent {
+    padding: 1.5rem;
+  }
+}

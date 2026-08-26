@@ -1,100 +1,159 @@
-:root {
-  --black: #0B0F19;
-  --white: #F5F5F3;
-  --padding: 16px 0;
- 
-}
-
 .header {
-  color: var(--black);
   width: 100%;
-
-  box-sizing: border-box;
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 99;
-  padding: var(--padding);
-  background-color: var(--white);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 25px rgba(16, 185, 129, 0.06);
+  padding: 14px 0;
+  transition: all 0.3s ease;
 }
 
-.header button {
-  font-size: 0.8rem;
-  max-width: fit-content;
+.navContainer {
+  width: 92%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.brandLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #0f172a;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.brandLogo:hover {
+  transform: scale(1.03);
+}
+
+.logoIcon {
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #10b981, #34d399);
+  padding: 6px 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.logoText {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.mainNav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.navLink {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #475569;
+  padding: 10px 18px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+}
+
+.navLink:hover {
+  color: #10b981;
+  background-color: #ecfdf5;
+  transform: translateY(-1px);
+}
+
+.activeLink {
+  color: #10b981;
+  background-color: #d1fae5;
+}
+
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
 }
 
 .basketWrapper {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 5px;
-
+  justify-content: center;
 }
 
 .basketIcon {
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s ease;
-
 }
 
 .basketIcon:hover {
-  transform: scale(1.2);
-
+  transform: scale(1.12);
 }
 
-.navContainer {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-.mainNav {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-
-}
-
-.userActions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  justify-content: flex-end;
-}
-
-.header a {
-  text-decoration: none;
-  font-size: 1.2rem;
-  color: inherit;
-  white-space: nowrap;
-  
-}
-
-.header a:hover {
-  color: red;
-}
-
-.header h4 {
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-.basketCount{
+.basketCount {
   position: absolute;
-  font-size: 10px;
-  top: -5px;
-  left: 10px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
+  top: -6px;
+  right: -6px;
+  background: #f43f5e;
   color: white;
-  background: red;
+  font-size: 0.75rem;
+  font-weight: 800;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.4);
+}
+
+.hamburgerBtn {
+  display: none;
+  background: transparent;
+  font-size: 1.6rem;
+  color: #0f172a;
+  padding: 4px 8px;
+}
+
+@media (max-width: 768px) {
+  .hamburgerBtn {
+    display: block;
+  }
+
+  .mainNav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid #e2e8f0;
+    gap: 1rem;
+  }
+
+  .mobileNavOpen {
+    display: flex;
+  }
+
+  .navLink {
+    width: 100%;
+    text-align: center;
+  }
 }

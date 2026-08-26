@@ -1,10 +1,9 @@
 import styles from './Chat.module.css'
-import {  useAppDispatch, useAppSelector } from '../../../redux/type'
+import { useAppSelector } from '../../../redux/type'
 import useUserChatLogical from './useUserChatLogical'
 
 
 export default function ChatModal() {
-  const dispatch = useAppDispatch()
   const { isOpen} = useAppSelector((s) => s.support)
   const {
       ref,

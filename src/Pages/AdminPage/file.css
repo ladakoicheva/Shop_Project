@@ -3,33 +3,77 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  width: fit-content;
-  height: fit-content;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
+
+.cont-file-c:hover {
+  background: #e2e8f0;
+  border-color: #10b981;
+}
+
+.plus-c {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #475569;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
 .file-c {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-}
-.img-c{
-  position: absolute;
-  bottom:70px;
-  left: 20px;
-  width:  100px;
-  /* height: 100px; */
-}
-
-.img-c  span{
   cursor: pointer;
- position: absolute;
- top: 0;
- right: 0;
- font-size: large;
 }
 
-.img{
+.img-c {
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  width: 90px;
+  height: 90px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 2px solid white;
+}
+
+.img-c span {
+  cursor: pointer;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.img {
   width: 100%;
   height: 100%;
   object-fit: cover;

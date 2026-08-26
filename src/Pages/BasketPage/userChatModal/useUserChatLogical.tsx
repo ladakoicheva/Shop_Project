@@ -46,44 +46,25 @@ export default function useUserChatLogical() {
  
 
   useEffect(() => {
-    if (!user?.email) return
-    
+    if (!user?.email) return;
+
     const callback = (data: messageDataUserI) => {
-      
-      // const messagesArr = Object.values(data);
-      // const length = messagesArr.length;
-      // const getLS = localStorage.getItem('lastMessage') as string
-      // const lastMessage = messagesArr[length - 1];
-      // const lastMessageLS = JSON.parse(getLS);
-    
-      if (data.isIncoming) dispatch(setIsIncoming());
-      delete data.isIncoming;
-      delete data.isIncomingAdmin
-      
-      setMessages(data);
+      if (!data) return;
+      const copy = { ...data };
+      if (copy.isIncoming) dispatch(setIsIncoming());
+      delete copy.isIncoming;
+      delete copy.isIncomingAdmin;
 
-      if(length === 0) return
-     
-      
-      // if (lastMessageLS && lastMessageLS.id === lastMessage.id) return;
-        //  if (lastMessage.is) dispatch(setIsIncoming());
-
-     
-
-
-     
-      
-    }
+      setMessages(copy);
+    };
 
     const unsubscribe = connectLiveChatClient(callback, user?.email);
     return unsubscribe;
-  }, [user?.email])
-  
- const memoMessages = useMemo(() => {
+  }, [user?.email, dispatch]);
 
+  const memoMessages = useMemo(() => {
     const times = Object.keys(messages);
-          //@ts-ignore
-    times.sort((a: string, b: string) => a - b);
+    times.sort((a, b) => Number(a) - Number(b));
     let currentDate = '';
      const showMessages = () => {
       const res = times.map((time) => {
@@ -110,10 +91,14 @@ export default function useUserChatLogical() {
             className={messageItem.is ?
               styles.messageTextAdmin :
               styles.messageTextClient
-              
             }
-          
-          >{messageItem.message}
+          >
+            {messageItem.file && (
+              <a href={messageItem.file} target="_blank" rel="noopener noreferrer">
+                <img className={styles.fileImg} src={messageItem.file} alt="attachment" />
+              </a>
+            )}
+            {messageItem.message && <div>{messageItem.message}</div>}
           </div>
         </li>
     
@@ -142,16 +127,14 @@ export default function useUserChatLogical() {
 
 
 
+  const { isincoming } = useAppSelector((s) => s.support);
+
   useEffect(() => {
-    scrollDown(ref)
-    if (isOpen) {
-      // clientReadMessage(user?.email!);
-      // dispatch(setNotIsIncoming())
-      // console.log('close in');
-      dispatch(readMessage())
-      
+    scrollDown(ref);
+    if (isOpen && isincoming) {
+      dispatch(readMessage());
     }
-  },[memoMessages, isOpen])
+  }, [isOpen, isincoming, messages, dispatch]);
  
 
   // useEffect(() => {

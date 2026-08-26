@@ -11,16 +11,20 @@ export default function Admin() {
   const params = useParams()
   // const {messages} = useAppSelector((s) => s.support);
   // adminGetMessages()
-   const{
+   const {
       inputValue,
       messages,
       editMessage,
       isEditing,
       sendMessage,
       changeInputValue,
-     setEdit,
-       deleteMessage
-    }= useAdminPageLogical()
+      setEdit,
+      deleteMessage,
+      isAiThinking,
+      aiAutoReplyMap,
+      toggleAiAutoReply,
+      generateAiSuggestion,
+    } = useAdminPageLogical()
 
   
   
@@ -36,7 +40,11 @@ export default function Admin() {
         isEditing={isEditing}
         setIsEditing = {setEdit}
         sendMessage={sendMessage}
-         deleteMessage={ deleteMessage}
+        deleteMessage={ deleteMessage}
+        isAiThinking={isAiThinking}
+        isAiAutoReplyEnabled={!!aiAutoReplyMap[params.email]}
+        onToggleAiAutoReply={() => toggleAiAutoReply(params.email!)}
+        onGenerateAiSuggestion={() => generateAiSuggestion(params.email!)}
         />}
    </div>
   

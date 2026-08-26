@@ -1,4 +1,4 @@
-import { doc, getDocs, getDoc,collection,setDoc,updateDoc,deleteDoc,deleteField} from "firebase/firestore";
+import { doc, getDocs, getDoc,collection,setDoc,updateDoc,deleteField} from "firebase/firestore";
 import { APP_DB } from "..";
 import type { messageDataUserI, messageDataI } from "../../../Pages/AdminPage/type";
 import { v4 as uuidv4 } from 'uuid';
@@ -101,19 +101,18 @@ export const adminDeleteMessage = async (userEmail: string, message:MessageItem 
 
 
 
-export const adminReadMessage = async(userEmail:string) => {
+export const adminReadMessage = async (userEmail: string) => {
+  if (!userEmail) return { ok: false, data: null };
   const colRef = doc(APP_DB, "messages", userEmail);
  
   try {
-    await updateDoc(colRef, { isIncomingAdmin:false});
-    return { ok: true, data: null}
-   
+    await setDoc(colRef, { isIncomingAdmin: false }, { merge: true });
+    return { ok: true, data: null };
   } catch (error) {
-    const e = error as string
-    return {ok:false,data:null,e:e}
+    const e = error as string;
+    return { ok: false, data: null, e: e };
   }
-  
-}
+};
 
 
 export const adminEditMessage = async(userEmail:string,  message:string ,time:string) => {
@@ -179,19 +178,18 @@ export const clientSendMessage = async(userEmail:string,  message:string ) => {
 }
 
 
-export const clientReadMessage = async(userEmail:string) => {
+export const clientReadMessage = async (userEmail: string) => {
+  if (!userEmail) return { ok: false, data: null };
   const colRef = doc(APP_DB, "messages", userEmail);
  
   try {
-    await updateDoc(colRef, { isIncoming:false});
-    return { ok: true, data: null}
-   
+    await setDoc(colRef, { isIncoming: false }, { merge: true });
+    return { ok: true, data: null };
   } catch (error) {
-    const e = error as string
-    return {ok:false,data:null,e:e}
+    const e = error as string;
+    return { ok: false, data: null, e: e };
   }
-  
-}
+};
 
 
 

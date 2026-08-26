@@ -1,11 +1,67 @@
-.userInfo{
+.authContainer {
   display: flex;
- align-items: center;
-  gap: 15px;
-  width: fit-content;
-  
+  align-items: center;
 }
-.userInfo button{
-  width: fit-content;
-  height: fit-content;
+
+.loginBtn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s ease;
+}
+
+.loginBtn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 14px;
+}
+
+.userEmail {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logoutBtn {
+  background: #ffe4e6;
+  color: #f43f5e;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.logoutBtn:hover {
+  background: #f43f5e;
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .userEmail {
+    max-width: 80px;
+  }
 }

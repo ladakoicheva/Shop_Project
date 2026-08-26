@@ -1,76 +1,136 @@
 .productForm {
-  background-color: white;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  align-items: center;
+  gap: 1.25rem;
+  align-items: stretch;
   position: fixed;
-  z-index: 100;
-  top: 55%;
+  z-index: 1000;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(200px, 60vw, 500px);
-  aspect-ratio: 1/1;
-  padding: 30px;
-  border-radius: 8px;
-  overflow-y: scroll;
+  width: 90%;
+  max-width: 520px;
+  max-height: 85vh;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid #e2e8f0;
+  overflow-y: auto;
 }
 
-.productForm input,
+.formHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1rem;
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.close:hover {
+  color: #ef4444;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.formLabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.productForm input[type='text'],
+.productForm input[type='number'],
+.productForm input[type='file'],
 .productForm select {
-  padding: 6px 8px;
-  font-size: 16px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
   width: 100%;
-  background: gainsboro;
-  border: none;
-  border-radius: 5px;
-  color: rgb(40, 40, 40);
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  color: #0f172a;
   outline: none;
+  transition: all 0.2s ease;
 }
 
 .productForm input:focus,
 .productForm select:focus {
   background: white;
-  border: 1px solid rgba(170, 59, 255, 0.3);
+  border-color: #00a046;
+  box-shadow: 0 0 0 3px rgba(0, 160, 70, 0.15);
 }
 
-.productForm input::placeholder {
-  color: rgb(40, 40, 40);
-}
-
-.productForm label {
-  text-align: left;
-  margin-top: 10px;
-}
-
-.close {
-  position: absolute;
-  top: 2%;
-  left: 90%;
-  font-size: larger;
-  cursor: pointer;
+.errorMsg {
+  color: #ef4444;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .imgPreview {
   width: 100%;
   position: relative;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 1rem;
+  border: 1px dashed #cbd5e1;
 }
+
 .imgPreview img {
-  width: 40%;
-  aspect-ratio: 1/1;
+  max-width: 150px;
+  max-height: 150px;
   object-fit: contain;
-  
-
+  border-radius: 8px;
 }
 
-.imgPreview span {
+.removeImgBtn {
   position: absolute;
-  top: 1%;
-  left: 70%;
+  top: 8px;
+  right: 12px;
   cursor: pointer;
+  background: #fee2e2;
+  color: #ef4444;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 50%;
+  font-size: 0.9rem;
 }
 
-.imgPreview span:hover {
-  color: red;
+.submitBtn {
+  background: linear-gradient(135deg, #00a046, #00873a);
+  color: white;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 14px rgba(0, 160, 70, 0.35);
+  transition: all 0.2s ease;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
 }

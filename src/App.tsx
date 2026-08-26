@@ -6,9 +6,7 @@ import Products from './Pages/ProductPage/Products.js';
 import Header from './Components/Header/Header.js';
 import BasketPage from './Pages/BasketPage/BasketPage.js';
 import Loading from './Components/Loading/Loading.js'
-import Setting from './Pages/Setting/Setting.js';
 import NoFound from './Pages/404Page/NoFound.js';
-import History from './Pages/History/History.js';
 import HistoryItemPage from './Pages/History/HistoryItemPage/HistoryItemPage.js';
 import { LocalStorageComponent } from './LocalStorage/LocalStorageComponent.js';
 import HistorySync from './Pages/History/HistorySync.js'
@@ -20,9 +18,11 @@ import { connectToApp } from './redux/think.js';
 import Chat from './Pages/BasketPage/userChatModal/Chat.js';
 
 
+import ProfilePage from './Pages/ProfilePage/ProfilePage.js';
+
 function App() {
-  const { isAdmin,user } = useAppSelector((s) => s.auth)
-  const { isLoadingApp,isLoading} = useAppSelector((s) => s.loading)
+  const { isAdmin } = useAppSelector((s) => s.auth)
+  const { isLoadingApp } = useAppSelector((s) => s.loading)
   
   const dispatch = useAppDispatch();
  
@@ -47,8 +47,9 @@ function App() {
         <Route path='/products/:uid' element={<Products />} />
         <Route path='/products/:uid/product/:id' element={<CurrentProductPage />} />
         <Route path='basket' element={<BasketPage />} />
-        <Route path='setting' element={<Setting />} />
-        <Route path='history' element={<History />} />
+        <Route path='profile' element={<ProfilePage />} />
+        <Route path='setting' element={<ProfilePage />} />
+        <Route path='history' element={<ProfilePage />} />
         <Route path='/history/:id' element={<HistoryItemPage />} />
        
         <Route path='*' element={<NoFound />}></Route> 

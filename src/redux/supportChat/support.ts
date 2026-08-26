@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice,type PayloadAction  } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { stateI } from "./type";
 import type { RootState } from "../store";
 import { clientReadMessage } from "../../services/firebase/db/support";

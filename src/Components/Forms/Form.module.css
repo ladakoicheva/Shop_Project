@@ -1,32 +1,63 @@
 .userForm {
-  padding-left: 5%;
-  padding-right: 5%;
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  background-color: white;
-  border-radius: 8px;
+  align-items: stretch;
+  gap: 1rem;
+  background-color: transparent;
 }
 
-.userForm p {
-  margin-bottom: 10px;
+.userForm label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #334155;
+  text-align: left;
 }
 
 .userForm input {
-  padding: 12px 15px;
-  font-size: 16px;
-  border-radius: 5px;
-  background: rgb(211, 207, 207);
-  width: 80%;
-  color: rgb(40, 40, 40);
-  border: none;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  width: 100%;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
   outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-.userForm input::placeholder {
-  color: rgb(40, 40, 40);
+.userForm input:focus {
+  border-color: #00a046;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 160, 70, 0.15);
+}
+
+.userForm p {
+  font-size: 0.9rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.userForm p span {
+  color: #00a046;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.userForm button[type='submit'] {
+  background: linear-gradient(135deg, #00a046, #00873a);
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(0, 160, 70, 0.3);
+  transition: all 0.2s ease;
+}
+
+.userForm button[type='submit']:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
 }
