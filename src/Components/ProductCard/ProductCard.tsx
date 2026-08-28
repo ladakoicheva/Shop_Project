@@ -8,9 +8,7 @@ import { useAppDispatch } from '../../redux/type'
 import { deleteItemFromFav ,addToFav} from '../../redux/fav/fav'
 import type { AuthState } from '../../redux/auth/type'
 import Price from './Price'
-
-
-
+import { Image, ImageProduct, ImageEdit } from '../../utils/Image'
 
 interface dataI{
   [id: string]: {
@@ -59,7 +57,7 @@ function ProductCard({ product, onEdit, style, basketContext ,auth, isFavorit}:p
 
         <Link to={`product/${product.id}`}>
           <div className={styles.img} >
-            <img src={product.img || '/No-Image.svg.png'} alt="" />
+            <ImageProduct src={product.img} alt={product.name} />
             <span className={styles.inStockSpan} style={{ color: `${product.inStock ? 'green' : 'red'}` }}>{product.inStock ? '◉ in Stock' : '◉ out of Stock'} </span>
           </div>
         </Link>
@@ -68,8 +66,7 @@ function ProductCard({ product, onEdit, style, basketContext ,auth, isFavorit}:p
           
           <h3 style={{ color: style.namecolor, fontSize: `${style.namefontSize}px` }}>{product.name}</h3>
           <div className={styles.rating}>
-            {true && <img className='fav' onClick={onFavClick} src={ isFavorit ? images.star.on : images.star.off} alt="" />}
-            {/* {favorit && <img className='fav' onClick={onFavClick} src={favorit.src} alt="" />} */}
+            <Image src={isFavorit ? images.star.on : images.star.off} defaultSRC={images.star.off} onClick={onFavClick} className='fav' alt="favorite star" />
           </div>
         </div>
 
@@ -77,9 +74,6 @@ function ProductCard({ product, onEdit, style, basketContext ,auth, isFavorit}:p
 
           <div className={styles.buyInfo}  >
             <Price style = {style} product ={product} rates ={rates} />
-            {/* <h2 style={{ color: style.pricecolor, fontSize: `${style.pricefontSize}px` }}>
-              {convector( style.currency, product.currency,  product.price, rates )}
-              {style.currency}</h2 > */}
             
             <div className={styles.basketBtns} >
               <button onClick={basketContext.addToBasket} >+</button>
@@ -92,7 +86,7 @@ function ProductCard({ product, onEdit, style, basketContext ,auth, isFavorit}:p
         </section>
         {isOwner && <>
           <span className={styles.deleteBtn} onClick={deleteItem}>×</span>
-          <div className={styles.editBtn}><img src="/edit.png" onClick={onEdit} /> </div>
+          <div className={styles.editBtn}><ImageEdit onClick={onEdit} alt="edit" /> </div>
         </>}
 
       </article>
@@ -100,6 +94,7 @@ function ProductCard({ product, onEdit, style, basketContext ,auth, isFavorit}:p
     </li>
   )
 }
+
 const getIsRender = (prev: props, next: props) => {
   const prevCount = prev.basketContext.data[prev.product.id]?.count;
   const nextCount = next.basketContext.data[next.product.id]?.count
@@ -114,4 +109,3 @@ return true
 
 const memoComponent = memo(ProductCard, getIsRender)
 export default memoComponent
-// export default ProductCard

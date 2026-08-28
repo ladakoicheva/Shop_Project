@@ -1,148 +1,276 @@
 .productCard {
   width: 100%;
-  background: rgb(255, 255, 255);
-  transition: .3s all;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  font-size: 1.2rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.productCard:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-active);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
 .product {
-  margin: 0 auto;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  width: 80%;
+  margin: 16px auto 8px auto;
+  width: 90%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
 
+.product h3 {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
 }
 
 .img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  background-color: gray;
+  background-color: #0B0D0E;
   position: relative;
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
   overflow: hidden;
-
 }
 
 .productCard img {
   height: 100%;
   width: 100%;
   object-fit: cover;
-
-
-
-
+  transition: transform 0.4s ease;
 }
 
-
-
+.productCard:hover .img img {
+  transform: scale(1.04);
+}
 
 .inStockSpan {
-  max-width: fit-content;
-  max-height: fit-content;
   position: absolute;
-  top: 90%;
-  left: 68%;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  bottom: 12px;
+  right: 12px;
+  background-color: var(--accent-stock-bg);
+  color: var(--accent-stock);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--accent-stock);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .category {
-  margin: 0 auto;
-  width: 80%;
+  margin: 0 auto 12px auto;
+  width: 90%;
   text-align: left;
-  margin-bottom: 5%;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
 }
 
 .rating {
   display: flex;
-
+  align-items: center;
 }
 
 .rating img {
   border: none;
-  width: 40px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
-  align-self: flex-start;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
 
-
+.rating img:hover {
+  transform: scale(1.2);
 }
 
 .info {
-  text-align: left
+  text-align: left;
+  padding-bottom: 16px;
 }
 
 .info div {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .buyInfo {
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   display: flex;
-  gap: 5px;
-
-
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .buyInfo h2 {
-  color: #E6736A;
-  align-self: flex-start;
-
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
 }
 
-
-
+.basketBtns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--text-primary);
+}
 
 .basketBtns button {
-  margin-left: 5px
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-interactive);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.basketBtns button:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
 }
 
 .deleteBtn {
-  font-size: 30px;
+  font-size: 18px;
   position: absolute;
-  top: 2%;
-  left: 90%
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  color: #F3F4F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
 }
 
 .deleteBtn:hover {
-  cursor: pointer;
-  font-size: 35px;
-  transition: all 0.2s;
+  color: var(--accent-danger);
+  border-color: var(--accent-danger);
+  background: rgba(239, 68, 68, 0.2);
 }
 
 .editBtn {
-
   position: absolute;
-  top: 2%;
-  left: 2%;
-
-
+  top: 12px;
+  left: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
   cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
 }
 
 .editBtn img {
-  width: 30px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
+  filter: invert(1);
 }
 
-.editBtn img:hover {
-  width: 35px;
-  transition: all 0.2s;
+.editBtn:hover {
+  border-color: var(--border-active);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .additionalInfo span {
   position: absolute;
-  top: 5%
+  top: 5%;
+}
+
+@media (max-width: 640px) {
+  .productCard {
+    border-radius: 12px;
+  }
+
+  .product {
+    margin: 8px auto 4px auto;
+    width: 92%;
+  }
+
+  .product h3 {
+    font-size: clamp(0.85rem, 3.5vw, 1.05rem) !important;
+    word-break: break-word;
+    max-width: 100%;
+  }
+
+  .buyInfo {
+    width: 92%;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .buyInfo h2 {
+    font-size: clamp(0.82rem, 3.2vw, 0.98rem) !important;
+    word-break: break-word;
+    max-width: 100%;
+  }
+
+  .inStockSpan {
+    bottom: 6px;
+    right: 6px;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+
+  .basketBtns button {
+    width: 26px;
+    height: 26px;
+    font-size: 0.85rem;
+  }
+
+  .deleteBtn,
+  .editBtn {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    top: 6px;
+  }
+
+  .deleteBtn {
+    right: 6px;
+  }
+
+  .editBtn {
+    left: 6px;
+  }
 }

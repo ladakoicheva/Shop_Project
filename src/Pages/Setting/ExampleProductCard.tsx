@@ -1,8 +1,7 @@
 import style from '../../Components/ProductCard/ProductCard.module.css'
 import { styleConfig, type styleConfigE } from './type'
 import { typeStyleE } from './type'
-
-
+import { ImageProduct } from '../../utils/Image'
 
  const keyStyle = {
   topBG: 'topBG',
@@ -18,27 +17,24 @@ type props = {
 
 export default function ExampleProductCard({ openStyle, getStyle }:props) {
  
-
   
   const [colorName, fontSizeName] = getStyle('name');
   const [colorPrice, fontSizePrice] = getStyle('price');
   const [bgColor] = getStyle('bg');
 
-
-
-
   return (
     <>
-      <article className={style.productCard} style={{ maxWidth: '20%', background: bgColor }} >
+      <article className={style.productCard} style={{ maxWidth: '240px', background: bgColor }} >
         <div
           onClick={() => {
             const s = styleConfig.bg
             openStyle([s], typeStyleE.bg)
           }}
           className={style.img} slot={keyStyle.topBG} >
-          <img src='https://img.joomcdn.net/7395a4bf7ca6e4e56be137088a9ce9deb834c1e0_original.jpeg' alt="" slot={keyStyle.topBG} />
+          <ImageProduct src='https://img.joomcdn.net/7395a4bf7ca6e4e56be137088a9ce9deb834c1e0_original.jpeg' alt="example product" slot={keyStyle.topBG} />
           <span className={style.inStockSpan} style={{ color: 'green' }} slot={keyStyle.topBG}> ◉ in Stock</span>
         </div>
+
         <div  slot={keyStyle.bottomBG}>
 
           <div style={{ width: 'fit-content' }} slot={keyStyle.nameColor} className={style.product}>

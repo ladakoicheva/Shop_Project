@@ -1,149 +1,256 @@
 .wrapper {
-  margin-top: 2rem;
+  margin: 32px auto;
+  max-width: 1240px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 2rem 5rem 2rem;
+  gap: 24px;
+  padding: 0 24px 48px 24px;
+  box-sizing: border-box;
 }
 
 .chatHistory {
   display: flex;
   flex-direction: column;
-  border-radius: 40px;
-  background: white;
-  flex-basis: 20% ;
-  margin-right: 2rem;
-  min-height:20vh;
-  max-height: 60vh;
-  overflow-y: scroll;
-  padding-bottom: 32px;
-
-
-}
-
-.supportChat{
-  padding: 0 1rem 0 1rem;
-  display: flex;
-  gap: 50px;
-  flex-direction: column;
-  border-radius: 40px;
-  background: white;
-  flex-basis: 80%;
-  max-height: 80vh;
+  border-radius: 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  flex-basis: 28%;
+  min-height: 400px;
+  max-height: 70vh;
   overflow-y: auto;
-   padding-bottom: 2rem;
-
+  padding: 20px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-.groupWrapper{
-  height: 100%;
+.supportChat {
+  padding: 24px;
+  display: flex;
+  gap: 24px;
+  flex-direction: column;
+  border-radius: 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  flex-basis: 72%;
+  max-height: 75vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.groupWrapper {
+  flex: 1;
+  min-height: 0;
   width: 100%;
   overflow-y: auto;
-}
-.supportChat ul {
- height: fit-content
+  padding-right: 8px;
 }
 
-.messageClient,.messageAdmin{
+.supportChat ul {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.messageClient,
+.messageAdmin {
   position: relative;
   display: block;
-  /* background: #bf91d1; */
   width: fit-content;
+  max-width: 75%;
   height: fit-content;
-  padding: 1rem;
-  margin-bottom: 5px;
-  
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
-.messageClient{
-  background-color: #bf91d1;
+.messageClient {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
   margin-right: auto;
 }
-.messageAdmin{
-  background-color: #80C56B;
+
+.messageAdmin {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  font-weight: 500;
   margin-left: auto;
 }
 
-.messageInput{
+.messageInput {
   position: relative;
   display: flex;
- justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
 }
 
-.messageInput input{
-  border: none;
-  background: rgb(198, 195, 195);
-  padding: 10px 0 10px 40px;
+.messageInput input {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-interactive);
+  padding: 12px 16px;
   flex: 1;
-  border-radius: 10px;
-  font-size: 16px;
-
-}
-.messageInput input:focus{
-  border: none;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
   outline: none;
+  font-family: var(--sans);
+  transition: all 0.2s ease;
 }
 
+.messageInput input:focus {
+  border-color: var(--accent-brand);
+  background: var(--bg-surface-hover);
+}
 
-.userEmail{
+.userEmail {
   position: relative;
   display: block;
-  margin: 0 auto;
-  margin-top: 2rem;
-  background: rgb(198, 195, 195);
-  width: 80%;
-  border-radius: 11px;
-  padding: 0.5rem;
-
+  margin: 8px auto;
+  background: var(--bg-interactive);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  width: 90%;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  font-family: var(--mono);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-}
-.userEmail:hover{
-  background: rgba(198, 195, 195,0.9);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+.userEmail:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-active);
+}
 
-.sendBtn{
-  height: 2.2rem;
-  margin-left: 2px;
-  padding: 2px;
+.userEmailActive {
+  background-color: var(--accent-brand) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-brand) !important;
+  font-weight: 600;
+}
+
+.sendBtn {
+  height: 42px;
+  padding: 0 20px;
   min-width: fit-content;
-  width: 3rem;
-  flex: 1;
+  border-radius: 12px;
+  background-color: var(--accent-brand);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.fileImg{
+.sendBtn:hover {
+  opacity: 0.9;
+  background-color: #2563EB;
+}
+
+.fileImg {
   cursor: pointer;
   width: 60%;
   min-width: 100px;
   max-width: 250px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
 }
 
-.notification{
+.notification {
   position: absolute;
-  top:40%;
-  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 12px;
   display: block;
   width: 10px;
   height: 10px;
-  background: red;
+  background: var(--accent-danger);
   border-radius: 50%;
   z-index: 100;
 }
 
-.sendBtns{
+.sendBtns {
   display: flex;
-  justify-items: center;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
-.deleteIcon{
+.deleteIcon {
   cursor: pointer;
   position: absolute;
-  top: 5px;
-  right: 0;
+  top: 4px;
+  right: 4px;
   width: 20px;
-  
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  opacity: 0.4;
+  transition: all 0.2s ease;
+}
+
+.messageAdmin:hover .deleteIcon,
+.messageClient:hover .deleteIcon {
+  opacity: 1;
+}
+
+.deleteIcon:hover {
+  color: #ffffff;
+  background: var(--accent-danger);
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 16px 32px 16px;
+  }
+
+  .chatHistory {
+    flex-basis: 100%;
+    width: 100%;
+    min-height: auto;
+    max-height: 160px;
+    padding: 12px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .userEmail {
+    width: auto;
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .supportChat {
+    flex-basis: 100%;
+    width: 100%;
+    padding: 16px;
+    max-height: 70vh;
+    gap: 16px;
+  }
+
+  .messageClient,
+  .messageAdmin {
+    max-width: 85%;
+    font-size: 0.9rem;
+    padding: 10px 14px;
+  }
 }

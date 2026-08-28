@@ -1,56 +1,71 @@
-:root {
-  --black: #0B0F19;
-  --white: #F5F5F3;
-  --padding: 16px 0;
- 
-}
-
 .header {
-  color: var(--black);
+  color: var(--text-primary);
   width: 100%;
-
   box-sizing: border-box;
   position: sticky;
   top: 0;
   left: 0;
   z-index: 99;
-  padding: var(--padding);
-  background-color: var(--white);
+  padding: 14px 0;
+  background-color: rgba(11, 13, 14, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .header button {
   font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
   max-width: fit-content;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-interactive);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.header button:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-active);
 }
 
 .basketWrapper {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 5px;
-
+  gap: 8px;
 }
 
-.basketIcon {
-  cursor: pointer;
-  display: inline-block;
-  transition: transform 0.2s ease;
-
+.basketLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.basketIcon:hover {
-  transform: scale(1.2);
+.basketSvg {
+  width: 22px;
+  height: 22px;
+  color: var(--text-primary);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
 
+.basketLink:hover .basketSvg {
+  color: var(--accent-brand);
+  transform: scale(1.08);
 }
 
 .navContainer {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  gap: 16px;
+  padding: 0 24px;
   box-sizing: border-box;
 }
 
@@ -58,43 +73,86 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   flex-wrap: wrap;
-
 }
 
 .userActions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   justify-content: flex-end;
 }
 
 .header a {
   text-decoration: none;
-  font-size: 1.2rem;
-  color: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
   white-space: nowrap;
-  
+  transition: color 0.2s ease;
 }
 
 .header a:hover {
-  color: red;
+  color: var(--text-primary);
 }
 
 .header h4 {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
   margin: 0;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
 }
 
-.basketCount{
+.basketCount {
   position: absolute;
   font-size: 10px;
-  top: -5px;
-  left: 10px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  color: white;
-  background: red;
+  font-family: var(--mono);
+  font-weight: bold;
+  top: -6px;
+  right: -10px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  color: #ffffff;
+  background: var(--accent-danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 0;
+  }
+
+  .navContainer {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 16px;
+  }
+
+  .mainNav {
+    width: 100%;
+    justify-content: center;
+    gap: 12px 16px;
+  }
+
+  .userActions {
+    width: 100%;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .header a {
+    font-size: 0.78rem;
+  }
 }

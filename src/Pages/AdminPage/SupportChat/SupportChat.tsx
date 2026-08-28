@@ -9,6 +9,8 @@ import { scrollDown } from '../../../utils/scroll';
 import { adminReadMessage } from '../../../services/firebase/db/support';
 import FileBtn from '../FileBtn';
 import '../file.css'
+import { ImageFile } from '../../../utils/Image';
+
 
 
 
@@ -45,37 +47,50 @@ export default function SupportChat({ messages, changeInputValue, inputValue, se
       changeInputValue(messageText)
 
     }
-    const mess = {...messages[email]}
-    delete mess.isIncoming
-    delete mess.isIncomingAdmin
-    if (!mess || Object.keys(mess).length == 0) return <div>start messaging...</div>
-    
+    const mess = { ...messages[email] };
+    delete mess.isIncoming;
+    delete mess.isIncomingAdmin;
+
+    const times = Object.keys(mess).filter((k) => !isNaN(+k) && mess[k] && typeof mess[k] === 'object');
+    if (times.length === 0) return <div>start messaging...</div>;
+
     let currentDate = '';
-    const times = Object.keys(mess);
-    //@ts-ignore
-    times.sort((a: string, b: string) => a - b);
+    times.sort((a: string, b: string) => +a - +b);
+
     const showMessages = times.map((time: string) => {
-      //@ts-ignore
       const messageItem = mess[time] as MessageItem;
+      if (!messageItem) return null;
+
       const date = getDateDDMMYYYY(+time);
       const isNeededDate = date !== currentDate;
       currentDate = date;
-      return <li  key={time}>
-       
-        {isNeededDate && <h2>{currentDate}</h2>}
-        
-        <div
-        
-          onDoubleClick={() => messageItem.is ? editMessage(messageItem.message, time) : null}
-          className={messageItem.is ? styles.messageAdmin : styles.messageClient}>
-          
-          {messageItem.file && <a href={messageItem.file} ><img className={styles.fileImg} src={messageItem.file} alt="image" /></a>}
-          {messageItem.message && <div>{messageItem.message}</div>}
-          <span className={styles.deleteIcon } onClick={()=>deleteMessage(email,messageItem,time)}>×</span>
-        </div>
-      </li>
-    })
-   return showMessages
+
+      return (
+        <li key={time}>
+          {isNeededDate && <h2>{currentDate}</h2>}
+          <div
+            onDoubleClick={() => messageItem.is ? editMessage(messageItem.message, time) : null}
+            className={messageItem.is ? styles.messageAdmin : styles.messageClient}
+          >
+            {messageItem.file && (
+              <a href={messageItem.file} target="_blank" rel="noopener noreferrer">
+                <ImageFile className={styles.fileImg} src={messageItem.file} alt="attached file" />
+              </a>
+            )}
+            {messageItem.message && <div>{messageItem.message}</div>}
+            <span
+              className={styles.deleteIcon}
+              title="Delete message"
+              onClick={() => deleteMessage(email, messageItem, time)}
+            >
+              ×
+            </span>
+          </div>
+        </li>
+      );
+    });
+    return showMessages;
+
   }, [email, messages])
   
    useEffect(() => {

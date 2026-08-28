@@ -21,14 +21,14 @@ import Chat from './Pages/BasketPage/userChatModal/Chat.js';
 
 
 function App() {
-  const { isAdmin,user } = useAppSelector((s) => s.auth)
-  const { isLoadingApp,isLoading} = useAppSelector((s) => s.loading)
+  const { isAdmin } = useAppSelector((s) => s.auth)
+  const { isLoadingApp } = useAppSelector((s) => s.loading)
   
   const dispatch = useAppDispatch();
  
   useEffect(() => {
       dispatch(connectToApp())//! autorisation user ...
-  }, [])
+  }, [dispatch])
   if (isLoadingApp ) return <Loading /> 
   
 

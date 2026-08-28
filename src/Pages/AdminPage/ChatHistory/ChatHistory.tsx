@@ -1,5 +1,5 @@
 import styles from '../Admin.module.css'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import type { messageDataI } from '../type';
 
 type props = {
@@ -7,26 +7,29 @@ type props = {
 }
 
 export default function ChatHistory({ messages }:props) {
+  const params = useParams<{ email?: string }>();
   const userEmailsArr = Object.keys(messages);
+
   return (
-    <ul className={styles.chatHistory}>{
-      userEmailsArr.map((email) => {
+    <ul className={styles.chatHistory}>
+      {userEmailsArr.map((email) => {
+        const isActive = params.email === email;
         return (
-        
-            <Link
-          className={styles.userEmail} key={email}
-            to={`/${email}`}>{email}
-            {messages[email].isIncomingAdmin &&
-              <span className={styles.notification}></span>}
+          <Link
+            className={`${styles.userEmail} ${isActive ? styles.userEmailActive : ''}`}
+            key={email}
+            to={`/${email}`}
+          >
+            {email}
+            {messages[email].isIncomingAdmin && (
+              <span className={styles.notification}></span>
+            )}
           </Link>
-    
-       
-         
-        )
-        
-      })
-    }</ul>
-  )
+        );
+      })}
+    </ul>
+  );
 }
+
 
 

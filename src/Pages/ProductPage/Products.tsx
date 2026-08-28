@@ -18,7 +18,6 @@ import type{ settingsI } from "../../../types/types";
 
 export default function Products() {
   const auth = useAppSelector((s) => s.auth)
-  const [value, setValue] = useState('');
   const [products, setProducts] = useState<productI[]>([]);
   const [showProducts, setShowProducts] = useState<productI[]>(products);
   const [editingProduct, setEditingProduct] = useState<productI | null>(null);
@@ -152,7 +151,7 @@ export default function Products() {
 
     <div>
         
-      <ShopName name={style.name}></ShopName>
+      <ShopName name={style.name} color={style.namecolor} />
       {editingProduct && (
         <ProductsForm
           product={editingProduct}
@@ -160,14 +159,16 @@ export default function Products() {
         />
       )}
       <FilterProducts products={products}  filterProducts={filterProducts} />
-    <input type="text" value={value} onChange={(e)=>setValue(e.target.value)} />
-      {products.length >= 1
-        ? <ul className={styles.grid_template_columns}>
-        
-          { memoProducts }
-         
-        </ul> : <NoFound text="no products" />
-      }
+    
+      {showProducts.length >= 1 ? (
+        <ul className={styles.grid_template_columns}>{memoProducts}</ul>
+      ) : (
+        <NoFound
+          type="products"
+          title="No Products Found"
+          subtitle="We couldn't find any products matching your selection. Try clearing your search or filters."
+        />
+      )}
     </div>
   )
 }

@@ -35,28 +35,43 @@ export default function FilterProducts({ filterProducts, products }:props) {
   }, [searchValue, selectedCategory, price])
 
   return (
+    <div className={styles.filterProducts}>
+      <div className={styles.filterGroup}>
+        <div className={styles.searchWrapper}>
+          <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="11" cy="11" r="8" strokeWidth="2" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          <input
+            className={styles.searchInput}
+            onChange={change}
+            value={searchValue}
+            type="search"
+            placeholder="Search by name..."
+          />
+        </div>
 
-    <div className={styles.filterProducts} >
-
-
-      <div>
-        <input onChange={change} value={searchValue} type="search" placeholder=" search by name..." />
-        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} name="category" >
-          <option value="All" >All</option>
+        <select
+          className={styles.categorySelect}
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          name="category"
+        >
+          <option value="All">All</option>
           {options}
         </select>
-      
-        <select className={styles.selectBgRight} value={price} onChange={(e) => setPrice(e.target.value)}>
+
+        <select
+          className={styles.priceSelect}
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        >
           <option value="normal" hidden>normal</option>
           <option value="min">Min price</option>
           <option value="max">Max price</option>
         </select>
-        
       </div>
-
-
-
-
     </div>
-  )
+  );
 }
+

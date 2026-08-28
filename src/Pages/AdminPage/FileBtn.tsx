@@ -1,6 +1,7 @@
 import './file.css'
 import { useEffect, useState } from 'react'
 import type { messageDataI } from './type';
+import { ImageFile } from '../../utils/Image';
 
 type props = {
   getFile: (data: { imgFile: File, url: string }|null) => void,
@@ -32,17 +33,28 @@ export default function FileBtn({getFile,messages}:props) {
     reader.readAsDataURL(inputFile);
     
   }
+  const removeSelectedFile = () => {
+    setFile(null);
+    getFile(null);
+  };
+
   return (
     <>
-      <div className='cont-file-c'>
-        {!file?.imgFile  && <button className='plus-c'>+</button>}
-      <input type="file" onChange={previewFile} className='file-c' />
+      {!file?.imgFile && (
+        <div className='cont-file-c'>
+          <button className='plus-c' type="button">+</button>
+          <input type="file" onChange={previewFile} className='file-c' accept="image/*" />
+        </div>
+      )}
 
-   
-      </div>
-      
-         {file?.url &&  <div className='img-c'><img src={file?.url }  className='img'/> <span onClick={()=>setFile(null)}>×</span></div>}
+      {file?.url && (
+        <div className='img-c'>
+          <ImageFile src={file?.url} className='img' alt="file preview" />
+          <span onClick={removeSelectedFile}>×</span>
+        </div>
+      )}
     </>
-    
-  )
+  );
 }
+
+

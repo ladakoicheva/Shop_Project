@@ -144,25 +144,26 @@ export function Setting() {
 
 
   return (
-    <div>
-      <input type="text" placeholder='your shop`s name' value={name} onChange={(e) => setName(e.target.value)} />
-      <select value={currency} onChange={(e) => setCurrency(e.target.value)} name="currency" id="currency">
-        <option value="UAH">UAH</option>
-         <option value="USD">USD</option>
-      </select>
-      <button onClick={() => {
-        changeSettings(user?.uid!, { name,currency })
-        dispatch(updateStyles({ name }));
-      }}>Save</button>
+    <div className={styles.settingContainer}>
+      <div className={styles.formRow}>
+        <input type="text" placeholder='your shop`s name' value={name} onChange={(e) => setName(e.target.value)} />
+        <select value={currency} onChange={(e) => setCurrency(e.target.value)} name="currency" id="currency">
+          <option value="UAH">UAH</option>
+          <option value="USD">USD</option>
+        </select>
+        <button onClick={() => {
+          changeSettings(user?.uid!, { name,currency })
+          dispatch(updateStyles({ name }));
+        }}>Save</button>
+      </div>
       <div className={styles.exampleCard}>
         <ExampleProductCard getStyle={getStyle} openStyle={openStyle} />
         {style.isOpen && <Menu user={user} updateStyles={updateStyles} closeStyle={closeStyle} style={style} changeStyle={changeStyle} />}
       </div>
     </div>
-
-
   )
 }
+
 
 
 const SettingPage = Autorisation_HOC(Setting);

@@ -1,113 +1,173 @@
 
-body{
-  height: auto;
-  width: 100vw;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-}
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #E9ECF0;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Dark Modern Design System Tokens (design_skill.md) */
+  --bg-primary: #0B0D0E;          /* Pitch black canvas */
+  --bg-surface: #16191C;          /* Elevated container / card */
+  --bg-interactive: #202428;      /* Input & interactive surface */
+  --bg-surface-hover: #1F242A;    /* Hovered surface */
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  --border-subtle: #2E343B;       /* 1px subtle divider */
+  --border-active: #4B5563;       /* Active border */
+
+  --text-primary: #F3F4F6;        /* High-contrast readable text */
+  --text-secondary: #9CA3AF;      /* Secondary label text */
+  --text-muted: #6B7280;          /* Captions and placeholders */
+
+  --accent-brand: #3B82F6;        /* Electric Blue */
+  --accent-stock: #10B981;        /* Emerald stock text */
+  --accent-stock-bg: #064E3B;     /* Emerald stock badge bg */
+  --accent-danger: #EF4444;       /* Danger / Out of stock */
+  --accent-star: #EAB308;         /* Rating stars */
+
+  /* Standardized Spacing Tokens */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  --sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-
-}
-
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #E9ECF0;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-
-}
-
-#root {
-  width: 100%;
-  flex:1;
-  margin: 0 auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  
-
-}
-
-a:hover{
-  color:red !important
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  color: rgb(40,40,40);
-  font-family: "Roboto", sans-serif;
-  
-   /* outline: 1px solid red; */
+  font-family: var(--sans);
 }
 
-@media (max-width: 768px) {
-  html {
-    font-size: 87.5%;
-   
-  }
+body {
+  min-height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
-button {
-  padding: 5px;
-  cursor: pointer;
-  color:#e5e4e7;
-  
+
+#root {
+  width: 100%;
+  flex: 1;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: var(--bg-primary);
+}
+
+/* Unified Typography Rules */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+p, span, label, li {
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
 a,
 a:visited {
   text-decoration: none;
+  color: inherit;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
+
+a:hover {
+  color: var(--text-primary);
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-interactive);
+  color: var(--text-primary);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-active);
+}
+
+/* Global Dark Theme Inputs & Selects */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="file"],
+select,
+textarea {
+  background-color: var(--bg-interactive) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent-brand) !important;
+  background-color: var(--bg-surface-hover) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+select option {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+}
+
 .filterBg {
   width: 95vw;
-  margin: 0 auto;
-  margin-bottom: 10px;
-  padding: 30px 0px;
-  background-color: #E6736A;
+  max-width: 1240px;
+  margin: 0 auto 16px auto;
+  padding: 16px 24px;
+  background-color: rgba(22, 25, 28, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
   position: sticky;
-
+  top: 70px;
+  z-index: 90;
+  backdrop-filter: blur(12px);
 }
 
-li{
+li {
   list-style: none;
 }
+
+
+

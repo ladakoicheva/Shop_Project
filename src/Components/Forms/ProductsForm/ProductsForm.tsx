@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import styles from './ProductsForm.module.css';
 import { useFormik } from 'formik';
 import IOSSwitch from '../../Switch';
@@ -47,21 +48,16 @@ function ProductsForm({ onClose, product }: props) {
   });
 
 
-  return (
-    <>
-      <form className={styles.productForm} onSubmit={formik.handleSubmit}>
+  const modalContent = (
+    <div className={styles.backdrop} onClick={() => onClose && onClose()}>
+      <form className={styles.productForm} onSubmit={formik.handleSubmit} onClick={(e) => e.stopPropagation()}>
         {product && <span onClick={onClose} className={styles.close}>×</span>}
         <h1>{product ? 'Edit Product' : 'Add Product'} </h1>
-        <hr style={{ width: '100%' }} />
-
+        <hr className={styles.divider} style={{ width: '100%' }} />
 
         {!img ? <input onChange={handleFileChange} type="file" id='img' accept="image/*" /> : <div className={styles.imgPreview}>
           <ImageProduct src={img?.src!} alt="productImg" className='' /> <span onClick={() => updateImage(null)}>×</span>
         </div>}
-
-
-
-
 
         <label htmlFor="name">Product name</label>
         <input onChange={formik.handleChange} value={formik.values.name} id='name' type="text" placeholder='product`s name' />
@@ -103,10 +99,12 @@ function ProductsForm({ onClose, product }: props) {
         <button type='submit'> Save</button>
 
       </form>
-    </>
-  )
+    </div>
+  );
 
+  return createPortal(modalContent, document.body);
 }
+
 
 
 

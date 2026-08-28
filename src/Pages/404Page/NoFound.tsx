@@ -1,7 +1,13 @@
+import { NoFound } from '../../uix/NoFound';
 
-
-export default function noFound() {
+export default function NoFoundPage() {
   return (
-    <div>noFound</div>
-  )
+    <NoFound
+      type="404"
+      title="404 - Page Not Found"
+      subtitle="The page you are looking for does not exist or has been moved."
+      actionLabel="Return to Catalog"
+      actionTo="/"
+    />
+  );
 }

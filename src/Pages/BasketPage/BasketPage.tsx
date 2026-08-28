@@ -17,8 +17,10 @@ import type { historyI } from "../../../types/types";
 import { convector } from "../../utils/convector";
 
 
+import { NoFound } from "../../uix/NoFound";
+
+
 export default function BasketPage() {
-  // const { basket, deleteFromBasket, resetBasket } =basketContext
   const { user} = useAppSelector((s) => s.auth)
   const basket = useAppSelector((s) => s.basket.data);
   const {settings,rates} = useAppSelector((s)=>s.auth)
@@ -64,8 +66,7 @@ export default function BasketPage() {
       discount: 0,
       products: productsData
     };
-    //   }
-    const res = await Promise.all([updateTotal(total, user.uid!), saveHistory(data, user.uid!,id)])//!
+    const res = await Promise.all([updateTotal(total, user.uid!), saveHistory(data, user.uid!,id)])
 
     if (res) {
       dispatch(resetBasket());
@@ -75,7 +76,7 @@ export default function BasketPage() {
     }
 
   }
-  if (isEmpty) return <div>No products</div>;
+  if (isEmpty) return <NoFound type="basket" actionLabel="Browse Products" actionTo="/" />;
 
   return (
     <>

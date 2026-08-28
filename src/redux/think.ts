@@ -18,7 +18,7 @@ export const connectToApp = createAsyncThunk<
   {dispatch : AppDispatch, state : RootState}
 >(
   'auth/connectToApp',
-  async (_, { dispatch, getState }) => {
+  async (_, { dispatch }) => {
 
      dispatch(openLoadingApp());
     const callBack = (data: settingsI) => {
@@ -78,7 +78,3 @@ export const connectToApp = createAsyncThunk<
     return { ok: false, data: null, message: 'unknown error' };
     
   })
-
-
-
-  
